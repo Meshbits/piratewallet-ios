@@ -95,7 +95,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                            TheNoScreen(appEnvironment: ZECCWalletEnvironment.shared)
 //                                .navigationBarHidden(true)
 //                                .navigationBarBackButtonHidden(true)
-                            ContentView()
+                            TheNoScreen()
                         }
                     )
             )
