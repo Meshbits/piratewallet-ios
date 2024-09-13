@@ -12,9 +12,10 @@ import AVFoundation
 import UserNotifications
 
 
-//@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+
+    let logger = PirateLogger(logLevel: .debug)
+
     static var isTouchIDVisible = false
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
