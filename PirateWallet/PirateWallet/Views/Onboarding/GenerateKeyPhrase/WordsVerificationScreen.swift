@@ -103,7 +103,7 @@ struct WordsVerificationScreen: View {
             }
         }.toast(isPresenting: $showErrorToast){
             
-            AlertToast(displayMode: .hud, type: .regular, title:"Invalid passphrase!".localized())
+            AlertToast(displayMode: .hud, type: .error(.red), title:"Invalid passphrase!".localized())
 
         }
         .navigationBarBackButtonHidden(true)

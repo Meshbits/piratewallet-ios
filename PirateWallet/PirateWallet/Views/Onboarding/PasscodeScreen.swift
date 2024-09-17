@@ -283,12 +283,12 @@ struct PasscodeScreen: View {
         }
         .toast(isPresenting: $showErrorToast){
 
-            AlertToast(displayMode: .hud, type: .regular, title:"Invalid passcode!".localized())
+            AlertToast(displayMode: .hud, type: .error(.red), title:"Invalid passcode!".localized())
 
         }
         .toast(isPresenting: $showPasscodeChangeSuccessToast){
 
-            AlertToast(displayMode: .hud, type: .regular, title:"Passcode changed successfully!".localized())
+            AlertToast(displayMode: .hud, type: .complete(.green), title:"Passcode changed successfully!".localized())
 
         }
         .onReceive(AuthenticationHelper.authenticationPublisher) { (output) in
