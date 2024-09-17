@@ -84,7 +84,7 @@ struct TheNoScreen: View {
 //        viewForState(appEnvironment.state)
         
         if removeSplash {
-            IntroWelcome()
+            CreateNewWallet()
                 .transition(.opacity)
         }else{
             theUnscreen()

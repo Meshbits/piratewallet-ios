@@ -59,15 +59,9 @@ struct CreateNewWallet: View {
                 
                 Spacer()
 
-//                Text("Restore from".localized()).foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .leading)
-//                    .padding(.leading,30).scaledFont(size: 14)
-
                 VStack(alignment: .center, spacing: 10.0, content: {
                     
-//                    ZStack {
-//                        RecoveryWalletButtonView(imageName: Binding.constant("buttonbackground"), title: Binding.constant("iCloud Backup".localized()))
-//                    }.frame(width: 225.0, height:84).hidden()
-////
+//
 //                    NavigationLink(
 //                        destination: RestorePhraseScreen().environmentObject(self.appEnvironment)/*RestoreWallet()
 //                                        .environmentObject(self.appEnvironment)*/,
@@ -75,15 +69,15 @@ struct CreateNewWallet: View {
 //                                   selection: $destination
 //                            
 //                    ) {
-//                        Button(action: {
-////                            guard !ZECCWalletEnvironment.shared.credentialsAlreadyPresent() else {
-////                                self.showError = .feedback(destination: .restoreWallet, cause: SeedManager.SeedManagerError.alreadyImported)
-////                                return
-////                            }
-//                            self.destination = .restoreWallet
-//                        }) {
-//                            RecoveryWalletButtonView(imageName: Binding.constant("buttonbackground"), title: Binding.constant("Restore Wallet".localized()))
-//                        }
+                        Button(action: {
+//                            guard !ZECCWalletEnvironment.shared.credentialsAlreadyPresent() else {
+//                                self.showError = .feedback(destination: .restoreWallet, cause: SeedManager.SeedManagerError.alreadyImported)
+//                                return
+//                            }
+                            self.destination = .restoreWallet
+                        }) {
+                            RecoveryWalletButtonView(imageName: Binding.constant("buttonbackground"), title: Binding.constant("Restore Wallet".localized()))
+                        }
 //                    }
                    
                     
@@ -103,25 +97,13 @@ struct CreateNewWallet: View {
 //                               isActive: $openCreateNewWalletFlow
 //                        
 //                ) {
-//                    Button(action: {
-////                      createNewWalletFlow()
-//                        openCreateNewWalletFlow = true
-//                    }) {
-//                        BlueButtonView(aTitle: "Create New Wallet".localized())
-//                    }
+                    Button(action: {
+                        openCreateNewWalletFlow = true
+                    }) {
+                        BlueButtonView(aTitle: "Create New Wallet".localized())
+                    }
 //                }
                 
-//                #if DEBUG
-//                Button(action: {
-//                    self.appEnvironment.nuke()
-//                }) {
-//                    Text("NUKE WALLET".localized())
-//                        .foregroundColor(.red)
-//                        .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .red, lineWidth: 1)))
-//                        .frame(height: self.buttonHeight)
-//
-//                }
-//                #endif
                
             }
             .padding([.horizontal, .bottom], self.buttonPadding)
@@ -255,23 +237,23 @@ struct BlueButtonView : View {
     var body: some View {
         ZStack {
             
-//            Image("bluebuttonbackground").resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
-//            
-//            if #available(iOS 15.0, *) {
-//                Text(aTitle).foregroundColor(Color.black)
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
-//                    .cornerRadius(15)
-////                    .dynamicTypeSize(.medium)
-//                    .scaledFont(size: Device.isLarge ? 19 : 13)
-//                    .multilineTextAlignment(.center)
-//            } else {
-//                // Fallback on earlier versions
-//                Text(aTitle).foregroundColor(Color.black)
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
-//                    .cornerRadius(15)
-//                    .modifier(BarlowModifier(.footnote))
-//                    .multilineTextAlignment(.center)
-//            }
+            Image("bluebuttonbackground").resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
+            
+            if #available(iOS 15.0, *) {
+                Text(aTitle).foregroundColor(Color.black)
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
+                    .cornerRadius(15)
+//                    .dynamicTypeSize(.medium)
+                    .scaledFont(size: Device.isLarge ? 19 : 13)
+                    .multilineTextAlignment(.center)
+            } else {
+                // Fallback on earlier versions
+                Text(aTitle).foregroundColor(Color.black)
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
+                    .cornerRadius(15)
+                    .modifier(BarlowModifier(.footnote))
+                    .multilineTextAlignment(.center)
+            }
         }.frame(width: Device.isLarge ? 225.0 : 130.0, height:Device.isLarge ? 84 : 60)
         
     }
@@ -314,24 +296,24 @@ struct RecoveryWalletButtonView : View {
     
     var body: some View {
         ZStack {
-//
-//            Image(imageName).resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
-//            
-//            if #available(iOS 15.0, *) {
-//                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
-//                    .cornerRadius(15)
-////                    .dynamicTypeSize(.medium)
-//                    .scaledFont(size: Device.isLarge ? 19 : 13)
-//                    .multilineTextAlignment(.center)
-//            } else {
-//                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
-//                    .cornerRadius(15)
-//                    .modifier(BarlowModifier(.footnote))
-//                    .multilineTextAlignment(.center)
-//                
-//            }
+
+            Image(imageName).resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
+            
+            if #available(iOS 15.0, *) {
+                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
+                    .cornerRadius(15)
+//                    .dynamicTypeSize(.medium)
+                    .scaledFont(size: Device.isLarge ? 19 : 13)
+                    .multilineTextAlignment(.center)
+            } else {
+                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
+                    .cornerRadius(15)
+                    .modifier(BarlowModifier(.footnote))
+                    .multilineTextAlignment(.center)
+                
+            }
         }.frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
     }
 }
