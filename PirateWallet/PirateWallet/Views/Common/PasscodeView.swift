@@ -295,12 +295,12 @@ struct PasscodeView: View {
         }
         .toast(isPresenting: $showErrorToast){
 
-            AlertToast(displayMode: .hud, type: .regular, title:"Invalid passcode!".localized())
+            AlertToast(displayMode: .hud, type: .error(.red), title:"Invalid passcode!".localized())
 
         }
         .toast(isPresenting: $showPasscodeChangeSuccessToast){
 
-            AlertToast(displayMode: .hud, type: .regular, title:"PIN SET Successfully!".localized())
+            AlertToast(displayMode: .hud, type: .complete(.green), title:"PIN SET Successfully!".localized())
 
         }
         .onReceive(AuthenticationHelper.authenticationPublisher) { (output) in
@@ -390,6 +390,7 @@ struct PasscodeLoginScreenTitle : View {
     var body: some View {
         HStack(alignment: .center, spacing: nil, content: {
             Text(aTitle).scaledFont(size: Device.isLarge ? 19 : 13).padding(.top,40)
+                .foregroundStyle(.white)
         })
     }
 }
