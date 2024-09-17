@@ -92,17 +92,17 @@ struct CreateNewWallet: View {
                 
                 Color.black.frame(height:CGFloat(1) / UIScreen.main.scale).frame(height:2).padding(.leading,15).padding(.trailing,15)
   
-//                NavigationLink(
-//                    destination: IntroWelcome().environmentObject(self.appEnvironment),
-//                               isActive: $openCreateNewWalletFlow
-//                        
-//                ) {
+                NavigationLink(
+                    destination: IntroWelcome(),
+                               isActive: $openCreateNewWalletFlow
+                        
+                ) {
                     Button(action: {
                         openCreateNewWalletFlow = true
                     }) {
                         BlueButtonView(aTitle: "Create New Wallet".localized())
                     }
-//                }
+                }
                 
                
             }
