@@ -1,6 +1,24 @@
 {
-  "originHash" : "0d148aa9ea4dbf6ffd25ebb2e2f733874d8bb2407165f3a31cc56342f70991bf",
+  "originHash" : "cdee243c6ad23b157845e40a2f67a14661f010ba691a8f42720b1dacb2e38950",
   "pins" : [
+    {
+      "identity" : "alerttoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elai950/AlertToast.git",
+      "state" : {
+        "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
+        "version" : "1.3.9"
+      }
+    },
+    {
+      "identity" : "lottie-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "state" : {
+        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
+        "version" : "4.5.0"
+      }
+    },
     {
       "identity" : "mnemonicswift",
       "kind" : "remoteSourceControl",
@@ -8,6 +26,15 @@
       "state" : {
         "revision" : "716a2c32ac2bbd8a1499ac834077df42b75edc85",
         "version" : "2.2.4"
+      }
+    },
+    {
+      "identity" : "neumorphic",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/costachung/neumorphic/",
+      "state" : {
+        "branch" : "master",
+        "revision" : "03c6f7b3d27bfb28a082db2e9ffae45fbc69cb8b"
       }
     },
     {

@@ -1,0 +1,124 @@
+//
+//  ARRRTextField.swift
+//  PirateWallet
+//
+//  Created by Lokesh on 16/09/24.
+//
+
+
+import SwiftUI
+struct ARRRTextField: View {
+    
+    var title: String
+    var placeholder: String = ""
+    var accessoryIcon: Image?
+    var action: (() -> Void)?
+    var contentType: UITextContentType?
+    var keyboardType: UIKeyboardType
+    var autocorrect = false
+    var autocapitalize = false
+    var subtitleView: AnyView
+    var onCommit: () -> Void
+    var onEditingChanged: (Bool) -> Void
+    
+    
+    
+    @Binding var text: String
+    
+    var accessoryView: AnyView {
+        if let img = accessoryIcon, let action = action {
+            return AnyView(
+                Button(action: {
+                    action()
+                }) {
+                    img
+                        .resizable()
+                    
+                }
+            )
+        } else {
+            return AnyView(EmptyView())
+        }
+    }
+    
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .foregroundColor(.white)
+            
+            HStack {
+                TextField(placeholder,
+                          text: $text,
+                          onEditingChanged: self.onEditingChanged,
+                          onCommit: self.onCommit)
+                
+                    .accentColor(.white)
+                    .foregroundColor(Color.white)
+                    .textContentType(contentType)
+                    .keyboardType(keyboardType)
+                    .autocapitalization(autocapitalize ? .sentences : .none)
+                    .disableAutocorrection(!autocorrect)
+                    
+                    
+                    .padding([.top])
+                accessoryView
+                    .frame(width: 25, height: 25)
+            }.overlay(
+                Baseline().stroke(Color.white,lineWidth: 2)
+            )
+            subtitleView
+        }
+    }
+    
+    init(title: String,
+         subtitleView: AnyView? = nil,
+         contentType: UITextContentType? = nil,
+         keyboardType: UIKeyboardType  = .default,
+         binding: Binding<String>,
+         action: (() -> Void)? = nil,
+         accessoryIcon: Image? = nil,
+         onEditingChanged: @escaping (Bool) -> Void,
+         onCommit: @escaping () -> Void) {
+        self.title = title
+        self.accessoryIcon = accessoryIcon
+        self.action = action
+        if let subtitle = subtitleView {
+            self.subtitleView = AnyView(subtitle)
+        } else {
+            self.subtitleView = AnyView(EmptyView())
+        }
+        self.contentType = contentType
+        self.keyboardType = keyboardType
+        self._text = binding
+        self.onCommit = onCommit
+        self.onEditingChanged = onEditingChanged
+    }
+    
+}
+
+struct ZcashTextField_Previews: PreviewProvider {
+    
+    @State static var text: String = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
+    static var previews: some View {
+        ZStack {
+            ARRRBackground()
+            ARRRTextField(title: "To:".localized(),
+                           subtitleView: AnyView(
+                            Text("Enter Shielded Address".localized())
+                                .foregroundColor(.zLightGray)
+                                .font(.footnote)
+                            ),
+                           binding: $text,
+                           action: {},
+                           accessoryIcon: Image("QRCodeIcon")
+                                                .renderingMode(.original),
+                           onEditingChanged: { editing in },
+                           onCommit: {}
+                
+            )
+            .padding()
+            
+        }
+    }
+}

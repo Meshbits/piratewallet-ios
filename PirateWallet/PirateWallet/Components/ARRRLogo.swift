@@ -30,3 +30,15 @@ struct ARRRLogo<S: ShapeStyle>: View {
         }
     }
 }
+
+extension LinearGradient {
+    static var amberGradient: LinearGradient {
+        LinearGradient(gradient: Gradient(
+                                    colors: [Color.zAmberGradient1,
+                                             Color.zAmberGradient2]
+                                    ),
+                       startPoint: UnitPoint(x: 0.5, y: 0),
+                       endPoint: UnitPoint(x: 0.5, y: 1.0))
+    }
+}
+
