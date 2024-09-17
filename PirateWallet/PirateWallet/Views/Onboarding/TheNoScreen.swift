@@ -84,7 +84,7 @@ struct TheNoScreen: View {
 //        viewForState(appEnvironment.state)
         
         if removeSplash {
-            ContentView()
+            IntroWelcome()
                 .transition(.opacity)
         }else{
             theUnscreen()
