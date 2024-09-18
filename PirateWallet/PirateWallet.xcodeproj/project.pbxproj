@@ -11,6 +11,8 @@
 		CF23EFA52C985B0200AC59B6 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = CF23EFA42C985B0200AC59B6 /* AlertToast */; };
 		CF23EFED2C986B4C00AC59B6 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CF23EFEC2C986B4C00AC59B6 /* Lottie */; };
 		CF44638A2C941018002E7FCE /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CF4463892C941018002E7FCE /* MnemonicSwift */; };
+		CF5220752C9B54DC00C0ABD9 /* NotificationBubbles in Frameworks */ = {isa = PBXBuildFile; productRef = CF5220742C9B54DC00C0ABD9 /* NotificationBubbles */; };
+		CF5220782C9B54F800C0ABD9 /* KRProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = CF5220772C9B54F800C0ABD9 /* KRProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,10 +45,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF5220782C9B54F800C0ABD9 /* KRProgressHUD in Frameworks */,
 				CF23EFA52C985B0200AC59B6 /* AlertToast in Frameworks */,
 				CF23EF752C97119700AC59B6 /* Neumorphic in Frameworks */,
 				CF44638A2C941018002E7FCE /* MnemonicSwift in Frameworks */,
 				CF23EFED2C986B4C00AC59B6 /* Lottie in Frameworks */,
+				CF5220752C9B54DC00C0ABD9 /* NotificationBubbles in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +97,8 @@
 				CF23EF742C97119700AC59B6 /* Neumorphic */,
 				CF23EFA42C985B0200AC59B6 /* AlertToast */,
 				CF23EFEC2C986B4C00AC59B6 /* Lottie */,
+				CF5220742C9B54DC00C0ABD9 /* NotificationBubbles */,
+				CF5220772C9B54F800C0ABD9 /* KRProgressHUD */,
 			);
 			productName = PirateWallet;
 			productReference = CF44634A2C940383002E7FCE /* PirateWallet.app */;
@@ -132,6 +138,8 @@
 				CF23EF732C97119700AC59B6 /* XCRemoteSwiftPackageReference "neumorphic" */,
 				CF23EFA32C985B0200AC59B6 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				CF23EFEB2C986B4C00AC59B6 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				CF5220732C9B54DC00C0ABD9 /* XCRemoteSwiftPackageReference "NotificationBubbles" */,
+				CF5220762C9B54F800C0ABD9 /* XCRemoteSwiftPackageReference "KRProgressHUD" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CF44634B2C940383002E7FCE /* Products */;
@@ -416,6 +424,22 @@
 				minimumVersion = 2.2.4;
 			};
 		};
+		CF5220732C9B54DC00C0ABD9 /* XCRemoteSwiftPackageReference "NotificationBubbles" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pacu/NotificationBubbles.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		CF5220762C9B54F800C0ABD9 /* XCRemoteSwiftPackageReference "KRProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krimpedance/KRProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -438,6 +462,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CF4463882C941018002E7FCE /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
 			productName = MnemonicSwift;
+		};
+		CF5220742C9B54DC00C0ABD9 /* NotificationBubbles */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF5220732C9B54DC00C0ABD9 /* XCRemoteSwiftPackageReference "NotificationBubbles" */;
+			productName = NotificationBubbles;
+		};
+		CF5220772C9B54F800C0ABD9 /* KRProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF5220762C9B54F800C0ABD9 /* XCRemoteSwiftPackageReference "KRProgressHUD" */;
+			productName = KRProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
