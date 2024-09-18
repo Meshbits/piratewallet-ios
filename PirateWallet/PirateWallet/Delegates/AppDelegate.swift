@@ -10,14 +10,86 @@ import UIKit
 import BackgroundTasks
 import AVFoundation
 import UserNotifications
-
+import PirateLightClientKit
+import NotificationBubbles
+import Combine
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let logger = PirateLogger(logLevel: .debug)
 
     static var isTouchIDVisible = false
+    
+    var cancellables: [AnyCancellable] = []
+    var window: UIWindow?
+    private var wallet: Initializer?
+    private var synchronizer: SDKSynchronizer?
 
+    var sharedSynchronizer: SDKSynchronizer {
+        if let sync = synchronizer {
+            return sync
+        } else {
+            let sync = SDKSynchronizer(initializer: sharedWallet) // this must break if fails
+            self.synchronizer = sync
+            return sync
+        }
+    }
+
+    var sharedViewingKey: UnifiedFullViewingKey {
+        let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
+        let spendingKey = try! derivationTool
+            .deriveUnifiedSpendingKey(seed: PirateAppConfig.defaultSeed, accountIndex: 0)
+
+        return try! derivationTool.deriveUnifiedFullViewingKey(from: spendingKey)
+    }
+
+    
+    var sharedWallet: Initializer {
+        if let wallet {
+            return wallet
+        } else {
+            let wallet = Initializer(
+                cacheDbURL: nil,
+                fsBlockDbRoot: try! fsBlockDbRootURLHelper(),
+                dataDbURL: try! dataDbURLHelper(),
+                endpoint: PirateAppConfig.endpoint,
+                network: kPirateNetwork,
+                spendParamsURL: try! spendParamsURLHelper(),
+                outputParamsURL: try! outputParamsURLHelper(),
+                saplingParamsSourceURL: SaplingParamsSourceURL.default
+            )
+
+            self.wallet = wallet
+            return wallet
+        }
+    }
+    
+    func subscribeToMinedTxNotifications() {
+        sharedSynchronizer.eventStream
+            .map { event in
+                guard case let .minedTransaction(transaction) = event else { return nil }
+                return transaction
+            }
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveValue: { [weak self] transaction in self?.txMined(transaction) }
+            )
+            .store(in: &cancellables)
+    }
+
+    
+    func txMined(_ transaction: ZcashTransaction.Overview) {
+        NotificationBubble.display(
+            in: window!.rootViewController!.view,
+            options: NotificationBubble.sucessOptions(
+                animation: NotificationBubble.Animation.fade(duration: 1)
+            ),
+            attributedText: NSAttributedString(string: "Transaction \(String(describing: transaction.id))mined!"),
+            handleTap: {}
+        )
+    }
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         if connectingSceneSession.role == UISceneSession.Role.windowApplication {
             let config = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
@@ -131,4 +203,96 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 //    }
   
+}
+
+
+extension AppDelegate {
+    static var shared: AppDelegate {
+        UIApplication.shared.delegate as! AppDelegate
+    }
+
+    func wipe(completion completionClosure: @escaping (Error?) -> Void) {
+        guard let synchronizer = (UIApplication.shared.delegate as? AppDelegate)?.sharedSynchronizer else { return }
+
+        // At this point app should show some loader or some UI that indicates action. If the sync is not running then wipe happens immediately.
+        // But if the sync is in progress then the SDK must first stop it. And it may take some time.
+
+        synchronizer.wipe()
+            // Delay is here to be sure that previously showed alerts are gone and it's safe to show another. Or I want to show loading UI for at
+            // least one second in case that wipe happens immediately.
+            .delay(for: .seconds(1), scheduler: DispatchQueue.main, options: .none)
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        completionClosure(nil)
+                    case .failure(let error):
+                        completionClosure(error)
+                    }
+                },
+                receiveValue: { _ in }
+            )
+            .store(in: &cancellables)
+    }
+}
+
+extension Initializer {
+    static var shared: Initializer {
+        AppDelegate.shared.sharedWallet // AppDelegate or DIE.
+    }
+}
+
+extension Synchronizer {
+    static var shared: Synchronizer {
+        AppDelegate.shared.sharedSynchronizer
+    }
+}
+
+func documentsDirectoryHelper() throws -> URL {
+    try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+}
+
+func fsBlockDbRootURLHelper() throws -> URL {
+    try documentsDirectoryHelper()
+        .appendingPathComponent(kPirateNetwork.networkType.chainName)
+        .appendingPathComponent(
+            PirateSDK.defaultFsCacheName,
+            isDirectory: true
+        )
+}
+
+func cacheDbURLHelper() throws -> URL {
+    try documentsDirectoryHelper()
+        .appendingPathComponent(
+            kPirateNetwork.constants.defaultDbNamePrefix + PirateSDK.defaultCacheDbName,
+            isDirectory: false
+        )
+}
+
+func dataDbURLHelper() throws -> URL {
+    try documentsDirectoryHelper()
+        .appendingPathComponent(
+            kPirateNetwork.constants.defaultDbNamePrefix + PirateSDK.defaultDataDbName,
+            isDirectory: false
+        )
+}
+
+func spendParamsURLHelper() throws -> URL {
+    try documentsDirectoryHelper().appendingPathComponent("sapling-spend.params")
+}
+
+func outputParamsURLHelper() throws -> URL {
+    try documentsDirectoryHelper().appendingPathComponent("sapling-output.params")
+}
+
+public extension NotificationBubble {
+    static func sucessOptions(animation: NotificationBubble.Animation) -> [NotificationBubble.Style] {
+        return [
+            NotificationBubble.Style.animation(animation),
+            NotificationBubble.Style.margins(UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)),
+            NotificationBubble.Style.cornerRadius(8),
+            NotificationBubble.Style.duration(timeInterval: 10),
+            NotificationBubble.Style.backgroundColor(UIColor.green)
+        ]
+    }
 }
