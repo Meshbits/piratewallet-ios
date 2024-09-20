@@ -7,8 +7,12 @@
 
 import SwiftUI
 import Combine
-//import ZcashLightClientKit
 
+import PirateLightClientKit
+import MnemonicSwift
+
+//import ZcashLightClientKit
+public typealias BlockHeight = Int
 struct RestorePhraseScreen: View {
     
 //    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
@@ -34,7 +38,7 @@ struct RestorePhraseScreen: View {
         }
         
         do {
-//           try MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)
+           try MnemonicSeedProvider.default.isValid(mnemonic: seedPhrase)
             return Text.subtitle(text: "Your seed phrase is valid".localized()).font(.barlowRegular(size: Device.isLarge ? 15 : 10))
         } catch {
             return Text.subtitle(text: "Your seed phrase is invalid!".localized()).font(.barlowRegular(size: Device.isLarge ? 15 : 10))
@@ -83,23 +87,22 @@ struct RestorePhraseScreen: View {
                         }
 
                     }
-//                    Button(action: {
-//                        do {
-//                            try self.importSeed()
-//                            try self.importBirthday()
-////                            try self.appEnvironment.initialize()
-//                        } catch {
-////                            logger.error("\(error)")
-//                            self.showError = true
-//                            return
-//                        }
-//                        self.proceed = true
-//                    }) {
-//                        BlueButtonView(aTitle: "Proceed".localized())
-//                    }
-//                    .disabled(disableProceed)
-//                    .opacity(disableProceed ? 0.4 : 1.0)
-//                    .frame(height: 58)
+                    Button(action: {
+                        do {
+                            try self.importBirthdayAndSeed()
+//                            try self.appEnvironment.initialize()
+                        } catch {
+                            printLog("\(error)")
+                            self.showError = true
+                            return
+                        }
+                        self.proceed = true
+                    }) {
+                        BlueButtonView(aTitle: "Proceed".localized())
+                    }
+                    .disabled(disableProceed)
+                    .opacity(disableProceed ? 0.4 : 1.0)
+                    .frame(height: 58)
                     
                     Spacer()
                 }
@@ -149,7 +152,7 @@ struct RestorePhraseScreen: View {
             }
 //        }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("Recovery Phrase".localized())
+        .navigationTitle(Text("Recovery Phrase".localized()))
             .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(leading:   Button {
             presentationMode.wrappedValue.dismiss()
@@ -159,26 +162,28 @@ struct RestorePhraseScreen: View {
         
     }
     
-//    var isValidBirthday: Bool {
-//        validateBirthday(walletBirthDay)
-//    }
-//    
+    var isValidBirthday: Bool {
+        validateBirthday(walletBirthDay)
+    }
+    
     var isValidSeed: Bool {
         validateSeed(seedPhrase)
     }
     
-//    func validateBirthday(_ birthday: String) -> Bool {
-//        
-//        guard !birthday.isEmpty else {
-//            return true
-//        }
-//        
-//        guard let b = BlockHeight(birthday) else {
-//            return false
-//        }
-//        
-//        return b >= ZCASH_NETWORK.constants.SAPLING_ACTIVATION_HEIGHT
-//    }
+    func validateBirthday(_ birthday: String) -> Bool {
+        
+        guard !birthday.isEmpty else {
+            return true
+        }
+        
+        guard let b = BlockHeight(birthday) else {
+            return false
+        }
+        
+        let constants: NetworkConstants.Type = PirateSDKMainnetConstants.self
+        
+        return b >= constants.saplingActivationHeight
+    }
     
     func validateSeed(_ seed: String) -> Bool {
         do {
@@ -188,24 +193,26 @@ struct RestorePhraseScreen: View {
             return false
         }
     }
-//    
-//    func importBirthday() throws {
-//        let b = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ZCASH_NETWORK.constants.SAPLING_ACTIVATION_HEIGHT
-//        try SeedManager.default.importBirthday(b)
-//    }
-//    
-//    func importSeed() throws {
-//        let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
-//        guard !trimmedSeedPhrase.isEmpty else {
-//            throw WalletError.createFailed(underlying: MnemonicError.invalidSeed)
-//        }
-//        
-//        try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
-//    }
-//    
-//    var disableProceed: Bool {
-//        !isValidSeed || !isValidBirthday
-//    }
+    
+    func importBirthdayAndSeed() throws {
+        let constants: NetworkConstants.Type = PirateSDKMainnetConstants.self
+
+        // Birthday
+        let birthdayHeight = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? constants.saplingActivationHeight
+
+        let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
+       
+        // Seed
+        let mnemonicSeed = try! Mnemonic.deterministicSeedBytes(from: trimmedSeedPhrase)
+        
+        PirateAppConfig.defaultSeed = mnemonicSeed
+        PirateAppConfig.defaultBirthdayHeight = birthdayHeight
+        
+    }
+        
+    var disableProceed: Bool {
+        !isValidSeed || !isValidBirthday
+    }
 }
 
 struct RestorePhraseScreen_Previews: PreviewProvider {

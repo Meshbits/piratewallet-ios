@@ -61,24 +61,20 @@ struct CreateNewWallet: View {
 
                 VStack(alignment: .center, spacing: 10.0, content: {
                     
-//
-//                    NavigationLink(
-//                        destination: RestorePhraseScreen().environmentObject(self.appEnvironment)/*RestoreWallet()
-//                                        .environmentObject(self.appEnvironment)*/,
-//                                   tag: Destinations.restoreWallet,
-//                                   selection: $destination
-//                            
-//                    ) {
+
+                    NavigationLink(
+                        destination: RestorePhraseScreen()/*.environmentObject(self.appEnvironment)RestoreWallet()
+                                        .environmentObject(self.appEnvironment)*/,
+                                   tag: Destinations.restoreWallet,
+                                   selection: $destination
+                            
+                    ) {
                         Button(action: {
-//                            guard !ZECCWalletEnvironment.shared.credentialsAlreadyPresent() else {
-//                                self.showError = .feedback(destination: .restoreWallet, cause: SeedManager.SeedManagerError.alreadyImported)
-//                                return
-//                            }
                             self.destination = .restoreWallet
                         }) {
                             RecoveryWalletButtonView(imageName: Binding.constant("buttonbackground"), title: Binding.constant("Restore Wallet".localized()))
                         }
-//                    }
+                    }
                    
                     
                 })

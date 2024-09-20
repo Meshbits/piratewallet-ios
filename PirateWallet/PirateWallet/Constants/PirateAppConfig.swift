@@ -19,16 +19,8 @@ enum PirateAppConfig {
 
     static let host = "lightd1.pirate.black"
     static let port: Int = 443
-    static let defaultBirthdayHeight: BlockHeight = 1390000
-    static let defaultSeed = try! Mnemonic.deterministicSeedBytes(from: "eyebrow luggage boy enemy stamp lunch middle slab mother bacon confirm again tourist idea grain pink angle comic question rabbit pole train dragon grape")
-
-    static let otherTempSynchronizers: [SynchronizerInitData] = [
-        SynchronizerInitData(
-            alias: .custom("alt-pirate-synchronizer"),
-            birthday: 1390000,
-            seed: try! Mnemonic.deterministicSeedBytes(from: "eyebrow luggage boy enemy stamp lunch middle slab mother bacon confirm again tourist idea grain pink angle comic question rabbit pole train dragon grape")
-        )
-    ]
+    static var defaultBirthdayHeight: BlockHeight = 1390000
+    static var defaultSeed = try! Mnemonic.deterministicSeedBytes(from: "eyebrow luggage boy enemy stamp lunch middle slab mother bacon confirm again tourist idea grain pink angle comic question rabbit pole train dragon grape")
 
     static var address: String {
         "\(host):\(port)"

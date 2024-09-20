@@ -15,7 +15,7 @@ import NotificationBubbles
 import Combine
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     let logger = PirateLogger(logLevel: .debug)
 
     static var isTouchIDVisible = false
