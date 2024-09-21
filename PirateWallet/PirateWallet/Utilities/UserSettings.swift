@@ -29,6 +29,8 @@ class UserSettings {
         static let mBackgroundSoundVolume = "mBackgroundSoundVolume"
         static let mBackgroundSoundSelectionIndex = "mBackgroundSoundSelectionIndex"
         static let isBackgroundSoundEnabled = "isBackgroundSoundEnabled"
+        static let isSyncCompleted = "isSyncCompleted"
+        static let lastSyncedBlockHeight = "lastSyncedBlockHeight"
     }
     
     var isEnableSoundSettings = true // We also need to turn on audio settings under background modes
@@ -181,7 +183,25 @@ class UserSettings {
             UserDefaults.standard.setValue(newValue, forKey: Keys.isAutoConfigurationOn)
         }
     }
+
+    var isSyncCompleted: Bool  {
+        get {
+            UserDefaults.standard.bool(forKey: Keys.isSyncCompleted)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Keys.isSyncCompleted)
+        }
+    }
     
+    
+    var lastSyncedBlockHeight: Int  {
+        get {
+            UserDefaults.standard.integer(forKey: Keys.lastSyncedBlockHeight)
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Keys.lastSyncedBlockHeight)
+        }
+    }
     
     func removeAllSettings() {
         let defaults = UserDefaults.standard

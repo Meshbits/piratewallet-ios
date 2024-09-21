@@ -13,9 +13,11 @@ import UserNotifications
 import PirateLightClientKit
 import NotificationBubbles
 import Combine
+import SwiftUI
+import MnemonicSwift
 
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
+
     let logger = PirateLogger(logLevel: .debug)
 
     static var isTouchIDVisible = false
@@ -126,11 +128,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
         
+        printLog("STATUS ON LAUNCH")
+
+        if !UserSettings.shared.isSyncCompleted {
+            
+            PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
+            
+            PirateAppSynchronizer.shared.startStop()
+        }
+        
+        
         // To support background playing of audio
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
         try? AVAudioSession.sharedInstance().setActive(true)
 
-        
+//        syncRange:                   2025846...3098444
+//        downloadToHeight:            2049918
+//        latestDownloadedBlockHeight: 2043909
+//        range:                       2043910...2049918
         // Preventing screen from auto locking due to idle timer (usually happens while syncing/downloading)
         application.isIdleTimerDisabled = true
         
@@ -207,6 +222,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 extension AppDelegate {
+
     static var shared: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }

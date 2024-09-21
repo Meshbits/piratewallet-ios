@@ -10,11 +10,12 @@ import SwiftUI
 @main
 struct PirateWalletApp: App {
     
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {
             
         }
     }
+    
 }

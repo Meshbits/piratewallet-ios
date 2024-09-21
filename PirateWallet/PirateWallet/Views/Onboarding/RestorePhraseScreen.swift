@@ -90,7 +90,9 @@ struct RestorePhraseScreen: View {
                     Button(action: {
                         do {
                             try self.importBirthdayAndSeed()
-//                            try self.appEnvironment.initialize()
+//                            Task {
+                                PirateAppSynchronizer.shared.startStop()
+//                            }
                         } catch {
                             printLog("\(error)")
                             self.showError = true
