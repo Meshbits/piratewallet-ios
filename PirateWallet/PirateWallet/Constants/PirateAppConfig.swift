@@ -31,6 +31,13 @@ enum PirateAppConfig {
     }
 }
 
+public enum LocalSyncStatus : Int, Codable{
+    case notStarted = 0
+    case inProgress = 1
+    case completed = 2
+}
+
+
 extension PirateSDK {
     static var isMainnet: Bool {
         switch kPirateNetwork.networkType {

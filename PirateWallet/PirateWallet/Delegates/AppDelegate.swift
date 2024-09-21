@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
     var window: UIWindow?
     private var wallet: Initializer?
     private var synchronizer: SDKSynchronizer?
-
+    
     var sharedSynchronizer: SDKSynchronizer {
         if let sync = synchronizer {
             return sync
@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         
         printLog("STATUS ON LAUNCH")
 
-        if !UserSettings.shared.isSyncCompleted {
+        if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
             
             PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
             

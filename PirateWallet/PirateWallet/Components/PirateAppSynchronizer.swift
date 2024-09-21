@@ -78,6 +78,7 @@ public class PirateAppSynchronizer{
 
         switch state.syncStatus {
         case .unprepared:
+            UserSettings.shared.currentSyncStatus = LocalSyncStatus.notStarted.rawValue
             break
 
         case let .syncing(progress):
@@ -96,6 +97,7 @@ public class PirateAppSynchronizer{
             
             if state.latestScannedHeight > 0 {
                 UserSettings.shared.lastSyncedBlockHeight = state.latestScannedHeight
+                UserSettings.shared.currentSyncStatus = LocalSyncStatus.inProgress.rawValue
             }
 
             printLog(progressText)
@@ -106,10 +108,12 @@ public class PirateAppSynchronizer{
 
         case .upToDate:
             accumulateMetrics()
+            UserSettings.shared.currentSyncStatus = LocalSyncStatus.completed.rawValue
             printLog("enhancement: \(accumulatedMetrics.debugDescription)")
             overallSummary()
 
         case .error:
+            UserSettings.shared.currentSyncStatus = LocalSyncStatus.notStarted.rawValue
             break
         }
     }

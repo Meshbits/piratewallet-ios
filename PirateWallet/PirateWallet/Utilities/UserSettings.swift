@@ -29,7 +29,7 @@ class UserSettings {
         static let mBackgroundSoundVolume = "mBackgroundSoundVolume"
         static let mBackgroundSoundSelectionIndex = "mBackgroundSoundSelectionIndex"
         static let isBackgroundSoundEnabled = "isBackgroundSoundEnabled"
-        static let isSyncCompleted = "isSyncCompleted"
+        static let currentSyncStatus = "currentSyncStatus"
         static let lastSyncedBlockHeight = "lastSyncedBlockHeight"
     }
     
@@ -184,12 +184,12 @@ class UserSettings {
         }
     }
 
-    var isSyncCompleted: Bool  {
+    var currentSyncStatus: Int  {
         get {
-            UserDefaults.standard.bool(forKey: Keys.isSyncCompleted)
+            UserDefaults.standard.integer(forKey: Keys.currentSyncStatus)
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Keys.isSyncCompleted)
+            UserDefaults.standard.setValue(newValue, forKey: Keys.currentSyncStatus)
         }
     }
     
