@@ -174,15 +174,14 @@ struct PasscodeScreen: View {
             })
             .padding(.bottom, 20)
             
-//            NavigationLink(destination:
-//                            HomeTabView(openPasscodeScreen: false)
-//                                .environmentObject(appEnvironment)
-//                            .navigationBarTitle("", displayMode: .inline)
-//                            .navigationBarBackButtonHidden(true)
-//                            .navigationBarHidden(true)
-//            , isActive: $openHomeScreen) {
-//                EmptyView()
-//            }.isDetailLink(false)
+            NavigationLink(destination:
+                            HomeTabView(openPasscodeScreen: false)
+                            .navigationBarTitle("", displayMode: .inline)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarHidden(true)
+            , isActive: $openHomeScreen) {
+                EmptyView()
+            }.isDetailLink(false)
             
         }
         .highPriorityGesture(dragGesture)
