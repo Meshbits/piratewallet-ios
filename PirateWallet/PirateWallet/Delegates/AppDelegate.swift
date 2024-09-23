@@ -132,9 +132,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
 
         if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
             
+            printLog("Yes, found something in progress")
+            
             PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
             
             PirateAppSynchronizer.shared.startStop()
+        }else{
+            printLog("No, Nothing found in progress")
         }
         
         
