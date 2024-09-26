@@ -73,6 +73,15 @@
       }
     },
     {
+      "identity" : "securedefaults",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Meshbits/SecureDefaults.git",
+      "state" : {
+        "revision" : "370366e9db41ba4c318963a63bc544a4766fb827",
+        "version" : "1.0.6"
+      }
+    },
+    {
       "identity" : "sqlite.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stephencelis/SQLite.swift.git",

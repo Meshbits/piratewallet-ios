@@ -15,6 +15,7 @@
 		CF5220782C9B54F800C0ABD9 /* KRProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = CF5220772C9B54F800C0ABD9 /* KRProgressHUD */; };
 		CF52207C2C9B588A00C0ABD9 /* PirateLightClientKit in Frameworks */ = {isa = PBXBuildFile; productRef = CF52207B2C9B588A00C0ABD9 /* PirateLightClientKit */; };
 		CF52207E2C9B591A00C0ABD9 /* libpiratelc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF52207D2C9B591A00C0ABD9 /* libpiratelc.xcframework */; };
+		CFAB925F2CA5DC9F00B6C6DE /* SecureDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = CFAB925E2CA5DC9F00B6C6DE /* SecureDefaults */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 				CF23EFA52C985B0200AC59B6 /* AlertToast in Frameworks */,
 				CF23EF752C97119700AC59B6 /* Neumorphic in Frameworks */,
 				CF44638A2C941018002E7FCE /* MnemonicSwift in Frameworks */,
+				CFAB925F2CA5DC9F00B6C6DE /* SecureDefaults in Frameworks */,
 				CF23EFED2C986B4C00AC59B6 /* Lottie in Frameworks */,
 				CF52207C2C9B588A00C0ABD9 /* PirateLightClientKit in Frameworks */,
 				CF5220752C9B54DC00C0ABD9 /* NotificationBubbles in Frameworks */,
@@ -116,6 +118,7 @@
 				CF5220742C9B54DC00C0ABD9 /* NotificationBubbles */,
 				CF5220772C9B54F800C0ABD9 /* KRProgressHUD */,
 				CF52207B2C9B588A00C0ABD9 /* PirateLightClientKit */,
+				CFAB925E2CA5DC9F00B6C6DE /* SecureDefaults */,
 			);
 			productName = PirateWallet;
 			productReference = CF44634A2C940383002E7FCE /* PirateWallet.app */;
@@ -157,6 +160,7 @@
 				CF23EFEB2C986B4C00AC59B6 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				CF5220732C9B54DC00C0ABD9 /* XCRemoteSwiftPackageReference "NotificationBubbles" */,
 				CF5220762C9B54F800C0ABD9 /* XCRemoteSwiftPackageReference "KRProgressHUD" */,
+				CFAB925D2CA5DC9F00B6C6DE /* XCRemoteSwiftPackageReference "SecureDefaults" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CF44634B2C940383002E7FCE /* Products */;
@@ -457,6 +461,14 @@
 				minimumVersion = 3.4.8;
 			};
 		};
+		CFAB925D2CA5DC9F00B6C6DE /* XCRemoteSwiftPackageReference "SecureDefaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Meshbits/SecureDefaults.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -493,6 +505,11 @@
 		CF52207B2C9B588A00C0ABD9 /* PirateLightClientKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PirateLightClientKit;
+		};
+		CFAB925E2CA5DC9F00B6C6DE /* SecureDefaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFAB925D2CA5DC9F00B6C6DE /* XCRemoteSwiftPackageReference "SecureDefaults" */;
+			productName = SecureDefaults;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
