@@ -7,14 +7,14 @@
 
 
 import SwiftUI
+import PirateLightClientKit
 
 struct CreateAndSetupNewWallet: View {
     @EnvironmentObject var viewModel: WordsVerificationViewModel
-//    @Environment(\.walletEnvironment) var appEnvironment: ZECCWalletEnvironment
 
     @State var openHomeScreen = false
     
-//    @State var error: UserFacingErrors?
+    @State var error: UserFacingErrors?
     @State var showError: AlertType?
     @State var destination: Destinations?
     

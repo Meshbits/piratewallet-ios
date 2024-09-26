@@ -86,16 +86,16 @@ struct PasscodeScreen: View {
 //            }
             
             
-//            
-//            NavigationLink(destination:
-//                    GenerateKeyPhraseInitiate().environmentObject(self.appEnvironment)
-//                    .navigationBarTitle("", displayMode: .inline)
-//                    .navigationBarBackButtonHidden(true)
-//                ,isActive: $initiateNewWalletPhraseSetup
-//            ) {
-//                EmptyView()
-//            }.isDetailLink(false)
-//            
+            
+            NavigationLink(destination:
+                    GenerateKeyPhraseInitiate()
+                    .navigationBarTitle("", displayMode: .inline)
+                    .navigationBarBackButtonHidden(true)
+                ,isActive: $initiateNewWalletPhraseSetup
+            ) {
+                EmptyView()
+            }.isDetailLink(false)
+            
             
             PasscodeBackgroundView()
             
