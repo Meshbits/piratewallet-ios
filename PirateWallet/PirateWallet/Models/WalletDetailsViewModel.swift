@@ -16,12 +16,13 @@ class WalletDetailsViewModel: ObservableObject {
 
     var showError = false
     var balance: Double = 0
+
     private var synchronizerEvents = Set<AnyCancellable>()
     private var internalEvents = Set<AnyCancellable>()
     @State var showMockData = false // Change it to false = I have used it for mock data testing
     var synchronizer : SDKSynchronizer?
 
-    var closureSynchronizer : ClosureSDKSynchronizer?
+    var combineSDKSynchronizer : CombineSDKSynchronizer?
 
     let appDelegate: AppDelegate = PirateWalletApp().appDelegate
     
@@ -45,6 +46,9 @@ class WalletDetailsViewModel: ObservableObject {
     }
 
     init(){
+        synchronizer = appDelegate.sharedSynchronizer
+        combineSDKSynchronizer = CombineSDKSynchronizer(synchronizer: appDelegate.sharedSynchronizer)
+         
         subscribeToSynchonizerEvents()
     }
     
@@ -57,19 +61,20 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     func subscribeToSynchonizerEvents() {
-        appDelegate.synchronizer.walletDetailsBuffer
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] (d) in
-                self?.items = self!.showMockData ? DetailModel.mockDetails : d
-            })
-            .store(in: &synchronizerEvents)
         
-        ZECCWalletEnvironment.shared.synchronizer.balance
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] (b) in
-                self?.balance = b
-            })
-            .store(in: &synchronizerEvents)
+//        combineSDKSynchronizer?.allTransactions
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { [weak self] (d) in
+//                self?.items = self!.showMockData ? DetailModel.mockDetails : d
+//            })
+//            .store(in: &synchronizerEvents)
+        
+//        combineSDKSynchronizer.balance
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { [weak self] (b) in
+//                self?.balance = b
+//            })
+//            .store(in: &synchronizerEvents)
     }
     
     func unsubscribeFromSynchonizerEvents() {
@@ -78,17 +83,19 @@ class WalletDetailsViewModel: ObservableObject {
         }
         synchronizerEvents.removeAll()
     }
-    var balanceStatus: BalanceStatus {
-        let status = ZECCWalletEnvironment.shared.balanceStatus
-        switch status {
-        case .available(_):
-            return .available(showCaption: false)
-        default:
-            return status
-        }
+    
+    var shieldedBalance: String {
+//        return try! PirateAppSynchronizer.shared.appDelegate.sharedSynchronizer.getShieldedBalance().decimalString()
+        "shieldedBalance"
+    }
+    
+    var verifiedBalance: String {
+//        return try! PirateAppSynchronizer.shared.appDelegate.sharedSynchronizer.getShieldedVerifiedBalance().decimalString()
+        "verifiedBalance"
     }
     
     var zAddress: String {
-        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
+//        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
+        "--"
     }
 }

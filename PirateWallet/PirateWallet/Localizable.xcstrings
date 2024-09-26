@@ -18,6 +18,18 @@
     " " : {
 
     },
+    " %@ " : {
+
+    },
+    " %@)" : {
+
+    },
+    " %lf)" : {
+
+    },
+    "(%@ " : {
+
+    },
     "%@ sendable ARRR. You don't have sufficient funds to cover the amount + Miner Fee of %@ ARRR" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -36,6 +48,9 @@
       }
     },
     "%lld of 24" : {
+
+    },
+    "†" : {
 
     },
     "$%@" : {
@@ -2400,6 +2415,9 @@
           }
         }
       }
+    },
+    "Home" : {
+
     },
     "How it works - Step 1" : {
       "comment" : "How it works",
@@ -5637,6 +5655,9 @@
           }
         }
       }
+    },
+    "SETTINGS" : {
+
     },
     "Share" : {
       "extractionState" : "manual",

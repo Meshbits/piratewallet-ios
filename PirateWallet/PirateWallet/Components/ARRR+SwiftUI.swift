@@ -87,3 +87,93 @@ extension View {
         opacity(shouldHide ? 0 : 1)
     }
 }
+
+struct BackgroundPlaceholderModifierRescanOptions: ViewModifier {
+
+var backgroundColor = Color(.systemBackground)
+
+func body(content: Content) -> some View {
+    content
+        .padding(5)
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 12).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
+                .softInnerShadow(RoundedRectangle(cornerRadius: 12), darkShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), lightShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), spread: 0.05, radius: 2))
+        
+    }
+}
+
+
+struct SettingsSectionBackgroundModifier: ViewModifier {
+
+        var backgroundColor = Color(.systemBackground)
+
+        func body(content: Content) -> some View {
+            content
+                .background(
+                    RoundedRectangle(cornerRadius: 12).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
+                        .softInnerShadow(RoundedRectangle(cornerRadius: 12), darkShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), lightShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), spread: 0.05, radius: 2))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+            }
+}
+
+
+extension Image {
+    static func statusImage(for cardType: DetailModel.Status) -> Image {
+        var imageName = "gray_shield"
+        switch cardType {
+    
+        case .paid(let success):
+            imageName = success ? "senticon" : "bombIcon"
+        case .received:
+            imageName = "receiveicon"
+        }
+        
+        return Image(imageName)
+    }
+}
+
+extension String {
+    static func transactionSubTitle(for model: DetailModel) -> String {
+        var transactionSubTitle = "Pending".localized()
+        switch model.status {
+    
+        case .paid(let success):
+            transactionSubTitle = success ? (("sent to ".localized()) + (model.arrrAddress ?? "NA".localized())) : ("pending via ".localized()) + (model.arrrAddress ?? "NA".localized())
+        case .received:
+            transactionSubTitle = "received via ".localized()
+        }
+        
+        transactionSubTitle = transactionSubTitle + (model.arrrAddress ?? "NA".localized())
+        
+        return transactionSubTitle
+    }
+}
+
+extension LinearGradient {
+    static func gradient(for cardType: DetailModel.Status) -> LinearGradient {
+        var gradient = Gradient.paidCard
+        switch cardType {
+    
+        case .paid(let success):
+            gradient = success ? Gradient.paidCard : Gradient.failedCard
+        case .received:
+            gradient = Gradient.receivedCard
+        }
+        return LinearGradient(
+            gradient: gradient,
+            startPoint: UnitPoint(x: 0.3, y: 0.7),
+            endPoint: UnitPoint(x: 0.5, y: 1)
+        )
+    }
+}
+
+
+extension Date {
+var aFormattedDate: String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMMM dd"
+    return dateFormatter.string(from: self)
+}
+}

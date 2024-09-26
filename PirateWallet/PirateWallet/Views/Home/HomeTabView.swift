@@ -36,114 +36,85 @@ struct HomeTabView: View {
         self.mOpenPasscodeScreen = openPasscodeScreen
     }
     
-//    var mWalletView: some View {
+    var mWalletView: some View {
 //        LazyView(WalletDetails(viewModel: WalletDetailsViewModel(),isActive: Binding.constant(true))
-//                    .navigationBarBackButtonHidden(true)
-//            .navigationBarHidden(true).environmentObject(WalletDetailsViewModel()))
-//    }
-//    var mHomeView : some View {
-//        LazyView(
-//                Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel())).navigationBarHidden(true)
-//                    .navigationBarBackButtonHidden(true)
-//                    .environmentObject(HomeViewModel()))
-//    }
-//    
-//    var mSettingsView: some View {
+        Text("Wallet")
+                    .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
+//            .environmentObject(WalletDetailsViewModel()))
+    }
+    var mHomeView : some View {
+        LazyView(
+//                Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
+            Text("Home")
+                .navigationBarHidden(true)
+                    .navigationBarBackButtonHidden(true)
+//                    .environmentObject(HomeViewModel())
+        )
+    }
+    
+    var mSettingsView: some View {
 //        LazyView(SettingsScreen() .navigationBarHidden(true).environmentObject(self.appEnvironment))
-//        .navigationBarBackButtonHidden(true)
-//    }
+        Text("SETTINGS")
+        .navigationBarBackButtonHidden(true)
+    }
   
     var body: some View {
         ZStack {
             ARRRBackground().edgesIgnoringSafeArea(.all)
             TabView(selection: $mSelectedTab){
                 
-                if #available(iOS 15.0, *) {
-//                        NavigationView{
-//                            mHomeView
-//                             .navigationBarTitle("")
-//                            .navigationBarHidden(isNavigationBarHidden)
-//                            .onAppear {
-//                                self.isNavigationBarHidden = true
-//                            }
-//                        }
-//                        .font(.system(size: 30, weight: .bold, design: .rounded))
-//                        .tabItem {
-//                            Image("walleticon").renderingMode(.template)
-//                            Text("Wallet".localized())
-//                                .scaledFont(size: 10)
-//                        }.tag(Tab.home)
-//                        .environment(\.currentTab, mSelectedTab)
+                        NavigationView{
+                            mHomeView
+                             .navigationBarTitle("")
+                            .navigationBarHidden(isNavigationBarHidden)
+                            .onAppear {
+                                self.isNavigationBarHidden = true
+                            }
+                        }
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .tabItem {
+                            Image("walleticon").renderingMode(.template)
+                            Text("Wallet".localized())
+                                .scaledFont(size: 10)
+                        }.tag(Tab.home)
+                        .environment(\.currentTab, mSelectedTab)
                       
                     
-//                        NavigationView{
-//                            mWalletView
-//                                .navigationBarTitle("Wallet History")
-//                                .navigationBarHidden(isNavigationBarHidden)
-//                                .onAppear {
-//                                    self.isNavigationBarHidden = true
-//                                }
-//                        }
-//                        .font(.system(size: 30, weight: .bold, design: .rounded))
-//                        .tabItem {
-//                            Image("historyicon").renderingMode(.template)
-//                            Text("History".localized()).scaledFont(size: 10)
-//                        }
-//                        .tag(Tab.wallet)
-//                        .environment(\.currentTab, mSelectedTab)
+                        NavigationView{
+                            mWalletView
+                                .navigationBarTitle("Wallet History")
+                                .navigationBarHidden(isNavigationBarHidden)
+                                .onAppear {
+                                    self.isNavigationBarHidden = true
+                                }
+                        }
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .tabItem {
+                            Image("historyicon").renderingMode(.template)
+                            Text("History".localized()).scaledFont(size: 10)
+                        }
+                        .tag(Tab.wallet)
+                        .environment(\.currentTab, mSelectedTab)
                     
                     
                                
-//                       NavigationView{
-//                           mSettingsView
-//                               .navigationBarTitle("Settings")
-//                               .navigationBarHidden(isNavigationBarHidden)
-//                               .onAppear {
-//                                   self.isNavigationBarHidden = true
-//                               }
-//                       }
-//                       .font(.system(size: 30, weight: .bold, design: .rounded))
-//                       .tabItem {
-//                           Image("settingsicon").renderingMode(.template)
-//                           Text("Settings".localized()).scaledFont(size: 10)
-//                       }
-//                       .tag(Tab.settings)
-//                       .environment(\.currentTab, mSelectedTab)
+                       NavigationView{
+                           mSettingsView
+                               .navigationBarTitle("Settings")
+                               .navigationBarHidden(isNavigationBarHidden)
+                               .onAppear {
+                                   self.isNavigationBarHidden = true
+                               }
+                       }
+                       .font(.system(size: 30, weight: .bold, design: .rounded))
+                       .tabItem {
+                           Image("settingsicon").renderingMode(.template)
+                           Text("Settings".localized()).scaledFont(size: 10)
+                       }
+                       .tag(Tab.settings)
+                       .environment(\.currentTab, mSelectedTab)
                  
-                }else{
-                    
-//                    mHomeView
-//                    .font(.system(size: 30, weight: .bold, design: .rounded))
-//                    .tabItem {
-//                        Image("walleticon").renderingMode(.template)
-//                        Text("Wallet".localized())
-//                            .scaledFont(size: 10)
-//                    }
-//                    .tag(Tab.home)
-//                    .environment(\.currentTab, mSelectedTab)
-                
-                    
-//                    mWalletView
-//                    .font(.system(size: 30, weight: .bold, design: .rounded))
-//                    .tabItem {
-//                        Image("historyicon").renderingMode(.template)
-//                        Text("History".localized()).scaledFont(size: 10)
-//                    }
-//                    .tag(Tab.wallet)
-//                    .environment(\.currentTab, mSelectedTab)
-                    
-                    
-               
-//                    mSettingsView
-//                   .font(.system(size: 30, weight: .bold, design: .rounded))
-//                   .tabItem {
-//                       Image("settingsicon").renderingMode(.template)
-//                       Text("Settings".localized()).scaledFont(size: 10)
-//                   }
-//                   .tag(Tab.settings)
-//                   .environment(\.currentTab, mSelectedTab)
-             
-                }
      
                 
             }
