@@ -40,14 +40,14 @@ struct CreateAndSetupNewWallet: View {
         ZStack{
             ARRRBackground().edgesIgnoringSafeArea(.all)
             
-//            NavigationLink(destination:
-//                            HomeTabView(openPasscodeScreen: false)
-//                            .navigationBarHidden(true)
-//                            .navigationBarBackButtonHidden(true)
-//                            .navigationBarTitle("", displayMode: .inline)
-//            , isActive: $openHomeScreen) {
-//                EmptyView()
-//            }
+            NavigationLink(destination:
+                            HomeTabView(openPasscodeScreen: false)
+                            .navigationBarHidden(true)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarTitle("", displayMode: .inline)
+            , isActive: $openHomeScreen) {
+                EmptyView()
+            }
             VStack(alignment: .center, spacing: 40) {
                 Spacer()
                 Text("Please wait, while we setup your wallet!".localized())
@@ -72,22 +72,26 @@ struct CreateAndSetupNewWallet: View {
     }
     
     func createNewWalletFlow(){
-//        do {
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                openHomeScreen = true
-//            }
-//            try self.appEnvironment.createNewWalletWithPhrase(randomPhrase: self.viewModel.mCompletePhrase!.joined(separator: " "))
-//            
-//        } catch WalletError.createFailed(let e) {
-//            if case SeedManager.SeedManagerError.alreadyImported = e {
-//                self.showError = AlertType.feedback(destination: .createNew, cause: e)
-//            } else {
-//                fail(WalletError.createFailed(underlying: e))
-//            }
-//        } catch {
-//            fail(error)
-//        }
+        do {
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                openHomeScreen = true
+            }
+            
+            Task {
+                try await PirateAppSynchronizer.shared.createNewWalletWithPhrase(randomPhrase:  self.viewModel.mCompletePhrase!.joined(separator: " "))
+            }
+            
+            
+        } catch WalletError.createFailed(let e) {
+            if case SeedManager.SeedManagerError.alreadyImported = e {
+                self.showError = AlertType.feedback(destination: .createNew, cause: e)
+            } else {
+                fail(WalletError.createFailed(underlying: e))
+            }
+        } catch {
+            fail(error)
+        }
     }
     
     func fail(_ error: Error) {

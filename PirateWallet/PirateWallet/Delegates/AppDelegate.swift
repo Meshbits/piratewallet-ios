@@ -15,6 +15,7 @@ import NotificationBubbles
 import Combine
 import SwiftUI
 import MnemonicSwift
+import SecureDefaults
 
 class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
 
@@ -153,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         // Preventing screen from auto locking due to idle timer (usually happens while syncing/downloading)
         application.isIdleTimerDisabled = true
         
-        /*
+        
         let defaults = SecureDefaults()
         
         // Ensures that a password was not set before. Otherwise, if
@@ -161,15 +162,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         // That means that we lose old data as well.
         if !defaults.isKeyCreated {
             if let aPasscode = UserSettings.shared.aPasscode, !aPasscode.isEmpty {
-//                print("No need to update it here")
+                print("No need to update it here")
             }else{
-//                print("update it here please")
+                print("update it here please")
                 defaults.password = UUID().uuidString
                 defaults.synchronize()
                 defaults.set("We're using SecureDefaults!", forKey: "secure.greeting")
             }
         }
-         */
+         
         
 //        defaultsForBackgroundSoundSettings()
         return true

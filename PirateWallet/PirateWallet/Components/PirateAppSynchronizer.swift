@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import PirateLightClientKit
 import SwiftUI
+import MnemonicSwift
 
 public class PirateAppSynchronizer{
     
@@ -157,6 +158,60 @@ public class PirateAppSynchronizer{
         }
       
     }
+    
+    
+    func createNewWalletWithPhrase(randomPhrase:String) async throws {
+        
+        do {
+           
+            if randomPhrase.isEmpty {
+                let mPhrase = try MnemonicSeedProvider.default.randomMnemonic()
+                try SeedManager.default.importPhrase(bip39: mPhrase)
+            }else{
+                try SeedManager.default.importPhrase(bip39: randomPhrase)
+            }
+            
+            let birthday = PirateAppConfig.defaultBirthdayHeight
+            
+            try SeedManager.default.importBirthday(birthday)
+             
+            SeedManager.default.importLightWalletEndpoint(address: PirateAppConfig.address)
+            SeedManager.default.importLightWalletPort(port: PirateAppConfig.port)
+            try await self.initializeFreshWallet()
+        
+        } catch {
+            throw WalletError.createFailed(underlying: error)
+        }
+    }
+    
+    func initializeFreshWallet() async throws {
+        let seedPhrase = try SeedManager.default.exportPhrase()
+        let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
+        let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
+        var defaultSeed = try! Mnemonic.deterministicSeedBytes(from: SeedManager.default.exportPhrase())
+        let spendingKey = try! derivationTool
+            .deriveUnifiedSpendingKey(seed: defaultSeed, accountIndex: 0)
+
+        let viewingKey =  try! derivationTool.deriveUnifiedFullViewingKey(from: spendingKey)
+        
+        let initializer = Initializer(
+            cacheDbURL: nil,
+            fsBlockDbRoot: try! fsBlockDbRootURLHelper(),
+            dataDbURL: try! dataDbURLHelper(),
+            endpoint: PirateAppConfig.endpoint,
+            network: kPirateNetwork,
+            spendParamsURL: try! spendParamsURLHelper(),
+            outputParamsURL: try! outputParamsURLHelper(),
+            saplingParamsSourceURL: SaplingParamsSourceURL.default
+        )
+        
+        self.synchronizer = SDKSynchronizer(initializer: initializer)
+        
+        try await self.synchronizer?.prepare(with: defaultSeed,viewingKeys: [viewingKey],walletBirthday: SeedManager.default.exportBirthday())
+        
+        startStop()
+    }
+    
     
     func startStop() {
         Task { @MainActor in
