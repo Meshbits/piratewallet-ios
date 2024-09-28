@@ -10,7 +10,7 @@ import LocalAuthentication
 
 struct AuthenticateFaceID: View {
     
-    @EnvironmentObject var viewModel: WordsVerificationViewModel
+    @EnvironmentObject var viewModel: GenerateAndVerifyWordsViewModel
 
     @State var skipAndMoveToHomeTab = false
     

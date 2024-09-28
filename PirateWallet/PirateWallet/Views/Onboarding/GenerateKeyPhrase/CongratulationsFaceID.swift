@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct CongratulationsFaceID: View {
-    @EnvironmentObject var viewModel: WordsVerificationViewModel
+    @EnvironmentObject var viewModel: GenerateAndVerifyWordsViewModel
     @State var openWalletSetupScreen = false
     @Environment(\.presentationMode) var presentationMode
     var body: some View {

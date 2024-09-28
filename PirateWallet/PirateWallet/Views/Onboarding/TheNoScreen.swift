@@ -10,6 +10,7 @@ import SwiftUI
 struct TheNoScreen: View {
 //    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @State var removeSplash: Bool = false
+    @State var openHomeScreen = false
     
     @ViewBuilder func theUnscreen() -> some View {
         ZStack(alignment: .center) {
@@ -18,25 +19,24 @@ struct TheNoScreen: View {
                 .frame(width: 167,
                        height: 167,
                        alignment: .center)
+            NavigationLink(destination:
+                            HomeTabView(openPasscodeScreen: false)
+                            .navigationBarHidden(true)
+                            .navigationBarBackButtonHidden(true)
+                            .navigationBarTitle("", displayMode: .inline)
+            , isActive: $openHomeScreen) {
+                EmptyView()
+            }
         }
         .navigationBarHidden(true)
         .onAppear() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.removeSplash = true
-//                do {
-//                    let initialState = ZECCWalletEnvironment.getInitialState()
-//                    switch initialState {
-//                    case .unprepared, .initalized:
-//                        try appEnvironment.initialize()
-//                        appEnvironment.state = .initalized
-//
-//                    default:
-//                        appEnvironment.state = initialState
-//                    }
-//
-//                } catch {
-//                    self.appEnvironment.state = .failure(error: error)
-//                }
+                                
+                if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
+                    self.openHomeScreen = true
+                }else{
+                    self.removeSplash = true
+                }
             }
         }
     }

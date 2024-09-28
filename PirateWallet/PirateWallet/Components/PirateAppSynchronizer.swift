@@ -186,9 +186,8 @@ public class PirateAppSynchronizer{
     
     func initializeFreshWallet() async throws {
         let seedPhrase = try SeedManager.default.exportPhrase()
-        let seedBytes = try MnemonicSeedProvider.default.toSeed(mnemonic: seedPhrase)
         let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
-        var defaultSeed = try! Mnemonic.deterministicSeedBytes(from: SeedManager.default.exportPhrase())
+        let defaultSeed = try! Mnemonic.deterministicSeedBytes(from: SeedManager.default.exportPhrase())
         let spendingKey = try! derivationTool
             .deriveUnifiedSpendingKey(seed: defaultSeed, accountIndex: 0)
 

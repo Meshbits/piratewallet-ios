@@ -136,7 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         if SeedManager().keysPresent {
             if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
                 
-                printLog("Yes, found something in progress")
+                printLog("Yes, found something in progress, let's move to home screen instead of Login")
                 
                 PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
                 

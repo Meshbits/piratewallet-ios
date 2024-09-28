@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CongratulationsRecoverySetup: View {
-    @EnvironmentObject var viewModel: WordsVerificationViewModel
+    @EnvironmentObject var viewModel: GenerateAndVerifyWordsViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var openAuthenticatateFaceID = false
     var body: some View {

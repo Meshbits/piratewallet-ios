@@ -10,7 +10,7 @@ import SwiftUI
 import PirateLightClientKit
 
 struct CreateAndSetupNewWallet: View {
-    @EnvironmentObject var viewModel: WordsVerificationViewModel
+    @EnvironmentObject var viewModel: GenerateAndVerifyWordsViewModel
 
     @State var openHomeScreen = false
     

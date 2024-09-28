@@ -91,7 +91,7 @@ struct HowItWorks: View {
 //    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @EnvironmentObject var viewModel: HowItWorksViewModel
     
-    var generateWordsViewModel: GenerateWordsViewModel = GenerateWordsViewModel()
+    var generateWordsViewModel: GenerateAndVerifyWordsViewModel = GenerateAndVerifyWordsViewModel()
     
     var body: some View {
         ZStack{

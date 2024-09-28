@@ -41,7 +41,7 @@ struct SmallRecoveryWalletButtonView : View {
 
             Image(imageName).resizable().frame(width: 175.0, height:84).padding(.top,5)
             
-            Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
+            Text(title).foregroundColor(Color.gray)
                 .frame(width: 175.0, height:84).padding(10)
                 .cornerRadius(15)
                 .multilineTextAlignment(.center)

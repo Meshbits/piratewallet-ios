@@ -10,7 +10,7 @@ import AlertToast
 struct WordsVerificationScreen: View {
 //    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: WordsVerificationViewModel
+    @ObservedObject var viewModel: GenerateAndVerifyWordsViewModel
     @State var isConfirmButtonEnabled = false
     @State private var showErrorToast = false
 

@@ -11,7 +11,7 @@ import Foundation
 struct GenerateWordsView: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var generateWordsViewModel: GenerateWordsViewModel
+    @ObservedObject var generateWordsViewModel: GenerateAndVerifyWordsViewModel
     
     @State var isForward = true
     
@@ -62,7 +62,7 @@ struct GenerateWordsView: View {
               
                 
                 NavigationLink(
-                    destination: WordsVerificationScreen(viewModel:WordsVerificationViewModel(mPhrase:self.generateWordsViewModel.randomKeyPhrase!)).navigationBarTitle("", displayMode: .inline)
+                    destination: WordsVerificationScreen(viewModel:generateWordsViewModel).navigationBarTitle("", displayMode: .inline)
                         .navigationBarBackButtonHidden(true),
                     isActive: $generateWordsViewModel.mWordsVerificationScreen
                 ) {
