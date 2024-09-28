@@ -294,16 +294,16 @@ struct RecoveryWalletButtonView : View {
         ZStack {
 
             Image(imageName).resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
-            
+
             if #available(iOS 15.0, *) {
-                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
+                Text(title).foregroundColor(Color.gray)
                     .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
                     .cornerRadius(15)
 //                    .dynamicTypeSize(.medium)
                     .scaledFont(size: Device.isLarge ? 16 : 13)
                     .multilineTextAlignment(.center)
             } else {
-                Text(title).foregroundColor(Color.zARRRTextColorLightYellow)
+                Text(title).foregroundColor(Color.zARRRSubtitleColor)
                     .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60).padding(10)
                     .cornerRadius(15)
                     .modifier(BarlowModifier(.footnote))

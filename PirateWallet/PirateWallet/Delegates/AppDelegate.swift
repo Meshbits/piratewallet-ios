@@ -119,6 +119,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         }
         */
         
+        let secureDefaults = SecureDefaults()
+        
         UNUserNotificationCenter.current().requestAuthorization(options:[.alert, .sound]) { (granted, error) in
 
               if granted {
@@ -130,18 +132,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         }
         
         printLog("STATUS ON LAUNCH")
-
-        if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
-            
-            printLog("Yes, found something in progress")
-            
-            PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
-            
-            PirateAppSynchronizer.shared.startStop()
-        }else{
-            printLog("No, Nothing found in progress")
-        }
         
+        if SeedManager().keysPresent {
+            if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
+                
+                printLog("Yes, found something in progress")
+                
+                PirateAppConfig.defaultBirthdayHeight = UserSettings.shared.lastSyncedBlockHeight     //sharedSynchronizer.initializer.walletBirthday
+                
+                PirateAppSynchronizer.shared.startStop()
+            }else{
+                printLog("No, Nothing found in progress")
+            }
+        }else{
+            printLog("No user is logged into the app")
+        }
+
         
         // To support background playing of audio
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
@@ -154,20 +160,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
         // Preventing screen from auto locking due to idle timer (usually happens while syncing/downloading)
         application.isIdleTimerDisabled = true
         
-        
-        let defaults = SecureDefaults()
-        
         // Ensures that a password was not set before. Otherwise, if
         // you set a password one more time, it will re-generate a key.
         // That means that we lose old data as well.
-        if !defaults.isKeyCreated {
+        if !secureDefaults.isKeyCreated {
             if let aPasscode = UserSettings.shared.aPasscode, !aPasscode.isEmpty {
                 print("No need to update it here")
             }else{
                 print("update it here please")
-                defaults.password = UUID().uuidString
-                defaults.synchronize()
-                defaults.set("We're using SecureDefaults!", forKey: "secure.greeting")
+                secureDefaults.password = UUID().uuidString
+                secureDefaults.synchronize()
+                secureDefaults.set("We're using SecureDefaults!", forKey: "secure.greeting")
             }
         }
          

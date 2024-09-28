@@ -11,8 +11,7 @@ import Foundation
 struct GenerateWordsView: View {
     
     @Environment(\.presentationMode) var presentationMode
-//    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
-    @ObservedObject var viewModel: GenerateWordsViewModel
+    @State var generateWordsViewModel: GenerateWordsViewModel =  GenerateWordsViewModel()
     
     @State var isForward = true
     
@@ -26,7 +25,7 @@ struct GenerateWordsView: View {
                     .padding(.top,20)
                 Text("Write down the following words in order".localized()).padding(.trailing,60).padding(.leading,60).foregroundColor(.gray).multilineTextAlignment(.center).foregroundColor(.gray).padding(.top,10).scaledFont(size: 15)
                 Spacer()
-                Text(self.viewModel.mWordTitle)/*.transition(.move(edge: isForward ? .trailing : .leading))*/.id("titleComponentID" + self.viewModel.mWordTitle).padding(.trailing,40).padding(.leading,40).foregroundColor(.white).multilineTextAlignment(.center).lineLimit(nil)
+                Text(self.generateWordsViewModel.mWordTitle)/*.transition(.move(edge: isForward ? .trailing : .leading))*/.id("titleComponentID" + self.generateWordsViewModel.mWordTitle).padding(.trailing,40).padding(.leading,40).foregroundColor(.white).multilineTextAlignment(.center).lineLimit(nil)
 //                    .transition(
 //                        .asymmetric(
 //                            insertion: .move(edge: isForward ? .trailing : .leading),
@@ -36,7 +35,7 @@ struct GenerateWordsView: View {
 //                    .animation(.default)
 //                    .id(UUID())
                     .padding(.top,80)
-                Text("\(self.viewModel.mWordIndex) of 24").padding(.trailing,60).padding(.leading,60).foregroundColor(.gray).multilineTextAlignment(.center).foregroundColor(.gray).padding(.top,10)
+                Text("\(self.generateWordsViewModel.mWordIndex) of 24").padding(.trailing,60).padding(.leading,60).foregroundColor(.gray).multilineTextAlignment(.center).foregroundColor(.gray).padding(.top,10)
                     .scaledFont(size: 17)
                 Spacer()
                 
@@ -55,7 +54,7 @@ struct GenerateWordsView: View {
                 Button {
                     self.isForward = true
 //                    withAnimation(.easeInOut(duration: 0.2), {
-                        self.viewModel.updateLayoutTextOrMoveToNextScreen()
+                        self.generateWordsViewModel.updateLayoutTextOrMoveToNextScreen()
 //                   })
                 } label: {
                     BlueButtonView(aTitle: "Next".localized())
@@ -63,9 +62,9 @@ struct GenerateWordsView: View {
               
                 
                 NavigationLink(
-                    destination: WordsVerificationScreen(viewModel:WordsVerificationViewModel(mPhrase:self.viewModel.randomKeyPhrase!)).navigationBarTitle("", displayMode: .inline)
+                    destination: WordsVerificationScreen(viewModel:WordsVerificationViewModel(mPhrase:self.generateWordsViewModel.randomKeyPhrase!)).navigationBarTitle("", displayMode: .inline)
                         .navigationBarBackButtonHidden(true),
-                    isActive: $viewModel.mWordsVerificationScreen
+                    isActive: $generateWordsViewModel.mWordsVerificationScreen
                 ) {
                     EmptyView()
                 }
@@ -73,12 +72,12 @@ struct GenerateWordsView: View {
             })  .navigationBarBackButtonHidden(true)
                 .navigationTitle("").navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading:  Button(action: {
-                    if self.viewModel.mWordIndex == 1 {
+                    if self.generateWordsViewModel.mWordIndex == 1 {
                         presentationMode.wrappedValue.dismiss()
                     }else{
                         isForward = false
 //                        withAnimation(.easeIn(duration: 0.2), {
-                            self.viewModel.backPressedToPopBack()
+                            self.generateWordsViewModel.backPressedToPopBack()
 //                       })
                     }
                     
@@ -116,7 +115,7 @@ struct GenerateWordsView: View {
 
 struct GenerateWordsView_Previews: PreviewProvider {
     static var previews: some View {
-        GenerateWordsView(viewModel: GenerateWordsViewModel())
+        GenerateWordsView(generateWordsViewModel: GenerateWordsViewModel())
     }
 }
 

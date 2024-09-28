@@ -115,7 +115,7 @@ final class GenerateWordsViewModel: ObservableObject {
     @Published var mWordsVerificationScreen = false
     
     init() {
-        
+        printLog("called init of generate words view model")
         do {
             randomKeyPhrase =  try MnemonicSeedProvider.default.randomMnemonicWords()
             

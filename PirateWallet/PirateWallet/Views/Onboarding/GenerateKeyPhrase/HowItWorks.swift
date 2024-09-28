@@ -73,6 +73,11 @@ final class HowItWorksViewModel: ObservableObject {
             break
         case .move_next:
             mOpenGenerateWordsScreen = true
+            // resetting it to first step
+            mScreenTitle = "How it works - Step 1".localized()
+            mDescriptionTitle = "Write down your key".localized()
+            mDescriptionSubTitle = "Write down your key on paper and confirm it. Screenshots are not recommended for security reasons.".localized()
+            destination = ScreenSteps.step_one
             break
         }
         
@@ -106,7 +111,7 @@ struct HowItWorks: View {
                 
                 
                 NavigationLink(
-                    destination: GenerateWordsView(viewModel: GenerateWordsViewModel()).navigationBarTitle("", displayMode: .inline)
+                    destination: GenerateWordsView().navigationBarTitle("", displayMode: .inline)
                         .navigationBarBackButtonHidden(true),
                     isActive: $viewModel.mOpenGenerateWordsScreen
                 ) {
