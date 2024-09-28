@@ -109,22 +109,26 @@ final class GenerateWordsViewModel: ObservableObject {
     
     @Published var mVisibleWord: Words = Words.word_one
     
+    var isRandomKeyPhraseAlreadyGenerated = false
     
     var randomKeyPhrase:[String]?
     
     @Published var mWordsVerificationScreen = false
     
     init() {
-        printLog("called init of generate words view model")
-        do {
-            randomKeyPhrase =  try MnemonicSeedProvider.default.randomMnemonicWords()
-            
-            mWordTitle = randomKeyPhrase![0]
-            
-        } catch {
-            // Handle error in here
-        }
         
+        if !isRandomKeyPhraseAlreadyGenerated {
+            
+            do {
+                randomKeyPhrase =  try MnemonicSeedProvider.default.randomMnemonicWords()
+                
+                mWordTitle = randomKeyPhrase![0]
+                
+            } catch {
+                // Handle error in here
+            }
+            isRandomKeyPhraseAlreadyGenerated = true
+        }
     }
     
     

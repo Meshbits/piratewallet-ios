@@ -91,6 +91,8 @@ struct HowItWorks: View {
 //    @EnvironmentObject var appEnvironment: ZECCWalletEnvironment
     @EnvironmentObject var viewModel: HowItWorksViewModel
     
+    var generateWordsViewModel: GenerateWordsViewModel = GenerateWordsViewModel()
+    
     var body: some View {
         ZStack{
             ARRRBackground().edgesIgnoringSafeArea(.all)
@@ -111,7 +113,7 @@ struct HowItWorks: View {
                 
                 
                 NavigationLink(
-                    destination: GenerateWordsView().navigationBarTitle("", displayMode: .inline)
+                    destination: GenerateWordsView(generateWordsViewModel:generateWordsViewModel).navigationBarTitle("", displayMode: .inline)
                         .navigationBarBackButtonHidden(true),
                     isActive: $viewModel.mOpenGenerateWordsScreen
                 ) {

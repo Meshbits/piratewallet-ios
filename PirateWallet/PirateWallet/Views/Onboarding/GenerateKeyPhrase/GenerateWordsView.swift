@@ -11,7 +11,7 @@ import Foundation
 struct GenerateWordsView: View {
     
     @Environment(\.presentationMode) var presentationMode
-    @State var generateWordsViewModel: GenerateWordsViewModel =  GenerateWordsViewModel()
+    @ObservedObject var generateWordsViewModel: GenerateWordsViewModel
     
     @State var isForward = true
     
@@ -112,10 +112,10 @@ struct GenerateWordsView: View {
     }
     
 }
-
-struct GenerateWordsView_Previews: PreviewProvider {
-    static var previews: some View {
-        GenerateWordsView(generateWordsViewModel: GenerateWordsViewModel())
-    }
-}
-
+//
+//struct GenerateWordsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GenerateWordsView(generateWordsViewModel: GenerateWordsViewModel())
+//    }
+//}
+//
