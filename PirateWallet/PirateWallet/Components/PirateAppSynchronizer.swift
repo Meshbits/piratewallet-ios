@@ -185,7 +185,7 @@ public class PirateAppSynchronizer{
     }
     
     func initializeFreshWallet() async throws {
-        let seedPhrase = try SeedManager.default.exportPhrase()
+//        let seedPhrase = try SeedManager.default.exportPhrase()
         let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
         let defaultSeed = try! Mnemonic.deterministicSeedBytes(from: SeedManager.default.exportPhrase())
         let spendingKey = try! derivationTool
@@ -206,15 +206,31 @@ public class PirateAppSynchronizer{
         
         self.synchronizer = SDKSynchronizer(initializer: initializer)
         
-        try await self.synchronizer?.prepare(with: defaultSeed,viewingKeys: [viewingKey],walletBirthday: SeedManager.default.exportBirthday())
+        try startStopNewWallet(with: defaultSeed, viewingKeys: [viewingKey], walletBirthday: SeedManager.default.exportBirthday())
         
-        startStop()
+//        _ = try await self.synchronizer?.prepare(with: defaultSeed,viewingKeys: [viewingKey],walletBirthday: SeedManager.default.exportBirthday())
+        
     }
     
     
     func startStop() {
         Task { @MainActor in
             await doStartStop()
+        }
+    }
+    
+    func startStopNewWallet(with defaultSeed: [UInt8]?,
+                            viewingKeys: [UnifiedFullViewingKey],
+                            walletBirthday: BlockHeight) {
+        Task { @MainActor in
+            if let aSynchronizer = synchronizer  {
+                aSynchronizer.stateStream
+                    .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
+                    .sink(receiveValue: { [weak self] state in self?.synchronizerStateUpdated(state) })
+                    .store(in: &cancellables)
+                
+            }
+            await doStartStopNewWallet(with: defaultSeed, viewingKeys: viewingKeys, walletBirthday: walletBirthday)
         }
     }
     
@@ -231,6 +247,44 @@ public class PirateAppSynchronizer{
                             with: PirateAppConfig.defaultSeed,
                             viewingKeys: [appDelegate.sharedViewingKey],
                             walletBirthday: PirateAppConfig.defaultBirthdayHeight
+                        )
+                    }
+
+                    aSynchronizer.metrics.enableMetrics()
+                    try await aSynchronizer.start()
+                    updateUI()
+                } catch {
+                    printLog("Can't start synchronizer: \(error)")
+                    updateUI()
+                }
+            default:
+                aSynchronizer.stop()
+                aSynchronizer.metrics.disableMetrics()
+                updateUI()
+            }
+
+            updateUI()
+            
+        }
+        
+      
+    }
+    
+    func doStartStopNewWallet(with defaultSeed: [UInt8]?,
+                              viewingKeys: [UnifiedFullViewingKey],
+                              walletBirthday: BlockHeight) async {
+        
+        if let aSynchronizer = synchronizer  {
+            let syncStatus = aSynchronizer.latestState.syncStatus
+            switch syncStatus {
+            case .unprepared, .error:
+                do {
+                    if syncStatus == .unprepared {
+                        // swiftlint:disable:next force_try
+                        _ = try! await aSynchronizer.prepare(
+                            with: defaultSeed,
+                            viewingKeys: viewingKeys,
+                            walletBirthday: walletBirthday
                         )
                     }
 
