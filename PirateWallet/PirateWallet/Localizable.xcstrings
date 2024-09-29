@@ -2968,6 +2968,12 @@
         }
       }
     },
+    "Low space" : {
+
+    },
+    "Low space message here" : {
+
+    },
     "Low storage space" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -18,8 +18,8 @@ import MnemonicSwift
 import SecureDefaults
 
 class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
-
-    let logger = PirateLogger(logLevel: .debug)
+//
+//    let logger = PirateLogger(logLevel: .debug)
 
     static var isTouchIDVisible = false
     
