@@ -56,9 +56,9 @@ struct CreateAndSetupNewWallet: View {
                     .multilineTextAlignment(.center)
                     .scaledFont(size: 15)
                 
-//                LottieAnimation(isPlaying: true,
-//                                filename: "lottie_sending",
-//                                animationType: .circularLoop)
+                LottieAnimation(isPlaying: true,
+                                filename: "lottie_sending",
+                                animationType: .circularLoop)
                     .frame(height: 48)
                 Spacer()
             }

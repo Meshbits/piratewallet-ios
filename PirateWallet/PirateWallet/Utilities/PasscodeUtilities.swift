@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AlertToast
+import LocalAuthentication
 
 struct PasscodeScreenTopImageView : View {
     var body: some View {
@@ -28,7 +30,7 @@ struct PasscodeScreenSubTitle : View {
     var body: some View {
         HStack(alignment: .center, spacing: nil, content: {
             Spacer()
-            Text(aSubTitle).foregroundColor(.white)
+            Text(aSubTitle).foregroundStyle(.white)
             .scaledFont(size: Device.isLarge ? 22 : 14)
             .padding(.trailing,5)
             Spacer()
@@ -42,7 +44,7 @@ struct PasscodeScreenTitle : View {
     var body: some View {
         HStack(alignment: .center, spacing: nil, content: {
             Spacer()
-            Text(aTitle).foregroundColor(.gray).scaledFont(size: 18).padding(.top,20)
+            Text(aTitle).scaledFont(size: 18).foregroundStyle(.gray).padding(.top,20)
             Spacer()
         })
     }
@@ -56,7 +58,7 @@ struct PasscodeScreenDescription : View {
     var body: some View {
         HStack(alignment: .center, spacing: nil, content: {
             Spacer()
-            Text(aDescription).lineLimit(nil).foregroundColor(Color.zARRRSubtitleColor)
+            Text(aDescription).lineLimit(nil).foregroundStyle(Color.zARRRSubtitleColor)
                 .scaledFont(size: size).padding(.leading,padding).padding(.trailing,padding).multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer()
