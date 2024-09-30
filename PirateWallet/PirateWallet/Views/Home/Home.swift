@@ -175,11 +175,11 @@ struct Home: View {
     }
        
     var isSyncing: Bool {
-        appEnvironment.synchronizer.syncStatus.value.isSyncing
+        PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus.isSyncing ??  false
     }
     
     var isSendingEnabled: Bool {
-        appEnvironment.synchronizer.syncStatus.value.isSynced && self.viewModel.shieldedBalance.verified > 0
+        (PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus.isSynced ??  false) && self.viewModel.shieldedBalance.verified > 0
     }
     
     

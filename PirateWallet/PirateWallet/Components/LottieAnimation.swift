@@ -39,13 +39,9 @@ struct LottieAnimation: UIViewRepresentable {
     
     func makeUIView(context: UIViewRepresentableContext<LottieAnimation>) -> LottieAnimationView {
         
-        let animation = LottieAnimation(filename: filename, animationType: .circularLoop)
-        
-        let animationView = LottieAnimationView()
+        let animationView = LottieAnimationView(name:filename)
         
         animationView.backgroundBehavior = .pauseAndRestore
-        
-        animationView.animation = animation
         
         animationView.contentMode = .scaleAspectFit
         
