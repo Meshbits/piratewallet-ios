@@ -91,34 +91,34 @@ struct PasscodeView: View {
                 if mScreenState == .passcodeAlreadyExists{
                     PasscodeScreenTopImageView().padding(.leading,20).padding(.top,50)
                 }else if mScreenState == PasscodeScreenStates.validatePasscode{
-//                    PasscodeScreenTitle(aTitle: "LOGIN PIN".localized())
+//                    PasscodeScreenTitle(aTitle: "LOGIN PIN")
 //                    Spacer()
-                    PasscodeScreenSubTitle(aSubTitle: "Enter PIN".localized())
-                    PasscodeScreenDescription(aDescription: "Please enter your PIN to unlock your Pirate wallet and send money".localized(),size:Device.isLarge ? 14 : 9,padding:40)
+                    PasscodeScreenSubTitle(aSubTitle: "Enter PIN")
+                    PasscodeScreenDescription(aDescription: "Please enter your PIN to unlock your Pirate wallet and send money",size:Device.isLarge ? 14 : 9,padding:40)
                     Spacer()
                 }else if mScreenState == .validateAndDismiss{
-//                    PasscodeScreenTitle(aTitle: "Enter PIN".localized())
+//                    PasscodeScreenTitle(aTitle: "Enter PIN")
 //                    Spacer()
-                    PasscodeScreenSubTitle(aSubTitle: "PIN Required".localized())
-                    PasscodeScreenDescription(aDescription: "Please enter your PIN to continue".localized(),size:Device.isLarge ? 14 : 9,padding:40)
+                    PasscodeScreenSubTitle(aSubTitle: "PIN Required")
+                    PasscodeScreenDescription(aDescription: "Please enter your PIN to continue",size:Device.isLarge ? 14 : 9,padding:40)
                     Spacer()
                 }else if mScreenState == .newPasscode{
-//                    PasscodeScreenTitle(aTitle: "Change PIN".localized())
+//                    PasscodeScreenTitle(aTitle: "Change PIN")
 //                    Spacer()
-//                    PasscodeScreenSubTitle(aSubTitle: "Set PIN".localized())
-                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money".localized(),size:Device.isLarge ? 14 : 9,padding:40).padding(.top,Device.isLarge ? 50 : 10)
+//                    PasscodeScreenSubTitle(aSubTitle: "Set PIN")
+                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money",size:Device.isLarge ? 14 : 9,padding:40).padding(.top,Device.isLarge ? 50 : 10)
                     Spacer()
                 }else if mScreenState == .confirmPasscode{
-//                    PasscodeScreenTitle(aTitle: "Change PIN".localized())
+//                    PasscodeScreenTitle(aTitle: "Change PIN")
 //                    Spacer()
-//                    PasscodeScreenSubTitle(aSubTitle: "Re-Enter PIN".localized())
-                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money".localized(),size:Device.isLarge ? 14 : 9,padding:40).padding(.top,Device.isLarge ? 50 : 10)
+//                    PasscodeScreenSubTitle(aSubTitle: "Re-Enter PIN")
+                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money",size:Device.isLarge ? 14 : 9,padding:40).padding(.top,Device.isLarge ? 50 : 10)
                     Spacer()
                 }else if mScreenState == .changePasscode{
-//                    PasscodeScreenTitle(aTitle: "Change PIN".localized())
+//                    PasscodeScreenTitle(aTitle: "Change PIN")
 //                    Spacer()
-                    PasscodeScreenSubTitle(aSubTitle: "Enter Current PIN".localized())
-                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money".localized(),size:Device.isLarge ? 14 : 9,padding:Device.isLarge ? 50 : 10)
+                    PasscodeScreenSubTitle(aSubTitle: "Enter Current PIN")
+                    PasscodeScreenDescription(aDescription: "Your PIN will be used to unlock your Pirate wallet and send money",size:Device.isLarge ? 14 : 9,padding:Device.isLarge ? 50 : 10)
                     Spacer()
                 }
 
@@ -131,7 +131,7 @@ struct PasscodeView: View {
                     }
                 }).padding(10)
 
-                PasscodeScreenDescription(aDescription: "Remember your PIN. If you forget it, you won't be able to access your assets.".localized(),size:Device.isLarge ? 12 : 9,padding:40)
+                PasscodeScreenDescription(aDescription: "Remember your PIN. If you forget it, you won't be able to access your assets.",size:Device.isLarge ? 12 : 9,padding:40)
                 
                 PasscodeNumberView(passcodeViewModel: Binding.constant(passcodeViewModel))
                 Spacer(minLength: 10)
@@ -155,15 +155,15 @@ struct PasscodeView: View {
                 
             }, headerItem: {
                 if mScreenState == .validatePasscode{
-                    PasscodeLoginScreenTitle(aTitle: "Login PIN".localized())
+                    PasscodeLoginScreenTitle(aTitle: "Login PIN")
                 }else if mScreenState == .validateAndDismiss{
-                    PasscodeLoginScreenTitle(aTitle: "Enter PIN".localized())
+                    PasscodeLoginScreenTitle(aTitle: "Enter PIN")
                 }else if mScreenState == .newPasscode{
-                    PasscodeLoginScreenTitle(aTitle: "Set PIN".localized())
+                    PasscodeLoginScreenTitle(aTitle: "Set PIN")
                 }else if mScreenState == .confirmPasscode{
-                    PasscodeLoginScreenTitle(aTitle: "Re-Enter PIN".localized())
+                    PasscodeLoginScreenTitle(aTitle: "Re-Enter PIN")
                 }else if mScreenState == .changePasscode{
-                    PasscodeLoginScreenTitle(aTitle: "PIN".localized())
+                    PasscodeLoginScreenTitle(aTitle: "PIN")
                 }else{
                     EmptyView()
                 }
@@ -295,12 +295,12 @@ struct PasscodeView: View {
         }
         .toast(isPresenting: $showErrorToast){
 
-            AlertToast(displayMode: .hud, type: .error(.red), title:"Invalid passcode!".localized())
+            AlertToast(displayMode: .hud, type: .error(.red), title:"Invalid passcode!")
 
         }
         .toast(isPresenting: $showPasscodeChangeSuccessToast){
 
-            AlertToast(displayMode: .hud, type: .complete(.green), title:"PIN SET Successfully!".localized())
+            AlertToast(displayMode: .hud, type: .complete(.green), title:"PIN SET Successfully!")
 
         }
         .onReceive(AuthenticationHelper.authenticationPublisher) { (output) in
@@ -341,7 +341,7 @@ struct PasscodeView: View {
 //                    let userFacingError = mapToUserFacingError(ZECCWalletEnvironment.mapError(error: cause))
 //                    return Alert(title: Text(userFacingError.title),
 //                                 message: Text(userFacingError.message),
-//                                 dismissButton: .default(Text("button_close".localized())))
+//                                 dismissButton: .default(Text("button_close")))
 //                case .feedback(let destination, let cause):
 //                    if let feedbackCause = cause as? SeedManager.SeedManagerError,
 //                       case SeedManager.SeedManagerError.alreadyImported = feedbackCause {

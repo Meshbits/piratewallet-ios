@@ -33,40 +33,40 @@ struct Home: View {
     @State var selectedModel: DetailModel? = nil
     @State var cantSendError = false
     var aTitleStatus: String {
-        switch self.viewModel.syncStatus {
+        switch PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus {
             case .error:
                 NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
                 return ""
             case .unprepared:
                 return ""
-            case .downloading(let downloadingProgress):
-            if downloadingProgress.progress == 0 {
+            case .syncing(let downloadingProgress):
+                if downloadingProgress == 0 {
                     NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
-                }else if downloadingProgress.progress == 100 {
+                }else if downloadingProgress == 100 {
                     NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
                 }
             
-                return "Downloading".localized() + " \(Int(downloadingProgress.progress * 100))%"
-            case .validating:
-                return "Validating".localized()
-            case .scanning(let scanProgress):
-                if scanProgress.progress == 0 {
-                    NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
-                }else if scanProgress.progress == 100 {
-                    NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                }
-                return "Scan".localized() + " \(Int(scanProgress.progress * 100))%"
-            case .enhancing(let enhanceProgress):
-                return "Enhance".localized() + " \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)"
-            case .fetching:
-                return "Fetching".localized()
-            case .stopped:
-                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                return "Stopped".localized()
-            case .disconnected:
+                return "Syncing".localized() + " \(Int(downloadingProgress * 100))%"
+//            case .validating:
+//                return "Validating".localized()
+//            case .scanning(let scanProgress):
+//                if scanProgress.progress == 0 {
+//                    NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
+//                }else if scanProgress.progress == 100 {
+//                    NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
+//                }
+//                return "Scan".localized() + " \(Int(scanProgress.progress * 100))%"
+//            case .enhancing(let enhanceProgress):
+//                return "Enhance".localized() + " \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)"
+//            case .fetching:
+//                return "Fetching".localized()
+//            case .upToDate:
+//                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
+//                return "Stopped".localized()
+            case .none:
                 NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
                 return "Offline".localized()
-            case .synced:
+            case .upToDate:
                 NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
                 return "Synced 100%".localized()
         }
@@ -90,39 +90,39 @@ struct Home: View {
                 .foregroundColor(.red)
                 .zcashButtonBackground(shape: .roundedCorners(fillStyle: .outline(color: .zGray2, lineWidth: 2)))
             
-        case .downloading(let progress):
-            SyncingButton(animationType: .frameProgress(startFrame: 0, endFrame: 100, progress: 1.0, loop: true)) {
-                Text("Downloading".localized() + " \(Int(progress.progress * 100))%")
+//        case .downloading(let progress):
+//            SyncingButton(animationType: .frameProgress(startFrame: 0, endFrame: 100, progress: 1.0, loop: true)) {
+//                Text("Downloading".localized() + " \(Int(progress.progress * 100))%")
+//                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
+//            }
+//            .frame(width: 100, height: buttonHeight)
+//            
+//        case .validating:
+//            Text("Validating".localized())
+//                .font(.system(size: 15)).italic()
+//                .foregroundColor(.black)
+//                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient))).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
+        case .syncing(let scanProgress):
+            SyncingButton(animationType: .frameProgress(startFrame: 101, endFrame: 187,  progress: scanProgress, loop: false)) {
+                Text("Scanning".localized() + " \(Int(scanProgress * 100 ))%")
                     .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
             }
             .frame(width: 100, height: buttonHeight)
+//        case .enhancing(let enhanceProgress):
+//            SyncingButton(animationType: .circularLoop) {
+//                Text("Enhancing".localized() + " \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
+//                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
+//            }
+//            .frame(width: 100, height: buttonHeight)
             
-        case .validating:
-            Text("Validating".localized())
-                .font(.system(size: 15)).italic()
-                .foregroundColor(.black)
-                .zcashButtonBackground(shape: .roundedCorners(fillStyle: .gradient(gradient: .zButtonGradient))).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
-        case .scanning(let scanProgress):
-            SyncingButton(animationType: .frameProgress(startFrame: 101, endFrame: 187,  progress: scanProgress.progress, loop: false)) {
-                Text("Scanning".localized() + " \(Int(scanProgress.progress * 100 ))%")
-                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
-            }
-            .frame(width: 100, height: buttonHeight)
-        case .enhancing(let enhanceProgress):
-            SyncingButton(animationType: .circularLoop) {
-                Text("Enhancing".localized() + " \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)")
-                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
-            }
-            .frame(width: 100, height: buttonHeight)
+//        case .fetching:
+//            SyncingButton(animationType: .circularLoop) {
+//                Text("Fetching".localized())
+//                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
+//            }
+//            .frame(width: 100, height: buttonHeight)
             
-        case .fetching:
-            SyncingButton(animationType: .circularLoop) {
-                Text("Fetching".localized())
-                    .foregroundColor(.white).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
-            }
-            .frame(width: 100, height: buttonHeight)
-            
-        case .stopped:
+        case .unprepared:
             Button(action: {
                 self.viewModel.retrySyncing()
             }, label: {
@@ -132,32 +132,32 @@ struct Home: View {
                     .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray))).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
             })
             
-        case .disconnected:
-            Button(action: {
-                self.viewModel.retrySyncing()
-            }, label: {
-                Text("Offline".localized())
-                    .font(.system(size: 15)).italic()
-                    .foregroundColor(.black)
-                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray))).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
-            })
-        case .synced:
+//        case .disconnected:
+//            Button(action: {
+//                self.viewModel.retrySyncing()
+//            }, label: {
+//                Text("Offline".localized())
+//                    .font(.system(size: 15)).italic()
+//                    .foregroundColor(.black)
+//                    .zcashButtonBackground(shape: .roundedCorners(fillStyle: .solid(color: .zLightGray))).font(.barlowRegular(size: Device.isLarge ? 22 : 14))
+//            })
+        case .upToDate:
             ZStack {
                 NavigationLink(destination: EmptyView()) {
                     EmptyView()
                 }
-                NavigationLink(
-                    destination: LazyView(
-                        SendTransaction()
-                            .environmentObject(
-                                SendFlow.current! //fixme
-                            )
-                            .navigationBarTitle("",displayMode: .inline)
-                            .navigationBarHidden(true)
-                    ), isActive: self.$sendingPushed
-                ) {
-                    EmptyView()
-                }/*.isDetailLink(false)*/
+//                NavigationLink(
+//                    destination: LazyView(
+//                        SendTransaction()
+//                            .environmentObject(
+//                                SendFlow.current! //fixme
+//                            )
+//                            .navigationBarTitle("",displayMode: .inline)
+//                            .navigationBarHidden(true)
+//                    ), isActive: self.$sendingPushed
+//                ) {
+//                    EmptyView()
+//                }
                 
                 self.enterAddressButton
                     .onReceive(self.viewModel.$sendingPushed) { pushed in
@@ -189,9 +189,9 @@ struct Home: View {
            
             if(self.viewModel.syncStatus.isSynced){
 
-                SendFlow.start(appEnviroment: appEnvironment,
-                               isActive: self.$sendingPushed,
-                               amount: viewModel.sendZecAmount,memoText: memo,address:address)
+//                SendFlow.start(appEnviroment: appEnvironment,
+//                               isActive: self.$sendingPushed,
+//                               amount: viewModel.sendZecAmount,memoText: memo,address:address)
                 self.sendingPushed = true
                 
                 if self.sendingPushed {
@@ -205,20 +205,19 @@ struct Home: View {
     }
     
     func startSendFlow() {
-        SendFlow.start(appEnviroment: appEnvironment,
-                       isActive: self.$sendingPushed,
-                       amount: viewModel.sendZecAmount,memoText: "",address: "")
+//        SendFlow.start(appEnviroment: appEnvironment,
+//                       isActive: self.$sendingPushed,
+//                       amount: viewModel.sendZecAmount,memoText: "",address: "")
         self.sendingPushed = true
     }
     
     func endSendFlow() {
-        SendFlow.end()
+//        SendFlow.end()
         self.sendingPushed = false
     }
     
     var enterAddressButton: some View {
         Button(action: {
-            tracker.track(.tap(action: .homeSend), properties: [:])
             self.startSendFlow()
         }) {
             Text("button_send".localized())
@@ -238,11 +237,11 @@ struct Home: View {
     }
     @ViewBuilder func balanceView(shieldedBalance: ReadableBalance, transparentBalance: ReadableBalance) -> some View {
         if shieldedBalance.isThereAnyBalance || transparentBalance.isThereAnyBalance {
-            BalanceDetail(availableZec: shieldedBalance.verified,
-                          transparentFundsAvailable: transparentBalance.isThereAnyBalance,
-                          status: appEnvironment.balanceStatus)
+//            BalanceDetail(availableZec: shieldedBalance.verified,
+//                          transparentFundsAvailable: transparentBalance.isThereAnyBalance,
+//                          status: appEnvironment.balanceStatus)
         } else {
-            ActionableMessage(message: "balance_nofunds".localized())
+            ARRRActionableMessage(message: "balance_nofunds".localized())
         }
     }
     
@@ -307,7 +306,7 @@ struct Home: View {
             GeometryReader { geo in
                VStack(alignment: .center, spacing: 5) {
                 
-                ZcashNavigationBar(
+                ARRRNavigationBar(
                     leadingItem: {
 //                        NavigationLink(destination:  LazyView(
 //
@@ -326,14 +325,15 @@ struct Home: View {
 //                        }
                     },
                    headerItem: {
-//                    if appEnvironment.synchronizer.synchronizer.getShieldedBalance() > 0 {
-                        
-                        BalanceViewHome(availableZec: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus, aTitleStatus: aTitleStatus)
-                        
+//                       if PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance() > 0 {
+//                        
+////                        BalanceViewHome(availableARRR: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus, aTitleStatus: aTitleStatus)
+//                        
 //                    }
 //                    else {
-//                        ActionableMessage(message: "balance_nofunds".localized())
+//                        ARRRActionableMessage(message: "balance_nofunds".localized())
 //                    }
+                       Text("Header here") // TODO: LS
                    },
                    trailingItem: { EmptyView() }
                 )
@@ -399,7 +399,7 @@ struct Home: View {
                     .padding()
                 }else{
                     Spacer()
-                    Text("No Recent Transfers".localized()).font(.barlowRegular(size: Device.isLarge ? 30 : 20)).foregroundColor(Color.zSettingsSectionHeader)
+                    Text("No Recent Transfers").font(.barlowRegular(size: Device.isLarge ? 30 : 20)).foregroundColor(Color.zSettingsSectionHeader)
                         .multilineTextAlignment(.center)
                     Spacer()
                 }
@@ -425,7 +425,6 @@ struct Home: View {
                             cantSendError = false
                             // Send tapped
                             if(self.viewModel.syncStatus.isSynced){
-                                tracker.track(.tap(action: .homeSend), properties: [:])
                                 self.startSendFlow()
                                 
                                 if self.sendingPushed {
@@ -573,37 +572,37 @@ struct Home: View {
         }
        }
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
-            switch item {
-            case .profile:
-                ProfileScreen()
-                    .environmentObject(self.appEnvironment)
-            case .receiveFunds:
-                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,qrImage:self.viewModel.qrCodeImage)
-                    .environmentObject(self.appEnvironment)
-            case .feedback(let score):
-                #if ENABLE_LOGGING
-                FeedbackForm(selectedRating: score,
-                             isSolicited: true,
-                             isActive: self.$viewModel.destination)
-                #else
-                ProfileScreen()
-                    .environmentObject(self.appEnvironment)
-                #endif
-            case .sendMoney:
-                
-                if let sendflowCurrent = SendFlow.current{
-                    SendMoneyView()
-                        .environmentObject(
-                            sendflowCurrent
-                    )
-                }
-                
-               
-            }
+//            switch item {
+//            case .profile:
+//                ProfileScreen()
+//                    .environmentObject(self.appEnvironment)
+//            case .receiveFunds:
+//                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,qrImage:self.viewModel.qrCodeImage)
+//                    .environmentObject(self.appEnvironment)
+//            case .feedback(let score):
+//                #if ENABLE_LOGGING
+//                FeedbackForm(selectedRating: score,
+//                             isSolicited: true,
+//                             isActive: self.$viewModel.destination)
+//                #else
+//                ProfileScreen()
+//                    .environmentObject(self.appEnvironment)
+//                #endif
+//            case .sendMoney:
+//                
+//                if let sendflowCurrent = SendFlow.current{
+//                    SendMoneyView()
+//                        .environmentObject(
+//                            sendflowCurrent
+//                    )
+//                }
+//                
+//               
+//            }
         }
               
         .sheet(isPresented: $showPassCodeScreen){
-            LazyView(PasscodeValidationScreen(passcodeViewModel: PasscodeValidationViewModel(), isAuthenticationEnabled: true)).environmentObject(self.appEnvironment)
+//            LazyView(PasscodeValidationScreen(passcodeViewModel: PasscodeValidationViewModel(), isAuthenticationEnabled: true)).environmentObject(self.appEnvironment)
         }
         .toast(isPresenting: $viewModel.showLowSpaceAlert, duration: 10, tapToDismiss: true, alert: {
             AlertToast(displayMode: .alert,type: .error(.red), title:"Low storage space".localized())
@@ -614,7 +613,6 @@ struct Home: View {
             //Completion block after dismiss
          })
         .onAppear {
-            tracker.track(.screen(screen: .home), properties: [:])
             showFeedbackIfNeeded()
             let freeSpace = DiskStatus.freeDiskSpaceInBytes
             
@@ -647,10 +645,7 @@ struct Home: View {
                 self.viewModel.isOverlayShown = false
                 switch feedbackResult {
                 case .score(let rating):
-                    tracker.track(.feedback, properties: [
-                        "rating" : String(rating),
-                        "solicited" : String(true)
-                    ])
+                    printLog("rating here")
                 case .requestAdditional(let rating):
                     self.viewModel.destination = .feedback(score: rating)
                 }
@@ -659,31 +654,33 @@ struct Home: View {
             .frame(height: 240)
             .padding(.horizontal, 24)
         case .autoShielding:
-            AutoShieldView(isPresented: self.$viewModel.isOverlayShown)
-                
-                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shielder: self.appEnvironment.autoShielder)))
+            Text("AUTO SHIELD VIEW") // TODO LS
+//            AutoShieldView(isPresented: self.$viewModel.isOverlayShown)
+//                
+//                .environmentObject(ModelFlyWeight.shared.modelBy(defaultValue: AutoShieldingViewModel(shielder: self.appEnvironment.autoShielder)))
         case .shieldNowDialog:
             ShieldNowDialog {
                 self.viewModel.overlayType = .autoShielding
             } dismissBlock: {
                 self.viewModel.isOverlayShown = false
                 self.viewModel.overlayType = nil
-                Session.unique.markAutoShield()
+//                Session.unique.markAutoShield()
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 100)
         default:
-            AutoShieldingNotice {
-                tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
-                
-                self.appEnvironment.registerAutoShieldingNoticeScreenShown()
-                
-                if appEnvironment.autoShielder.strategy.shouldAutoShield {
-                    self.viewModel.overlayType = .autoShielding
-                } else {
-                    self.viewModel.isOverlayShown = false
-                }
-            }
+            Text("AUTO SHEILDING NOTICE VIEW") // TODO LS
+//            AutoShieldingNotice {
+//                tracker.track(.tap(action: .acceptAutoShieldNotice), properties: [:])
+//                
+//                self.appEnvironment.registerAutoShieldingNoticeScreenShown()
+//                
+//                if appEnvironment.autoShielder.strategy.shouldAutoShield {
+//                    self.viewModel.overlayType = .autoShielding
+//                } else {
+//                    self.viewModel.isOverlayShown = false
+//                }
+//            }
         }
        
     }
@@ -705,12 +702,12 @@ struct Home: View {
         if let userInfo = notificationObject.userInfo, let url:URL = userInfo["url"] as? URL {
             
             guard let aReplyAddress = url.host else {
-                logger.info("Invalid Reply Address, can't proceed")
+                printLog("Invalid Reply Address, can't proceed")
                 return
             }
             
-            guard ZECCWalletEnvironment.shared.isValidAddress(aReplyAddress) else {
-                logger.info("Invalid Sheilded Address, can't proceed")
+            guard PirateAppSynchronizer.shared.synchronizer!.initializer.isValidSaplingAddress(aReplyAddress) else {
+                printLog("Invalid Sheilded Address, can't proceed")
                 return
             }
 
@@ -739,7 +736,7 @@ struct Home: View {
             self.viewModel.setAmountWithoutFee(amountValue)
             
             if self.viewModel.isSyncing == false{
-                logger.info("Syncing is not in progress, please proceed to transaction screen")
+                printLog("Syncing is not in progress, please proceed to transaction screen")
                 
                 let memoMessageDecoded = mMemoMessage.removingPercentEncoding
                 
@@ -747,7 +744,7 @@ struct Home: View {
                 
                 
             }else{
-                logger.info("Syncing is in progress, can't proceed")
+                printLog("Syncing is in progress, can't proceed")
             }
         }
      

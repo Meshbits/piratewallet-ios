@@ -9,7 +9,7 @@ import SwiftUI
 import PirateLightClientKit
 
 struct BalanceViewHome: View {
-    var availableZec: Double
+    var availableARRR: Double
     var transparentFundsAvailable: Bool = false
     var status: BalanceStatus
     var aTitleStatus: String
@@ -17,18 +17,18 @@ struct BalanceViewHome: View {
     
     var available: some View {
         HStack{
-            Text(format(zec: availableZec))
+            Text(format(arrr: availableARRR))
                 .foregroundStyle(.white)
                 .scaledFont(size: Device.isLarge ? 30 : 20)
                 
-            Text(" \(zec) ")
+            Text(" \(arrr) ")
                 .scaledFont(size: Device.isLarge ? 20 : 12)
                 .foregroundColor(.zAmberGradient1)
         }
     }
     
-    func format(zec: Double) -> String {
-        NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: zec)) ?? "ERROR".localized() //TODO: handle this weird stuff
+    func format(arrr: Double) -> String {
+        NumberFormatter.zecAmountFormatter.string(from: NSNumber(value: arrr)) ?? "ERROR" //TODO: handle this weird stuff
     }
     var includeCaption: Bool {
         switch status {
@@ -40,25 +40,25 @@ struct BalanceViewHome: View {
     }
     var caption: some View {
         switch status {
-        case .expecting(let zec):
-            return  Text("(\("expecting".localized()) ")
+        case .expecting(let arrr):
+            return  Text("(\("expecting") ")
                            .font(.body)
                            .foregroundColor(Color.zLightGray) +
-            Text("+" + format(zec: zec))
+            Text("+" + format(arrr: arrr))
                            .font(.body)
                 .foregroundColor(.white)
-            + Text(" \(zec))")
+            + Text(" \(arrr))")
                 .font(.body)
                 .foregroundColor(Color.zLightGray)
         
         case .waiting(let change):
-            return  Text("(\("expecting".localized()) ")
+            return  Text("(\("expecting") ")
                                       .font(.body)
                                     .foregroundColor(Color.zLightGray) +
-                       Text("+" + format(zec: change))
+                       Text("+" + format(arrr: change))
                                       .font(.body)
                            .foregroundColor(.white)
-                       + Text(" \(zec))")
+                       + Text(" \(arrr))")
                            .font(.body)
                            .foregroundColor(Color.zLightGray)
             default:
@@ -67,7 +67,7 @@ struct BalanceViewHome: View {
     }
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Balance".localized())
+            Text("Balance")
                 .foregroundStyle(Color.zLightGray)
                 .scaledFont(size: Device.isLarge ? 18 : 14)
             HStack{
@@ -84,7 +84,7 @@ struct BalanceViewHome: View {
         }
     }
     
-    var zec: String {
+    var arrr: String {
             return "ARRR"
     }
 }

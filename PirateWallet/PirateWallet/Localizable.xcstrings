@@ -5,15 +5,7 @@
 
     },
     "\nChoose a birthday height for sync, leave it default if you are not sure.\n" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\nChoose a birthday height for sync, leave it default if you are not sure.\n"
-          }
-        }
-      }
+
     },
     " " : {
 
@@ -224,15 +216,7 @@
       }
     },
     "Almost done! Enter the following words from your recovery phrase" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Almost done! Enter the following words from your recovery phrase"
-          }
-        }
-      }
+
     },
     "an error ocurred" : {
       "extractionState" : "manual",
@@ -375,16 +359,7 @@
       }
     },
     "Authenticate Biometric ID" : {
-      "comment" : "Authenticate Biometric ID",
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Authenticate Biometric ID"
-          }
-        }
-      }
+      "comment" : "Authenticate Biometric ID"
     },
     "Auto Config" : {
       "extractionState" : "manual",
@@ -396,6 +371,12 @@
           }
         }
       }
+    },
+    "AUTO SHEILDING NOTICE VIEW" : {
+
+    },
+    "AUTO SHIELD VIEW" : {
+
     },
     "Backup Seed" : {
       "extractionState" : "manual",
@@ -830,7 +811,6 @@
       }
     },
     "button_close" : {
-      "extractionState" : "migrated",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1335,16 +1315,7 @@
       }
     },
     "Confirm Recovery Phrase" : {
-      "comment" : "Words Verification Screen",
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confirm Recovery Phrase"
-          }
-        }
-      }
+      "comment" : "Words Verification Screen"
     },
     "Confirmed" : {
       "extractionState" : "manual",
@@ -1358,27 +1329,10 @@
       }
     },
     "Congratulations! \nBiometric ID setup successfully" : {
-      "comment" : "Congratulations",
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Congratulations! \nBiometric ID setup successfully"
-          }
-        }
-      }
+      "comment" : "Congratulations"
     },
     "Congratulations! You completed your recovery phrase setup" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Congratulations! You completed your recovery phrase setup"
-          }
-        }
-      }
+
     },
     "Connection Error" : {
       "extractionState" : "manual",
@@ -1485,15 +1439,7 @@
       }
     },
     "Could not restore wallet" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not restore wallet"
-          }
-        }
-      }
+
     },
     "Could Not Shield Funds" : {
       "extractionState" : "manual",
@@ -1628,15 +1574,7 @@
       }
     },
     "Discard them and continue" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Discard them and continue"
-          }
-        }
-      }
+
     },
     "dismiss" : {
       "comment" : "Others",
@@ -1649,6 +1587,9 @@
           }
         }
       }
+    },
+    "Do it later" : {
+
     },
     "Do not close this screen" : {
       "extractionState" : "manual",
@@ -1840,14 +1781,7 @@
       }
     },
     "Error" : {
-      "extractionState" : "migrated",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error"
-          }
-        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1869,15 +1803,7 @@
       }
     },
     "Error Initializing Wallet" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error Initializing Wallet"
-          }
-        }
-      }
+
     },
     "Exchange Source" : {
       "extractionState" : "manual",
@@ -1891,15 +1817,7 @@
       }
     },
     "Existing keys found!" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Existing keys found!"
-          }
-        }
-      }
+
     },
     "expecting" : {
       "extractionState" : "manual",
@@ -2310,15 +2228,7 @@
       }
     },
     "For security purposes, do not screenshot or email these words." : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For security purposes, do not screenshot or email these words."
-          }
-        }
-      }
+
     },
     "from " : {
       "comment" : "Little Views",
@@ -2383,16 +2293,7 @@
       }
     },
     "Generate your private recovery phrase" : {
-      "comment" : "Generate Key Phrase",
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Generate your private recovery phrase"
-          }
-        }
-      }
+      "comment" : "Generate Key Phrase"
     },
     "Get Started" : {
       "extractionState" : "migrated",
@@ -2404,6 +2305,9 @@
           }
         }
       }
+    },
+    "Header here" : {
+
     },
     "History" : {
       "extractionState" : "manual",
@@ -2571,15 +2475,7 @@
       }
     },
     "it appears that this device already has keys stored on it. What do you want to do?" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "it appears that this device already has keys stored on it. What do you want to do?"
-          }
-        }
-      }
+
     },
     "Keep it secure" : {
       "extractionState" : "migrated",
@@ -2958,15 +2854,7 @@
       }
     },
     "Login quickly using your Biometric ID" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Login quickly using your Biometric ID"
-          }
-        }
-      }
+
     },
     "Low space" : {
 
@@ -3901,15 +3789,7 @@
       }
     },
     "Please wait, while we setup your wallet!" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please wait, while we setup your wallet!"
-          }
-        }
-      }
+
     },
     "Port " : {
       "extractionState" : "manual",
@@ -4278,15 +4158,7 @@
       }
     },
     "Recovery Phrase" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recovery Phrase"
-          }
-        }
-      }
+
     },
     "Reliable, Fast & Secure" : {
       "extractionState" : "migrated",
@@ -4425,15 +4297,7 @@
       }
     },
     "Restore existing keys" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restore existing keys"
-          }
-        }
-      }
+
     },
     "Restore from" : {
       "extractionState" : "manual",
@@ -5691,6 +5555,12 @@
         }
       }
     },
+    "Shield Now" : {
+
+    },
+    "Shield Now?" : {
+
+    },
     "Shield Transparent Funds" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5927,15 +5797,7 @@
       }
     },
     "The key is required to recover your money if you upgrade or lose your phone" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The key is required to recover your money if you upgrade or lose your phone"
-          }
-        }
-      }
+
     },
     "the provided reply-to address is invalid" : {
       "extractionState" : "manual",
@@ -5949,15 +5811,7 @@
       }
     },
     "There was a problem initializing the wallet" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There was a problem initializing the wallet"
-          }
-        }
-      }
+
     },
     "There was an error creating your wallet. Please back it up and try again" : {
       "comment" : "Home",
@@ -5989,15 +5843,7 @@
       }
     },
     "There's a problem restoring your wallet. Please verify your seed phrase and try again." : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There's a problem restoring your wallet. Please verify your seed phrase and try again."
-          }
-        }
-      }
+
     },
     "There's an internal error. Probably nothing serious. If this error persists, back up your seed phrase and restore your wallet" : {
       "extractionState" : "manual",
@@ -6610,15 +6456,7 @@
 
     },
     "Write down the following words in order" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Write down the following words in order"
-          }
-        }
-      }
+
     },
     "Write down your key" : {
       "extractionState" : "migrated",
@@ -6722,15 +6560,7 @@
       }
     },
     "You have successfuly enabled Biometric ID based authentication. \n\nNow securely login using your Biometric ID" : {
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have successfuly enabled Biometric ID based authentication. \n\nNow securely login using your Biometric ID"
-          }
-        }
-      }
+
     },
     "You Received" : {
       "extractionState" : "manual",
@@ -6766,12 +6596,14 @@
       }
     },
     "You’re all set to deposit, receive, and store crypto in your Pirate wallet" : {
-      "extractionState" : "migrated",
+
+    },
+    "You've received more than %@ %@ in transparent funds.\n\nMind if we interrupt to shield?" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "You’re all set to deposit, receive, and store crypto in your Pirate wallet"
+            "state" : "new",
+            "value" : "You've received more than %1$@ %2$@ in transparent funds.\n\nMind if we interrupt to shield?"
           }
         }
       }
@@ -6816,16 +6648,7 @@
       }
     },
     "Your Recovery Phrase" : {
-      "comment" : "Recovery words",
-      "extractionState" : "migrated",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your Recovery Phrase"
-          }
-        }
-      }
+      "comment" : "Recovery words"
     },
     "Your seed phrase is invalid!" : {
       "extractionState" : "migrated",

@@ -11,7 +11,7 @@ import PirateLightClientKit
 
 enum BalanceStatus {
     case available(showCaption: Bool)
-    case expecting(zec: Double)
+    case expecting(arrr: Double)
     case waiting(change: Double)
 }
 
@@ -95,7 +95,7 @@ struct BalanceDetail_Previews: PreviewProvider {
             ARRRBackground()
             VStack(alignment: .center, spacing: 50) {
                 BalanceDetail(availableZec: 2.0011,status: .available(showCaption: true))
-                BalanceDetail(availableZec: 0.0011,status: .expecting(zec: 2))
+                BalanceDetail(availableZec: 0.0011,status: .expecting(arrr: 2))
                 BalanceDetail(availableZec: 12.2,status: .waiting(change: 5.3111112))
             }
         }

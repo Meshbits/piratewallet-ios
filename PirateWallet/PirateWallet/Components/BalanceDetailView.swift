@@ -94,7 +94,7 @@ struct BalanceDetailView_Previews: PreviewProvider {
             ARRRBackground()
             VStack(alignment: .center, spacing: 50) {
                 BalanceDetailView(availableZec: 2.0011,status: .available(showCaption: true))
-                BalanceDetailView(availableZec: 0.0011,status: .expecting(zec: 2))
+                BalanceDetailView(availableZec: 0.0011,status: .expecting(arrr: 2))
                 BalanceDetailView(availableZec: 12.2,status: .waiting(change: 5.3111112))
             }
         }
