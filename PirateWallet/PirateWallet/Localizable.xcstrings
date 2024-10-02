@@ -2306,9 +2306,6 @@
         }
       }
     },
-    "Header here" : {
-
-    },
     "History" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2319,9 +2316,6 @@
           }
         }
       }
-    },
-    "Home" : {
-
     },
     "How it works - Step 1" : {
       "comment" : "How it works",

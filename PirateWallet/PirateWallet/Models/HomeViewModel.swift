@@ -73,18 +73,23 @@ final class HomeViewModel: ObservableObject {
     @Published var isOverlayShown = false
     @Published var pushDestination: PushDestination?
     var lastError: UserFacingErrors?
-
+    @Published var syncingInProgress: Float?
     var progress = CurrentValueSubject<Float,Never>(0)
     var pendingTransactions: [DetailModel] = []
     private var cancellable = [AnyCancellable]()
     private var environmentCancellables = [AnyCancellable]()
     private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
     var qrCodeImage: Image?
+    
+    @Published var aSyncTitleStatus: String?
+    
 
     init() {
         self.destination = nil
         openQRCodeScanner = false
         bindToEnvironmentEvents()
+        syncingInProgress = 0.0
+        aSyncTitleStatus = ""
         
         NotificationCenter.default.publisher(for: .sendFlowStarted)
             .receive(on: RunLoop.main)
@@ -101,6 +106,32 @@ final class HomeViewModel: ObservableObject {
                 self?.bindToEnvironmentEvents()
             }
             ).store(in: &cancellable)
+        
+        
+        Task { @MainActor in
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                aSynchronizer.stateStream
+                    .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
+                    .sink(receiveValue: { [weak self] state in self?.synchronizerStateUpdatedHome(state) })
+                    .store(in: &cancellable)
+                
+            }
+        }
+        
+        
+//        NotificationCenter.default.publisher(for: .syncingInProgress)
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { [weak self] _ in
+//                self?.syncingInProgress = PirateAppSynchronizer.shared.currentProgress
+//            }
+//            ).store(in: &cancellable)
+        
+//        NotificationCenter.default.publisher(for: .syncingFinished)
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { [weak self] _ in
+//                self?.syncingInProgress = 100
+//            }
+//            ).store(in: &cancellable)
         
         
         NotificationCenter.default.publisher(for: .qrCodeScanned)
@@ -159,6 +190,34 @@ final class HomeViewModel: ObservableObject {
 //            })
 //            .store(in: &synchronizerEvents)
 //    }
+    
+    
+    private func synchronizerStateUpdatedHome(_ state: SynchronizerState) {
+        printLog("Logging inside HomeViewModel.synchronizerStateUpdatedHome")
+        printLog(state)
+        switch state.syncStatus {
+        case .error:
+            NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
+            aSyncTitleStatus = "Retrying"
+        case .unprepared:
+            aSyncTitleStatus = ""
+        case .syncing(let downloadingProgress):
+            if downloadingProgress == 0 {
+                NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
+            }else if downloadingProgress == 100 {
+                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
+            }
+        
+            let currentProgress = (floor(downloadingProgress * 1000)) / 10
+            
+            aSyncTitleStatus = "Syncing".localized() + " " + currentProgress.description + " %"
+
+        case .upToDate:
+            NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
+            aSyncTitleStatus = "Synced 100%".localized()
+        }
+    }
+    
     
     func generateQRCodeImage() async throws{
             

@@ -11,7 +11,7 @@ import PirateLightClientKit
 import SwiftUI
 import MnemonicSwift
 
-public class PirateAppSynchronizer{
+public class PirateAppSynchronizer : ObservableObject{
     
     static let shared = PirateAppSynchronizer()
     
@@ -84,7 +84,7 @@ public class PirateAppSynchronizer{
 
         case let .syncing(progress):
             enhancingStarted = false
-
+            
 //            progressBar.progress = progress
 //            progressLabel.text = "\(floor(progress * 1000) / 10)%"
             printLog("\(floor(progress * 1000) / 10)%")
@@ -95,7 +95,7 @@ public class PirateAppSynchronizer{
             latest block height \(state.latestBlockHeight)
             """
 //            progressDataLabel.text = progressText
-            
+                        
             if state.latestScannedHeight > 0 {
                 UserSettings.shared.lastSyncedBlockHeight = state.latestScannedHeight
                 UserSettings.shared.currentSyncStatus = LocalSyncStatus.inProgress.rawValue

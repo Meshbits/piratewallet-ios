@@ -45,8 +45,8 @@ struct HomeTabView: View {
     }
     var mHomeView : some View {
         LazyView(
-//                Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
-            Text("Home")
+                Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
+//            Text("Home")
                 .navigationBarHidden(true)
                     .navigationBarBackButtonHidden(true)
 //                    .environmentObject(HomeViewModel())

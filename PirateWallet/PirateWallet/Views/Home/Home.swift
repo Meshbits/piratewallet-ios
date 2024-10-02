@@ -32,46 +32,6 @@ struct Home: View {
     @State var isAuthenticatedFlowInitiated = false
     @State var selectedModel: DetailModel? = nil
     @State var cantSendError = false
-    var aTitleStatus: String {
-        switch PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus {
-            case .error:
-                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                return ""
-            case .unprepared:
-                return ""
-            case .syncing(let downloadingProgress):
-                if downloadingProgress == 0 {
-                    NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
-                }else if downloadingProgress == 100 {
-                    NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                }
-            
-                return "Syncing".localized() + " \(Int(downloadingProgress * 100))%"
-//            case .validating:
-//                return "Validating".localized()
-//            case .scanning(let scanProgress):
-//                if scanProgress.progress == 0 {
-//                    NotificationCenter.default.post(name: NSNotification.Name(mPlaySoundWhileSyncing), object: nil)
-//                }else if scanProgress.progress == 100 {
-//                    NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-//                }
-//                return "Scan".localized() + " \(Int(scanProgress.progress * 100))%"
-//            case .enhancing(let enhanceProgress):
-//                return "Enhance".localized() + " \(enhanceProgress.enhancedTransactions) of \(enhanceProgress.totalTransactions)"
-//            case .fetching:
-//                return "Fetching".localized()
-//            case .upToDate:
-//                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-//                return "Stopped".localized()
-            case .none:
-                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                return "Offline".localized()
-            case .upToDate:
-                NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
-                return "Synced 100%".localized()
-        }
-    }
-    
     
     @ViewBuilder func buttonFor(syncStatus: SyncStatus) -> some View {
         switch syncStatus {
@@ -306,37 +266,13 @@ struct Home: View {
             GeometryReader { geo in
                VStack(alignment: .center, spacing: 5) {
                 
-                ARRRNavigationBar(
-                    leadingItem: {
-//                        NavigationLink(destination:  LazyView(
-//
-//                         QRCodeScanner(
-//                             viewModel: QRCodeScanAddressViewModel(shouldShowSwitchButton: false, showCloseButton: false),
-//                             cameraAccess: CameraAccessHelper.authorizationStatus,
-//                             isScanAddressShown: self.$viewModel.openQRCodeScanner
-//                         ).environmentObject(ZECCWalletEnvironment.shared)
-//
-//                     )
-//                        ) {
-//
-//                         Image("QRCodeIcon").resizable()
-//                             .frame(width: 35, height: 35)
-//                             .scaleEffect(0.5)
-//                        }
-                    },
-                   headerItem: {
-//                       if PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance() > 0 {
-//                        
-////                        BalanceViewHome(availableARRR: appEnvironment.synchronizer.verifiedBalance.value, status: appEnvironment.balanceStatus, aTitleStatus: aTitleStatus)
-//                        
-//                    }
-//                    else {
-//                        ARRRActionableMessage(message: "balance_nofunds".localized())
-//                    }
-                       Text("Header here") // TODO: LS
-                   },
-                   trailingItem: { EmptyView() }
-                )
+                   HStack {
+                       Spacer()
+                       BalanceViewHome(availableARRR: 2.0, status: BalanceStatus.available(showCaption: false), aTitleStatus: viewModel.aSyncTitleStatus ?? "")
+                   }
+                   .padding(.bottom,10)
+                
+
                        .frame(height: Device.isLarge ? 64 : 44)
                 .padding([.leading, .trailing], 10)
                 .padding(.top,40)
