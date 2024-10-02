@@ -45,8 +45,12 @@ public class PirateAppSynchronizer : ObservableObject{
     var synchronizer : SDKSynchronizer?
 
     var closureSynchronizer : ClosureSDKSynchronizer?
+    
+    var combineSdkSynchronizer : CombineSDKSynchronizer?
 
     let appDelegate: AppDelegate = PirateWalletApp().appDelegate
+    
+    var balance: String?
     
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -56,6 +60,47 @@ public class PirateAppSynchronizer : ObservableObject{
         
         synchronizer = appDelegate.sharedSynchronizer
         closureSynchronizer = ClosureSDKSynchronizer(synchronizer: appDelegate.sharedSynchronizer)
+        
+        combineSdkSynchronizer = CombineSDKSynchronizer(synchronizer: appDelegate.sharedSynchronizer)
+        
+        balance = ""
+        
+        if let combineSdkSynchronizer = self.combineSdkSynchronizer {
+            combineSdkSynchronizer.getTransparentBalance(accountIndex: 0)
+                .sink(
+                    receiveCompletion: { result in
+                        switch result {
+                        case .finished: break
+                        case .failure(let error):
+                            break
+                        }
+                    },
+                    receiveValue: { value in
+                        printLog("TransparentBalance : VERIFIED : \(value.verified.decimalValue)")
+                        printLog("TransparentBalance : TOTAL : \(value.total.decimalValue)")
+                    }
+                )
+                .store(in: &cancellables)
+        }
+        
+        if let combineSdkSynchronizer = self.combineSdkSynchronizer {
+            combineSdkSynchronizer.getShieldedBalance(accountIndex: 0)
+                .sink(
+                    receiveCompletion: { result in
+                        switch result {
+                        case .finished: break
+                        case .failure(let error):
+                            break
+                        }
+                    },
+                    receiveValue: { value in
+                        printLog("getShieldedBalance : \(value.decimalValue)")
+                    }
+                )
+                .store(in: &cancellables)
+        }
+        
+        
           
         if let aSynchronizer = synchronizer  {
             aSynchronizer.stateStream

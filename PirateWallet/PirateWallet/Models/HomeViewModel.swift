@@ -80,6 +80,7 @@ final class HomeViewModel: ObservableObject {
     private var environmentCancellables = [AnyCancellable]()
     private var zecAmountFormatter = NumberFormatter.zecAmountFormatter
     var qrCodeImage: Image?
+    @Published var balanceStatus: BalanceStatus?
     
     @Published var aSyncTitleStatus: String?
     
@@ -115,6 +116,39 @@ final class HomeViewModel: ObservableObject {
                     .sink(receiveValue: { [weak self] state in self?.synchronizerStateUpdatedHome(state) })
                     .store(in: &cancellable)
                 
+            }
+        }
+        
+        balanceStatus = .none
+        
+        Task { @MainActor in
+            
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                
+                let verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.int64Value
+                printLog("verifiedBalance : \(verifiedBalance)")
+                let shieldedBalance = try! await aSynchronizer.getShieldedBalance().decimalValue.int64Value
+                printLog("balance : \(shieldedBalance)")
+//                let transparentBalanc = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).verified.decimalValue.int64Value
+//                printLog("transparentBalanc : \(transparentBalanc)")
+//                let transparentBalanceTotal = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).total.decimalValue.int64Value
+//                printLog("transparentBalanceTotal : \(transparentBalanceTotal)")
+                let difference = verifiedBalance - shieldedBalance
+                
+                let abs_difference = Double(abs(difference))
+                
+                printLog("Balance Status")
+                printLog(difference)
+                                
+                if difference == 0 {
+                    self.balanceStatus = BalanceStatus.available(showCaption: true)
+                }
+                else if difference > 0 {
+                    self.balanceStatus = BalanceStatus.expecting(arrr: abs_difference)
+                }
+                else {
+                    self.balanceStatus = BalanceStatus.waiting(change: abs_difference)
+                }
             }
         }
         
@@ -194,7 +228,7 @@ final class HomeViewModel: ObservableObject {
     
     private func synchronizerStateUpdatedHome(_ state: SynchronizerState) {
         printLog("Logging inside HomeViewModel.synchronizerStateUpdatedHome")
-        printLog(state)
+        printLog(state.syncStatus)
         switch state.syncStatus {
         case .error:
             NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)

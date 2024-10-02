@@ -102,19 +102,3 @@ struct BalanceDetail_Previews: PreviewProvider {
     }
 }
 
-extension PirateAppSynchronizer {
-    var balanceStatus: BalanceStatus {
-        return BalanceStatus.available(showCaption: true)
-//        let verifiedBalance = try! await self.synchronizer?.getShieldedVerifiedBalance().decimalValue.int64Value
-//        let balance = try! await self.synchronizer?.getShieldedVerifiedBalance().decimalValue.int64Value
-//        
-//        let difference = verifiedBalance - balance
-//        if difference.isZero {
-//            return BalanceStatus.available(showCaption: true)
-//        } else if difference > 0 {
-//            return BalanceStatus.expecting(zec: abs(difference))
-//        } else {
-//            return BalanceStatus.waiting(change: abs(difference))
-//        }
-    }
-}
