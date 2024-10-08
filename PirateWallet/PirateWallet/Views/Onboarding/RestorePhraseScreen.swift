@@ -200,7 +200,7 @@ struct RestorePhraseScreen: View {
         let constants: NetworkConstants.Type = PirateSDKMainnetConstants.self
 
         // Birthday
-        let birthdayHeight = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? constants.saplingActivationHeight
+        let birthdayHeight = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? SeedManager.mDefaultHeight
 
         let trimmedSeedPhrase = seedPhrase.trimmingCharacters(in: .whitespacesAndNewlines)
        

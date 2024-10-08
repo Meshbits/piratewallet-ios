@@ -268,7 +268,7 @@ struct Home: View {
                 
                    HStack {
                        Spacer()
-                       BalanceViewHome(availableARRR: 2.0, status: viewModel.balanceStatus ?? BalanceStatus.available(showCaption: false), aTitleStatus: viewModel.aSyncTitleStatus ?? "")
+                       BalanceViewHome(availableARRR: Double(viewModel.verifiedBalance), status: viewModel.balanceStatus ?? BalanceStatus.available(showCaption: false), aTitleStatus: viewModel.aSyncTitleStatus ?? "")
                    }
                    .padding(.bottom,10)
                 

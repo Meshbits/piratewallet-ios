@@ -63,7 +63,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showHistory = false
     @Published var syncStatus: SyncStatus = .upToDate
     @Published var totalBalance: Double = 0
-    @Published var verifiedBalance: Double = 0
+    @Published var verifiedBalance: Int64 = 0
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
     @Published var showLowSpaceAlert: Bool = false
@@ -125,7 +125,7 @@ final class HomeViewModel: ObservableObject {
             
             if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
                 
-                let verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.int64Value
+                verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.int64Value
                 printLog("verifiedBalance : \(verifiedBalance)")
                 let shieldedBalance = try! await aSynchronizer.getShieldedBalance().decimalValue.int64Value
                 printLog("balance : \(shieldedBalance)")
@@ -152,6 +152,65 @@ final class HomeViewModel: ObservableObject {
             }
         }
         
+        if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+            
+            // Fetching pending ones
+            Task { @MainActor in
+                let dataSource =   TransactionsDataSource(
+                    status: .all,
+                    synchronizer: aSynchronizer
+                )
+                try? await dataSource.load()
+                printLog("dataSource.all.count : \(dataSource.transactions.count)")
+            }
+            
+            
+                aSynchronizer.eventStream
+                    .map { event in
+                        switch(event){
+                        case let .foundTransactions(transaction,range):
+                            printLog(transaction)
+                                return transaction
+                        case .minedTransaction(_):
+                            printLog("Mine transactions")
+                        case .storedUTXOs(_, _):
+                            printLog("storedUTXOs")
+                        case .connectionStateChanged(_):
+                            printLog("connectionStateChanged")
+                        default:
+                            printLog("Event empty")
+                        }
+                        
+                        return nil
+                    }
+                    .compactMap { $0 }
+                    .receive(on: DispatchQueue.main)
+                    .sink(
+                        receiveValue: { transaction in
+                            printLog("FOUND SOME TRANSACTIONS")
+                            printLog(transaction) }
+                    )
+                    .store(in: &environmentCancellables)
+            
+            
+//            // Fetching sent ones
+//            Task { @MainActor in
+//                let dataSource =   TransactionsDataSource(
+//                    status: .received,
+//                    synchronizer: aSynchronizer
+//                )
+//                
+//                do {
+//                    try await dataSource.load()
+//                    printLog("dataSource.sent.count : \(dataSource.transactions.count)")
+//                    await initTransactions()
+//                }catch{
+//                    printLog(error)
+//                }
+//                
+//            }
+            
+        }
         
 //        NotificationCenter.default.publisher(for: .syncingInProgress)
 //            .receive(on: RunLoop.main)
@@ -200,6 +259,18 @@ final class HomeViewModel: ObservableObject {
             
         
         }
+    }
+    
+    func initTransactions() async {
+        printLog("PRINTING TS")
+        if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+            await printLog(aSynchronizer.pendingTransactions.count)
+            await printLog(aSynchronizer.sentTransactions.count)
+            await printLog(aSynchronizer.receivedTransactions.count)
+            
+            
+        }
+        
     }
     
     deinit {
