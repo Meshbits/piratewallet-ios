@@ -197,7 +197,6 @@ struct RestorePhraseScreen: View {
     }
     
     func importBirthdayAndSeed() throws {
-        let constants: NetworkConstants.Type = PirateSDKMainnetConstants.self
 
         // Birthday
         let birthdayHeight = BlockHeight(self.walletBirthDay.trimmingCharacters(in: .whitespacesAndNewlines)) ?? SeedManager.mDefaultHeight
@@ -209,6 +208,16 @@ struct RestorePhraseScreen: View {
         
         PirateAppConfig.defaultSeed = mnemonicSeed
         PirateAppConfig.defaultBirthdayHeight = birthdayHeight
+        
+        do {
+            
+            try SeedManager.default.importPhrase(bip39: trimmedSeedPhrase)
+            
+            try SeedManager.default.importBirthday(birthdayHeight)
+            
+        } catch {
+            throw WalletError.createFailed(underlying: error)
+        }
         
     }
         

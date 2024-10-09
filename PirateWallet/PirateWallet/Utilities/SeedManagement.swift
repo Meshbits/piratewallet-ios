@@ -180,6 +180,7 @@ final class SeedManager {
         do {
             _ = try self.exportPhrase()
             _ = try self.exportBirthday()
+            printLog(message: "Found keys present")
         } catch SeedManagerError.uninitializedWallet {
             return false
         } catch {
