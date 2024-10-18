@@ -9,26 +9,28 @@ import SwiftUI
 
 struct DetailCard: View {
  
-    var model: DetailModel
+    var model: TransactionDetailModel
     var backgroundColor: Color = Color.init(red: 0.13, green: 0.14, blue: 0.15)
     var isFromWalletDetails = false
     var zecAmount: some View {
-        let amount = model.arrrAmount.toZecAmount()
-        let text = ((model.arrrAmount > 0 && model.arrrAmount >= 0.001) ? "+" : "") + ((model.arrrAmount < 0.001 && model.arrrAmount > 0) ? "< 0.001" : amount)
+        let amount = model.zatoshi.decimalString()
+        let text = ((model.zatoshi.amount > 0 && model.zatoshi.amount.asHumanReadableZecBalance() >= 0.001) ? "+" : "") + ((model.zatoshi.amount.asHumanReadableZecBalance() < 0.001 && model.zatoshi.amount > 0) ? "< 0.001" : amount)
         var color = Color.zARRRReceivedColor
         var opacity = Double(1)
-        switch model.status {
-        case .paid(let success):
+        switch model.transaction {
+        case .sent(let overview):
             color = Color.zARRRSentColor //success ? Color.zARRRSentColor : Color.zLightGray2
-            opacity = success ? 1 : 0.2
+            opacity = 1
             
-//            text = success ? text : "(\(text) ARRR)"
-            
-        default:
-            break
+        case .received(let overview):
+            color = Color.green //success ? Color.zARRRSentColor : Color.zLightGray2
+            opacity = 1
+        case .pending(let overview):
+            color = Color.orange
+        case .cleared(let overview):
+            color = Color.white
         }
-        
-        
+                
         return
             Text(text)
                 .foregroundColor(color)
@@ -40,12 +42,12 @@ struct DetailCard: View {
     var body: some View {
         ZStack {
             HStack {
-                Image.statusImage(for: model.status).resizable().frame(width: 20, height: 20, alignment: .center)
+                Image.statusImage(for: model.transaction).resizable().frame(width: 20, height: 20, alignment: .center)
 
                 VStack(alignment: .leading){
                     HStack {
 //                        Text(model.title)
-                        Text(model.date.aFormattedDate)
+                        Text(model.created!.aFormattedDate)
                             .scaledFont(size: Device.isLarge ? 20 : 14)
                             .truncationMode(.tail)
                             .lineLimit(1)

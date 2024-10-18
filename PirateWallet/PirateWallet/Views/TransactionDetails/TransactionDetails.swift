@@ -15,7 +15,7 @@ struct TransactionDetails: View {
         case explorerNotice
         case copiedItem(item: PasteboardItemModel)
     }
-    var detail: DetailModel
+    var detail: TransactionDetailModel
     @State var expandMemo = false
     @Environment(\.presentationMode) var presentationMode
     @State var alertItem: Alerts?
@@ -56,11 +56,15 @@ struct TransactionDetails: View {
     
     var aTitle: String {
 
-        switch detail.status {
-        case .paid(_):
-            return  "To: ".localized()
-        case .received:
-            return "From: ".localized()
+        switch detail.transaction {
+            case .sent(let overview):
+                return  "To: ".localized()
+            case .received(let overview):
+                return  "From: ".localized()
+            case .pending(let overview):
+                return  "Pending: ".localized()
+            case .cleared(let overview):
+                return  "Cleared: ".localized()
         }
     }
     
@@ -72,22 +76,22 @@ struct TransactionDetails: View {
                 VStack {
                     
                     TransactionDetailsTitle(
-                        availableZec: detail.arrrAmount,status:detail.status)
+                        availableZec: detail.zatoshi.amount.asHumanReadableZecBalance() ,status:detail.transaction)
                     
                     VStack(alignment: .center, spacing: 10) {
                         Spacer(minLength: 5)
                         ScrollView {
                             VStack {
 
-                                if let fullAddr = detail.arrrAddress{
-                                    TransactionRow(mTitle: aTitle, mSubTitle: fullAddr, showLine: true, isYellowColor: false)
+                                if let fullAddr = detail.id{
+                                    TransactionRow(mTitle: aTitle, mSubTitle: fullAddr.toHexStringTxId() ?? "no id", showLine: true, isYellowColor: false)
                                 }else{
-                                    TransactionRow(mTitle: aTitle, mSubTitle: (detail.arrrAddress ?? "NA"), showLine: true,isYellowColor: false)
+                                    TransactionRow(mTitle: aTitle, mSubTitle: (detail.id?.toHexStringTxId() ?? "no id"), showLine: true,isYellowColor: false)
                                 }
                                 
 //                                TransactionRowTitleSubtitle(mTitle: converDateToString(aDate: detail.date), mSubTitle: ("Processing fee: ".localized() + "\(detail.defaultFee.asHumanReadableZecBalance().toZecAmount())" + " ARRR"), showLine: true)
                                 
-                                TransactionRowTitleSubtitle(mTitle: "Memo".localized(), mSubTitle: (detail.memo ?? "-"), showLine: true).onTapGesture {
+                                TransactionRowTitleSubtitle(mTitle: "Memo".localized(), mSubTitle: (detail.memo?.toString() ?? "-"), showLine: true).onTapGesture {
                                     if let _ = detail.memo {
                                         mDisplayMemoAlert = true
                                     }
@@ -150,7 +154,7 @@ struct TransactionDetails: View {
         }
         .toast(isPresenting: $mDisplayMemoAlert){
             
-            AlertToast(displayMode:  .alert, type: .regular, title:detail.memo)
+            AlertToast(displayMode:  .alert, type: .regular, title:detail.memo?.toString())
 
         }
         .padding(.vertical,0)
@@ -168,7 +172,7 @@ struct TransactionDetails: View {
                              primaryButton: .cancel(Text("NEVERMIND".localized())),
                              secondaryButton: .default(Text("SEE TX".localized()), action: {
                                 
-                                guard let url = UrlHandler.blockExplorerURL(for: self.detail.id) else {
+                             guard let url = UrlHandler.blockExplorerURL(for: self.detail.id?.toHexStringTxId() ?? "no id") else {
                                     return
                                 }
                     

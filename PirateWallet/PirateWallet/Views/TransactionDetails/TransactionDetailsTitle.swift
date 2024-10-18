@@ -12,7 +12,7 @@ struct TransactionDetailsTitle: View {
     var availableZec: Double
     var transparentFundsAvailable: Bool = false
     
-    var status: DetailModel.Status
+    var status: TransactionDetailModel.Transaction
     
     var available: some View {
         HStack{
@@ -32,21 +32,31 @@ struct TransactionDetailsTitle: View {
     var aTitle: String {
 
         switch status {
-        case .paid(let success):
-            return success ? "You Sent".localized() : "Pending".localized()
-        case .received:
-            return "You Received".localized()
+            case .sent(let overview):
+                return  "You Sent".localized()
+            case .received(let overview):
+                return  "You Received".localized()
+            case .pending(let overview):
+                return  "Pending".localized()
+            case .cleared(let overview):
+                return  "Cleared: ".localized()
         }
+        
     }
     
     var anImage: String {
 
         switch status {
-        case .paid:
-            return "wallet_history_sent"
-        case .received:
-            return "wallet_history_receive"
+            case .sent(let overview):
+                return  "wallet_history_sent"
+            case .received(let overview):
+                return  "wallet_history_receive"
+            case .pending(let overview):
+                return  "wallet_history_sent"
+            case .cleared(let overview):
+                return  "wallet_history_receive"
         }
+        
     }
        
     var body: some View {

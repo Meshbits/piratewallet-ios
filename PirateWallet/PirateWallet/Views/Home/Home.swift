@@ -30,7 +30,8 @@ struct Home: View {
     @StateObject var viewModel: HomeViewModel
 
     @State var isAuthenticatedFlowInitiated = false
-    @State var selectedModel: DetailModel? = nil
+    
+    @State var selectedModel: TransactionDetailModel? = nil
     @State var cantSendError = false
     
     @ViewBuilder func buttonFor(syncStatus: SyncStatus) -> some View {
@@ -221,7 +222,7 @@ struct Home: View {
         self.isSendingEnabled ? self.viewModel.sendZecAmount > 0 ? 1.0 : 0.6 : 0.3
     }
     
-    func getFirstNModels() -> [DetailModel]{
+    func getFirstNModels() -> [TransactionDetailModel]{
         
         if self.viewModel.getSortedItems().count > 5 {
             return Array(self.viewModel.getSortedItems()[..<5])

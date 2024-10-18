@@ -52,7 +52,8 @@ final class HomeViewModel: ObservableObject {
         zecAmountFormatter.number(from: sendZecAmountText)?.doubleValue ?? 0.0
     }
     var diposables = Set<AnyCancellable>()
-    @Published var items = [DetailModel]()
+    @Published var transactions: [TransactionDetailModel] = []
+//    var items = [TransactionDetailModel]()
     var balance: Double = 0
     @Published var destination: ModalDestinations?
     @Published var sendZecAmountText: String = "0"
@@ -67,7 +68,7 @@ final class HomeViewModel: ObservableObject {
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
     @Published var showLowSpaceAlert: Bool = false
-//    private var synchronizerEvents = Set<AnyCancellable>()
+    private var synchronizerEvents = Set<AnyCancellable>()
 
     @Published var overlayType: OverlayType? = nil
     @Published var isOverlayShown = false
@@ -155,24 +156,51 @@ final class HomeViewModel: ObservableObject {
         if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
             
             // Fetching pending ones
+//            Task { @MainActor in
+//                let dataSource =   TransactionsDataSource(
+//                    status: .all,
+//                    synchronizer: aSynchronizer
+//                )
+//                try? await dataSource.load()
+//                printLog("dataSource.all.count : \(dataSource.transactions.count)")
+//            }
+//
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                
+                Task { @MainActor in
+                    let dataSource =   TransactionsDataSource(
+                        status: .all,
+                        synchronizer: aSynchronizer
+                    )
+                    
+                    try? await dataSource.load()
+                    self.transactions = dataSource.transactions
+//                    printLog("dataSource.all.count : \(dataSource.transactions.count)")
+                }
+                
+            }
+            
             Task { @MainActor in
-                let dataSource =   TransactionsDataSource(
-                    status: .all,
-                    synchronizer: aSynchronizer
-                )
-                try? await dataSource.load()
-                printLog("dataSource.all.count : \(dataSource.transactions.count)")
+                if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                    aSynchronizer.eventStream
+                        .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
+                        .sink(receiveValue: { [weak self] events in self?.synchronizerStateUpdatedEvents(events) })
+                        .store(in: &cancellable)
+                    
+                }
             }
             
             
                 aSynchronizer.eventStream
                     .map { event in
+                        printLog("eventStream")
                         switch(event){
                         case let .foundTransactions(transaction,range):
                             printLog(transaction)
                                 return transaction
                         case .minedTransaction(_):
-                            printLog("Mine transactions")
+                            printLog("Mined transactions")
                         case .storedUTXOs(_, _):
                             printLog("storedUTXOs")
                         case .connectionStateChanged(_):
@@ -296,6 +324,23 @@ final class HomeViewModel: ObservableObject {
 //            .store(in: &synchronizerEvents)
 //    }
     
+    private func synchronizerStateUpdatedEvents(_ events: SynchronizerEvent) {
+        printLog("synchronizerStateUpdatedEvents")
+        switch(events){
+        case let .foundTransactions(transaction,range):
+            printLog("FOUND transactions")
+            printLog(transaction)
+        case .minedTransaction(_):
+            printLog("Mined transactions")
+        case .storedUTXOs(_, _):
+            printLog("storedUTXOs")
+        case .connectionStateChanged(_):
+            printLog("connectionStateChanged")
+        default:
+            printLog("Event empty")
+        }
+        
+    }
     
     private func synchronizerStateUpdatedHome(_ state: SynchronizerState) {
         printLog("Logging inside HomeViewModel.synchronizerStateUpdatedHome")
@@ -349,8 +394,8 @@ final class HomeViewModel: ObservableObject {
 //        synchronizerEvents.removeAll()
 //    }
 //
-    func getSortedItems()-> [DetailModel]{
-        return self.items.sorted(by: { $0.date > $1.date })
+    func getSortedItems()-> [TransactionDetailModel]{
+        return self.transactions.sorted(by: { $0.created! > $1.created! })
     }
     
     func bindToEnvironmentEvents() {

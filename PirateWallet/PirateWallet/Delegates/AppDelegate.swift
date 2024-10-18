@@ -143,6 +143,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
                 PirateAppSynchronizer.shared.startStop()
             }else{
                 printLog("No, Nothing found in progress")
+                if UserSettings.shared.lastSyncedBlockHeight > 0 {
+                    printLog("Found synced block height, let's move to home screen instead of Login")
+                    PirateAppSynchronizer.shared.startStop()
+                }
             }
         }else{
             printLog("No user is logged into the app")

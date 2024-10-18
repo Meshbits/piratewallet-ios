@@ -241,7 +241,7 @@ extension DetailModel {
 
 
 struct TxDetailsWrapper: View {
-    @State var row: DetailModel
+    @State var row: TransactionDetailModel
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {

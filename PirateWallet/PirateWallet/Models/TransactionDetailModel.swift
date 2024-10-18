@@ -8,7 +8,7 @@
 import UIKit
 import PirateLightClientKit
 
-final class TransactionDetailModel {
+final class TransactionDetailModel : Identifiable {
     enum Transaction {
         case sent(ZcashTransaction.Overview)
         case received(ZcashTransaction.Overview)

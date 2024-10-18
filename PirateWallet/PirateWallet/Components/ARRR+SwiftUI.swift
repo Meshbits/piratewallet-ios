@@ -120,14 +120,17 @@ struct SettingsSectionBackgroundModifier: ViewModifier {
 
 
 extension Image {
-    static func statusImage(for cardType: DetailModel.Status) -> Image {
+    static func statusImage(for cardType: TransactionDetailModel.Transaction) -> Image {
         var imageName = "gray_shield"
         switch cardType {
-    
-        case .paid(let success):
-            imageName = success ? "senticon" : "bombIcon"
-        case .received:
+        case .sent(let overview):
+            imageName = "senticon"
+        case .received(let overview):
             imageName = "receiveicon"
+        case .pending(let overview):
+            imageName = "senticon"
+        case .cleared(let overview):
+            imageName = "bombIcon"
         }
         
         return Image(imageName)
@@ -135,17 +138,21 @@ extension Image {
 }
 
 extension String {
-    static func transactionSubTitle(for model: DetailModel) -> String {
+    static func transactionSubTitle(for model: TransactionDetailModel) -> String {
         var transactionSubTitle = "Pending".localized()
-        switch model.status {
-    
-        case .paid(let success):
-            transactionSubTitle = success ? (("sent to ".localized()) + (model.arrrAddress ?? "NA".localized())) : ("pending via ".localized()) + (model.arrrAddress ?? "NA".localized())
-        case .received:
-            transactionSubTitle = "received via ".localized()
+        
+        switch model.transaction {
+            case .sent(let overview):
+                transactionSubTitle = ("sent".localized())
+            case .received(let overview):
+                transactionSubTitle = ("received".localized())
+            case .pending(let overview):
+                transactionSubTitle = ("pending".localized())
+            case .cleared(let overview):
+                transactionSubTitle = ("cleared".localized())
         }
         
-        transactionSubTitle = transactionSubTitle + (model.arrrAddress ?? "NA".localized())
+//        transactionSubTitle = transactionSubTitle + (model.arrrAddress ?? "NA".localized())
         
         return transactionSubTitle
     }
