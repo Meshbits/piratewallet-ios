@@ -120,9 +120,9 @@ struct SettingsSectionBackgroundModifier: ViewModifier {
 
 
 extension Image {
-    static func statusImage(for cardType: TransactionDetailModel.Transaction) -> Image {
+    static func statusImage(for model: TransactionDetailModel) -> Image {
         var imageName = "gray_shield"
-        switch cardType {
+        switch model.transaction {
         case .sent(let overview):
             imageName = "senticon"
         case .received(let overview):
@@ -130,7 +130,12 @@ extension Image {
         case .pending(let overview):
             imageName = "senticon"
         case .cleared(let overview):
-            imageName = "bombIcon"
+            // Cleared means transaction is cleared - sent or received
+            if model.zatoshi.amount > 0 {
+                imageName = "receiveicon"
+            }else{
+                imageName = "senticon"
+            }
         }
         
         return Image(imageName)
@@ -143,15 +148,22 @@ extension String {
         
         switch model.transaction {
             case .sent(let overview):
-                transactionSubTitle = ("sent".localized())
+                transactionSubTitle = ("Sent".localized())
             case .received(let overview):
-                transactionSubTitle = ("received".localized())
+                transactionSubTitle = ("Received".localized())
             case .pending(let overview):
-                transactionSubTitle = ("pending".localized())
+                transactionSubTitle = ("Pending".localized())
             case .cleared(let overview):
-                transactionSubTitle = ("cleared".localized())
+            // Cleared means transaction is cleared - sent or received 
+            if model.zatoshi.amount > 0 {
+                transactionSubTitle = ("Received".localized())
+            }else{
+                transactionSubTitle = ("Sent".localized())
+            }
+            
+                
         }
-        
+                
 //        transactionSubTitle = transactionSubTitle + (model.arrrAddress ?? "NA".localized())
         
         return transactionSubTitle
@@ -181,6 +193,12 @@ extension Date {
     var aFormattedDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM dd"
+        return dateFormatter.string(from: self)
+    }
+
+    var aNewFormattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy"
         return dateFormatter.string(from: self)
     }
 }

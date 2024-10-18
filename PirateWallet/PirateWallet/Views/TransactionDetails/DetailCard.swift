@@ -42,12 +42,12 @@ struct DetailCard: View {
     var body: some View {
         ZStack {
             HStack {
-                Image.statusImage(for: model.transaction).resizable().frame(width: 20, height: 20, alignment: .center)
+                Image.statusImage(for: model).resizable().frame(width: 20, height: 20, alignment: .center)
 
                 VStack(alignment: .leading){
                     HStack {
 //                        Text(model.title)
-                        Text(model.created!.aFormattedDate)
+                        Text(model.created!.aNewFormattedDate)
                             .scaledFont(size: Device.isLarge ? 20 : 14)
                             .truncationMode(.tail)
                             .lineLimit(1)
