@@ -100,6 +100,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     )
             )
             self.window = window
+            self.window?.backgroundColor = .black
+            self.window?.tintColor = .black
             PirateNavigationBarUI()
             window.makeKeyAndVisible()
             

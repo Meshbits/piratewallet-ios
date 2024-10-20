@@ -571,7 +571,14 @@ struct Home: View {
         }.sheet(item: self.$selectedModel, onDismiss: {
             self.selectedModel = nil
         }) { (row)  in
-            TxDetailsWrapper(row: row)
+            if #available(iOS 16.4, *) {
+                TxDetailsWrapper(row: row)
+                    .background(Color.blue.edgesIgnoringSafeArea(.all))
+                    .presentationDetents([.large])
+
+            } else {
+                TxDetailsWrapper(row: row)
+            }
         }
     }
     
