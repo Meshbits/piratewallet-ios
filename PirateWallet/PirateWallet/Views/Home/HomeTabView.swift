@@ -37,8 +37,8 @@ struct HomeTabView: View {
     }
     
     var mWalletView: some View {
-//        LazyView(WalletDetails(viewModel: WalletDetailsViewModel(),isActive: Binding.constant(true))
-        Text("Wallet")
+        LazyView(WalletDetails(viewModel: WalletDetailsViewModel(),isActive: Binding.constant(true)))
+//        Text("Wallet")
                     .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
 //            .environmentObject(WalletDetailsViewModel()))
@@ -46,10 +46,8 @@ struct HomeTabView: View {
     var mHomeView : some View {
         LazyView(
                 Home(viewModel: ModelFlyWeight.shared.modelBy(defaultValue: HomeViewModel()))
-//            Text("Home")
                 .navigationBarHidden(true)
                     .navigationBarBackButtonHidden(true)
-//                    .environmentObject(HomeViewModel())
         )
     }
     

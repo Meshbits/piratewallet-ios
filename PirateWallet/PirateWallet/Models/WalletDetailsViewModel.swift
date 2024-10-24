@@ -12,7 +12,7 @@ import PirateLightClientKit
 
 class WalletDetailsViewModel: ObservableObject {
     // look at before changing https://stackoverflow.com/questions/60956270/swiftui-view-not-updating-based-on-observedobject
-    @Published var items = [DetailModel]()
+    @Published var items = [TransactionDetailModel]()
 
     var showError = false
     var balance: Double = 0
@@ -26,17 +26,17 @@ class WalletDetailsViewModel: ObservableObject {
 
     let appDelegate: AppDelegate = PirateWalletApp().appDelegate
     
-    func groupedTransactions(_ details: [DetailModel]) -> [Date: [DetailModel]] {
-      let empty: [Date: [DetailModel]] = [:]
+    func groupedTransactions(_ details: [TransactionDetailModel]) -> [Date: [TransactionDetailModel]] {
+      let empty: [Date: [TransactionDetailModel]] = [:]
       return details.reduce(into: empty) { acc, cur in
-          let components = Calendar.current.dateComponents([.year, .month, .day], from: cur.date)
+          let components = Calendar.current.dateComponents([.year, .month, .day], from: cur.created!)
           let date = Calendar.current.date(from: components)!
           let existing = acc[date] ?? []
           acc[date] = existing + [cur]
       }
     }
 
-    var groupedByDate: [Date: [DetailModel]] {
+    var groupedByDate: [Date: [TransactionDetailModel]] {
 //        Dictionary(grouping: self.items, by: {$0.date})
         groupedTransactions(self.items)
     }
@@ -56,8 +56,8 @@ class WalletDetailsViewModel: ObservableObject {
         unsubscribeFromSynchonizerEvents()
     }
 
-    func getSortedItems()-> [DetailModel]{
-        return self.items.sorted(by: { $0.date > $1.date })
+    func getSortedItems()-> [TransactionDetailModel]{
+        return self.items.sorted(by: { $0.created! > $1.created! })
     }
     
     func subscribeToSynchonizerEvents() {

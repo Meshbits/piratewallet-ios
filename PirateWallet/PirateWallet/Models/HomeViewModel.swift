@@ -69,6 +69,7 @@ final class HomeViewModel: ObservableObject {
     @Published var transparentBalance = ReadableBalance.zero
     @Published var showLowSpaceAlert: Bool = false
     private var synchronizerEvents = Set<AnyCancellable>()
+    @Published var unifiedAddressObject: UnifiedAddress?
 
     @Published var overlayType: OverlayType? = nil
     @Published var isOverlayShown = false
@@ -285,7 +286,12 @@ final class HomeViewModel: ObservableObject {
                 printLog(error)
             }
             
-        
+            do {
+                try await self.getUnifiedAddress()
+            }catch{
+                printLog(error)
+            }
+            
         }
     }
     
@@ -365,6 +371,14 @@ final class HomeViewModel: ObservableObject {
         case .upToDate:
             NotificationCenter.default.post(name: NSNotification.Name(mStopSoundOnceFinishedOrInForeground), object: nil)
             aSyncTitleStatus = "Synced 100%".localized()
+        }
+    }
+    
+    func getUnifiedAddress() async throws{
+        Task {
+            if let unifiedAddress = try? await PirateAppSynchronizer.shared.synchronizer?.getUnifiedAddress(accountIndex: 0) {
+                self.unifiedAddressObject = unifiedAddress
+            }
         }
     }
     

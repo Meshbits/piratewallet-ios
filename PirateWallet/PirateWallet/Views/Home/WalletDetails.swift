@@ -9,141 +9,126 @@
 import SwiftUI
 import Combine
 
-//struct WalletDetails: View {
-//    @StateObject var viewModel: WalletDetailsViewModel
-//    @Environment(\.presentationMode) var presentationMode
-//    @Binding var isActive: Bool
-//    @State var selectedModel: DetailModel? = nil
-//    var zAddress: String {
-//        viewModel.zAddress
-//    }
-//    
+struct WalletDetails: View {
+    @StateObject var viewModel: WalletDetailsViewModel
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var isActive: Bool
+    @State var selectedModel: TransactionDetailModel? = nil
+    var zAddress: String {
+        viewModel.zAddress
+    }
+    
 //    var status: BalanceStatus {
 //        viewModel.balanceStatus
 //    }
-//    
-//    func converDateToString(headerDate:Date) -> String{
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateStyle = .short
-//        dateFormatter.doesRelativeDateFormatting = true
-//        return dateFormatter.string(from: headerDate)
-//    }
-//    
-//    var body: some View {
-//        
-//        ZStack {
-//            ARRRBackground()
-//            VStack(alignment: .center, spacing: 20) {
-//                
-//                VStack(alignment: .center, spacing: 10) {
-//                    Text("Wallet History".localized()).scaledFont(size: Device.isLarge ? 20 : 12).multilineTextAlignment(.center).foregroundColor(.white)
-//                }.padding(.top,Device.isLarge ? 50 : 30)
-//                
-//                ARRRNavigationBar(
-//                    leadingItem: {
-//
-//                    },
-//                   headerItem: {
-////                    if appEnvironment.synchronizer.synchronizer.getShieldedBalance() > 0 {
-//                        BalanceDetailView(
-//                            availableZec: (PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance().decimalValue.doubleValue)!,
-//                                status: status)
-//                                
-////                    }
-////                    else {
-////                        ActionableMessage(message: "balance_nofunds".localized())
-////                    }
-//                   },
-//                   trailingItem: { EmptyView() }
-//                )
-//                .padding(.horizontal, 10)
-//                
-//
-//                if #available(iOS 16.0, *) {
-//                    List {
-//                        
-//                        ForEach(self.viewModel.headers, id: \.self) { header in
-//                            
-//                            Section(header: Text(converDateToString(headerDate: header)).font(.barlowRegular(size: 20)).foregroundColor(Color.zSettingsSectionHeader).background(Color.clear).cornerRadius(20)) {
-//                                ForEach(self.viewModel.groupedByDate[header]!) { row in
-//                                    Button(action: {
-//                                        self.selectedModel = row
-//                                    }) {
-//                                        DetailCard(model: row, backgroundColor: .zDarkGray2,isFromWalletDetails:true)
-//                                    }
-//                                    .buttonStyle(PlainButtonStyle())
-//                                    .frame(height: 60)
-//                                    .cornerRadius(0)
-//                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-//                                    
-//                                }
-//                            }
-//                        }
-//                        
-//                    }
-//                    .modifier(BackgroundPlaceholderModifierRescanOptions())
-//                        .scrollContentBackground(.hidden)
-//                        .padding()
-//                } else {
-//                    // Fallback on earlier versions
-//                    List {
-//                        
-//                        ForEach(self.viewModel.headers, id: \.self) { header in
-//                            
-//                            Section(header: Text(converDateToString(headerDate: header)).font(.barlowRegular(size: 20)).foregroundColor(Color.zSettingsSectionHeader).background(Color.clear).cornerRadius(20)) {
-//                                ForEach(self.viewModel.groupedByDate[header]!) { row in
-//                                    Button(action: {
-//                                        self.selectedModel = row
-//                                    }) {
-//                                        DetailCard(model: row, backgroundColor: .zDarkGray2,isFromWalletDetails:true)
-//                                    }
-//                                    .buttonStyle(PlainButtonStyle())
-//                                    .frame(height: 60)
-//                                    .cornerRadius(0)
-//                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-//                                    
-//                                }
-//                            }
-//                        }
-//                        
-//                    }
-//                    .modifier(BackgroundPlaceholderModifierRescanOptions())
-//                }
-//                
-//            }
-//        }
-//        .onAppear() {
-//            
-//            UITableView.appearance().separatorStyle = .none
-//            UITableView.appearance().backgroundColor = UIColor.clear
-//
-//        }
-//        .alert(isPresented: self.$viewModel.showError) {
-//            Alert(title: Text("Error".localized()),
-//                  message: Text("an error ocurred".localized()),
-//                  dismissButton: .default(Text("button_close".localized())))
-//        }
-//        .onDisappear() {
-//            UITableView.appearance().separatorStyle = .singleLine
-//        }
-//        .navigationBarHidden(true)
-//        .edgesIgnoringSafeArea([.top])
-//        .sheet(item: self.$selectedModel, onDismiss: {
-//            self.selectedModel = nil
-//        }) { (row)  in
-//            TxDetailsWrapper(row: row)
-//        }
-//
-//    }
-//
-//    
-//}
-//
-//struct WalletDetails_Previews: PreviewProvider {
-//    static var previews: some View {
-//        return WalletDetails(viewModel: WalletDetailsViewModel(), isActive: .constant(true))
-//    }
-//}
+    
+    func converDateToString(headerDate:Date) -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.doesRelativeDateFormatting = true
+        return dateFormatter.string(from: headerDate)
+    }
+    
+    var body: some View {
+        
+        ZStack {
+            ARRRBackground()
+            VStack(alignment: .center, spacing: 20) {
+                
+                VStack(alignment: .center, spacing: 10) {
+                    Text("Wallet History".localized()).scaledFont(size: Device.isLarge ? 20 : 12).multilineTextAlignment(.center).foregroundColor(.white)
+                }.padding(.top,Device.isLarge ? 50 : 30)
+                
+//                BalanceDetailView(
+//                    availableZec: (PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance().decimalValue.doubleValue)!,
+//                        status: status)
+                
+
+                if #available(iOS 16.0, *) {
+                    List {
+                        
+                        ForEach(self.viewModel.headers, id: \.self) { header in
+                            
+                            Section(header: Text(converDateToString(headerDate: header)).font(.barlowRegular(size: 20)).foregroundColor(Color.zSettingsSectionHeader).background(Color.clear).cornerRadius(20)) {
+                                ForEach(self.viewModel.groupedByDate[header]!) { row in
+                                    Button(action: {
+                                        self.selectedModel = row
+                                    }) {
+                                        DetailCard(model: row, backgroundColor: .zDarkGray2,isFromWalletDetails:true)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .frame(height: 60)
+                                    .cornerRadius(0)
+                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    
+                                }
+                            }
+                        }
+                        
+                    }
+                    .modifier(BackgroundPlaceholderModifierRescanOptions())
+                        .scrollContentBackground(.hidden)
+                        .padding()
+                } else {
+                    // Fallback on earlier versions
+                    List {
+                        
+                        ForEach(self.viewModel.headers, id: \.self) { header in
+                            
+                            Section(header: Text(converDateToString(headerDate: header)).font(.barlowRegular(size: 20)).foregroundColor(Color.zSettingsSectionHeader).background(Color.clear).cornerRadius(20)) {
+                                ForEach(self.viewModel.groupedByDate[header]!) { row in
+                                    Button(action: {
+                                        self.selectedModel = row
+                                    }) {
+                                        DetailCard(model: row, backgroundColor: .zDarkGray2,isFromWalletDetails:true)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .frame(height: 60)
+                                    .cornerRadius(0)
+                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    
+                                }
+                            }
+                        }
+                        
+                    }
+                    .modifier(BackgroundPlaceholderModifierRescanOptions())
+                }
+                
+            }
+        }
+        .onAppear() {
+            
+            UITableView.appearance().separatorStyle = .none
+            UITableView.appearance().backgroundColor = UIColor.clear
+
+        }
+        .alert(isPresented: self.$viewModel.showError) {
+            Alert(title: Text("Error".localized()),
+                  message: Text("an error ocurred".localized()),
+                  dismissButton: .default(Text("button_close".localized())))
+        }
+        .onDisappear() {
+            UITableView.appearance().separatorStyle = .singleLine
+        }
+        .navigationBarHidden(true)
+        .edgesIgnoringSafeArea([.top])
+        .sheet(item: self.$selectedModel, onDismiss: {
+            self.selectedModel = nil
+        }) { (row)  in
+            TxDetailsWrapper(row: row)
+        }
+
+    }
+
+    
+}
+
+struct WalletDetails_Previews: PreviewProvider {
+    static var previews: some View {
+        return WalletDetails(viewModel: WalletDetailsViewModel(), isActive: .constant(true))
+    }
+}
 
 class MockWalletDetailViewModel: WalletDetailsViewModel {
     

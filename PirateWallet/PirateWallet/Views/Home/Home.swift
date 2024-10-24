@@ -509,14 +509,27 @@ struct Home: View {
         }
        }
         .sheet(item: self.$viewModel.destination, onDismiss: nil) { item  in
-//            switch item {
-//            case .profile:
+            switch item {
+            case .profile:
+                EmptyView()
 //                ProfileScreen()
 //                    .environmentObject(self.appEnvironment)
-//            case .receiveFunds:
-//                ReceiveFunds(unifiedAddress: self.appEnvironment.synchronizer.unifiedAddress,qrImage:self.viewModel.qrCodeImage)
-//                    .environmentObject(self.appEnvironment)
-//            case .feedback(let score):
+            case .receiveFunds:
+                
+                
+           
+                
+                ReceiveFunds(qrImage:self.viewModel.qrCodeImage,homeViewModel: self.viewModel)
+           
+//                else{
+//                printLog("could not derive UA")
+//                printLog("could not derive tAddress")
+//                printLog("could not derive zAddress")
+//            }
+            
+
+            case .feedback(let score):
+                EmptyView()
 //                #if ENABLE_LOGGING
 //                FeedbackForm(selectedRating: score,
 //                             isSolicited: true,
@@ -525,8 +538,9 @@ struct Home: View {
 //                ProfileScreen()
 //                    .environmentObject(self.appEnvironment)
 //                #endif
-//            case .sendMoney:
-//                
+            case .sendMoney:
+                EmptyView()
+//
 //                if let sendflowCurrent = SendFlow.current{
 //                    SendMoneyView()
 //                        .environmentObject(
@@ -534,8 +548,8 @@ struct Home: View {
 //                    )
 //                }
 //                
-//               
-//            }
+               
+            }
         }
               
         .sheet(isPresented: $showPassCodeScreen){
