@@ -19,7 +19,7 @@ struct ReceiveFunds: View {
             ZStack {
                 ARRRBackground().edgesIgnoringSafeArea(.all)
                 VStack(alignment: .center, spacing: 10, content: {
-                    DisplayAddress(address: homeViewModel.unifiedAddressObject?.stringEncoded ?? "",
+                    DisplayAddress(address: homeViewModel.arrrAddress ?? "",
                                    title: "address_shielded".localized(),
                                    badge: Image("skullcoin"),
                                    qrImage: qrImage  ?? Image("QrCode"),

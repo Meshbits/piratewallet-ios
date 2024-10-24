@@ -70,6 +70,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showLowSpaceAlert: Bool = false
     private var synchronizerEvents = Set<AnyCancellable>()
     @Published var unifiedAddressObject: UnifiedAddress?
+    @Published var arrrAddress: String?
 
     @Published var overlayType: OverlayType? = nil
     @Published var isOverlayShown = false
@@ -378,6 +379,12 @@ final class HomeViewModel: ObservableObject {
         Task {
             if let unifiedAddress = try? await PirateAppSynchronizer.shared.synchronizer?.getUnifiedAddress(accountIndex: 0) {
                 self.unifiedAddressObject = unifiedAddress
+                
+                if let arrrSheildedAddress = try? unifiedAddress.saplingReceiver().stringEncoded {
+                    self.arrrAddress = arrrSheildedAddress
+                }
+                
+                
             }
         }
     }
@@ -392,9 +399,9 @@ final class HomeViewModel: ObservableObject {
             return
         }
         
-        let arrrSheildedAddress = uAddress.stringEncoded
+        let arrrSheildedAddress = try? uAddress.saplingReceiver().stringEncoded
         
-           if let img = QRCodeGenerator.generate(from: arrrSheildedAddress) {
+            if let img = QRCodeGenerator.generate(from: arrrSheildedAddress ?? "") {
                qrCodeImage = Image(img, scale: 1, label: Text(String(format:NSLocalizedString("QR Code for %@", comment: ""),"\(arrrSheildedAddress)") ))
            } else {
                qrCodeImage = Image("QRCodeIcon")
