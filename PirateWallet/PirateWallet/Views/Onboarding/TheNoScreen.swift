@@ -31,12 +31,24 @@ struct TheNoScreen: View {
         .navigationBarHidden(true)
         .onAppear() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                
-                if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
-                    self.openHomeScreen = true
+                             
+                
+                if SeedManager().keysPresent {
+                    if UserSettings.shared.currentSyncStatus == LocalSyncStatus.inProgress.rawValue {
+                        self.openHomeScreen = true
+                    }else{
+                        printLog("No, Nothing found in progress")
+                        if UserSettings.shared.lastSyncedBlockHeight > 0 {
+                            self.openHomeScreen = true
+                            printLog("Found synced block height, let's move to home screen instead of Login")
+                            PirateAppSynchronizer.shared.startStop()
+                        }
+                    }
                 }else{
+                    printLog("No user is logged into the app")
                     self.removeSplash = true
                 }
+
             }
         }
     }
