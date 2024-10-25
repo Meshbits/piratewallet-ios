@@ -261,24 +261,24 @@ struct GrayButtonView : View {
     
     var body: some View {
         ZStack {
-//            
-//            Image("buttonbackground").resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
-//            
-//            if #available(iOS 15.0, *) {
-//                Text(aTitle).foregroundColor(Color.zARRRTextColorLightYellow).bold()
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
-//                    .cornerRadius(15)
-//                    .scaledFont(size: Device.isLarge ? 19 : 13)
-////                    .dynamicTypeSize(.medium)
-//                    .multilineTextAlignment(.center)
-//            } else {
-//                // Fallback on earlier versions
-//                Text(aTitle).foregroundColor(Color.zARRRTextColorLightYellow).bold()
-//                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
-//                    .cornerRadius(15)
-//                    .modifier(BarlowModifier(.footnote))
-//                    .multilineTextAlignment(.center)
-//            }
+            
+            Image("buttonbackground").resizable().fixedSize().frame(width: 225.0, height:84).padding(.top,5)
+            
+            if #available(iOS 15.0, *) {
+                Text(aTitle).foregroundColor(Color.zARRRTextColorLightYellow).bold()
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
+                    .cornerRadius(15)
+                    .scaledFont(size: Device.isLarge ? 19 : 13)
+//                    .dynamicTypeSize(.medium)
+                    .multilineTextAlignment(.center)
+            } else {
+                // Fallback on earlier versions
+                Text(aTitle).foregroundColor(Color.zARRRTextColorLightYellow).bold()
+                    .frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
+                    .cornerRadius(15)
+                    .modifier(BarlowModifier(.footnote))
+                    .multilineTextAlignment(.center)
+            }
         }.frame(width: Device.isLarge ? 225.0 : 150.0, height:Device.isLarge ? 84 : 60)
         
     }

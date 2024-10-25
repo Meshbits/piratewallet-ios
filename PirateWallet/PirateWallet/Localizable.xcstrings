@@ -1270,6 +1270,9 @@
         }
       }
     },
+    "checkmark" : {
+
+    },
     "Close" : {
       "extractionState" : "manual",
       "localizations" : {

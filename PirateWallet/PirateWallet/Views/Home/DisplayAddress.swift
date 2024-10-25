@@ -102,24 +102,24 @@ struct DisplayAddress<AccesoryContent: View>: View {
             }
             
             Spacer()
-            
+                .frame(height: 100)
             
             GrayButtonView(aTitle: "Request an Amount".localized()).onTapGesture {
                 openRequestMoney = true
             }
             
-//            NavigationLink(
-//                destination: LazyView(
-//                    RequestMoneyView(address: self.address,
-//                                       badge: Image("skullcoin"),
-//                                       accessoryContent: { EmptyView() })
-//                        .navigationBarTitle("",displayMode: .inline)
-//                        .navigationBarHidden(true)
-//                ), isActive: self.$openRequestMoney
-//            ) {
-//                EmptyView()
-//            }.isDetailLink(false)
-//            
+            NavigationLink(
+                destination: LazyView(
+                    RequestMoneyView(address: self.address,
+                                       badge: Image("skullcoin"),
+                                       accessoryContent: { EmptyView() })
+                        .navigationBarTitle("",displayMode: .inline)
+                        .navigationBarHidden(true)
+                ), isActive: self.$openRequestMoney
+            ) {
+                EmptyView()
+            }.isDetailLink(false)
+            
             Button(action: {
                 self.isShareAddressShown = true
             }) {
