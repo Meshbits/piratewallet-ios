@@ -17,7 +17,7 @@ struct ARRRMemoTextField: View {
         ZStack{
            
             HStack{
-                TextField("", text: $memoText,prompt: Text("Memo Text...".localized()).foregroundColor(.zLightGray))
+                TextField("", text: $memoText,prompt: Text("Memo Text...".localized()).foregroundColor(.zARRRTextColorLightYellow))
                   .scaledFont(size: Device.isLarge ? 20 : 12)
                   .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.clear))
                   .foregroundColor(Color.white)
@@ -60,7 +60,7 @@ struct ARRRSendMoneyTextField: View {
              
          ZStack{
              HStack{
-                 TextField("", text: $anAmount,prompt: Text("Enter Amount".localized()).foregroundColor(.zLightGray))
+                 TextField("", text: $anAmount,prompt: Text("Enter Amount".localized()).foregroundColor(.zARRRTextColorLightYellow))
                    .scaledFont(size: Device.isLarge ? 20 : 12)
                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.clear))
                    .foregroundColor(Color.white)
