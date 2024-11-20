@@ -241,8 +241,7 @@ struct SettingsScreen: View {
                     }
                     
                     NavigationLink(
-                        destination: PrivateServerConfig().onAppear { self.tabBar.isHidden = true }
-                            ,
+                        destination: PrivateServerConfig().onAppear { self.tabBar.isHidden = true },
                                    tag: SettingsDestination.openPrivateServerConfig,
                                    selection: $destination
                     ) {
@@ -250,7 +249,7 @@ struct SettingsScreen: View {
                     }
                     
                     NavigationLink(
-                        destination: NotificationScreen().environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                        destination: NotificationScreen().onAppear { self.tabBar.isHidden = true }
                             ,
                                    tag: SettingsDestination.openNotifications,
                                    selection: $destination
@@ -277,7 +276,7 @@ struct SettingsScreen: View {
                  
                     NavigationLink(
                         
-                        destination: PasscodeScreen(passcodeViewModel: PasscodeViewModel(), mScreenState: .changePasscode, isChangePinFlow: true).environmentObject(self.appEnvironment)
+                        destination: PasscodeScreen(passcodeViewModel: PasscodeViewModel(), mScreenState: .changePasscode, isChangePinFlow: true)
                             .onAppear { self.tabBar.isHidden = true },
                         tag: SettingsDestination.openChangePIN,
                         selection: $destination
@@ -332,7 +331,7 @@ struct SettingsScreen: View {
                  }
                  
                  NavigationLink(
-                     destination: SelectBackgroundMusic().environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                     destination: SelectBackgroundMusic().onAppear { self.tabBar.isHidden = true }
                          .navigationBarTitle("", displayMode: .inline)
                          .navigationBarBackButtonHidden(true),
                                 tag: SettingsDestination.openBackgroundSoundSelection,

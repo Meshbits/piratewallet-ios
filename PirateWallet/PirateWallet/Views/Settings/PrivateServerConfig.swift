@@ -45,7 +45,7 @@ struct PrivateServerConfig: View {
                                 UserSettings.shared.isAutoConfigurationOn = isEnabled
                                 
                                 if (isEnabled){
-                                    lightPortString = PirateAppConfig.port
+                                    lightPortString = PirateAppConfig.port.description
                                     lightServerString = PirateAppConfig.address
                                     
                                     SeedManager.default.importLightWalletEndpoint(address: lightServerString)
