@@ -322,7 +322,7 @@ struct SettingsScreen: View {
                 
                 
                  NavigationLink(
-                     destination: AdjustBackgroundVolume().environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                     destination: AdjustBackgroundVolume().onAppear { self.tabBar.isHidden = true }
                          .navigationBarTitle("", displayMode: .inline)
                          .navigationBarBackButtonHidden(true),
                                 tag: SettingsDestination.openBackgroundSoundVolume,
