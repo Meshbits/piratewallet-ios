@@ -298,7 +298,7 @@ struct SettingsScreen: View {
                     
                     
                     NavigationLink(
-                        destination: RescanOptionsView(rescanDataViewModel: RescanDataViewModel()).environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                        destination: RescanOptionsView(rescanDataViewModel: RescanDataViewModel()).onAppear { self.tabBar.isHidden = true }
                             .navigationBarTitle("", displayMode: .inline)
                             .navigationBarBackButtonHidden(true),
                                    tag: SettingsDestination.startRescan,

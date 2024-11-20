@@ -264,6 +264,15 @@ public class PirateAppSynchronizer : ObservableObject{
         
     }
     
+    func rescanWithBirthday(blockheight: BlockHeight) {
+            _ = combineSdkSynchronizer?.rewind(.height(blockheight: blockheight))
+            startStop()
+    }
+    
+    func performFullRescan(){
+        _ = combineSdkSynchronizer?.rewind(.birthday)
+        startStop()
+    }
     
     func startStop() {
         Task { @MainActor in
