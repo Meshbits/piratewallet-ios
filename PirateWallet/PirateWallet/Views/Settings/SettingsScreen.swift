@@ -309,7 +309,7 @@ struct SettingsScreen: View {
                    
                     
                     NavigationLink(
-                        destination: AboutUs().environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                        destination: AboutUs().onAppear { self.tabBar.isHidden = true }
                             .navigationBarTitle("", displayMode: .inline)
                             .navigationBarBackButtonHidden(true),
                                    tag: SettingsDestination.openAboutUs,
