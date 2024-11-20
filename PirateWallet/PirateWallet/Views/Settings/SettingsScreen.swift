@@ -241,7 +241,7 @@ struct SettingsScreen: View {
                     }
                     
                     NavigationLink(
-                        destination: PrivateServerConfig().environmentObject(self.appEnvironment).onAppear { self.tabBar.isHidden = true }
+                        destination: PrivateServerConfig().onAppear { self.tabBar.isHidden = true }
                             ,
                                    tag: SettingsDestination.openPrivateServerConfig,
                                    selection: $destination

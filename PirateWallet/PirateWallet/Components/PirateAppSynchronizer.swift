@@ -216,12 +216,16 @@ public class PirateAppSynchronizer : ObservableObject{
                 try SeedManager.default.importPhrase(bip39: randomPhrase)
             }
             
-            let birthday = PirateAppConfig.defaultBirthdayHeight
+            let birthday = PirateAppConfig.defaultBirthdayHeightNewWallet // Setting up the latest sapling height we have in our json for main net
             
             try SeedManager.default.importBirthday(birthday)
              
             SeedManager.default.importLightWalletEndpoint(address: PirateAppConfig.address)
             SeedManager.default.importLightWalletPort(port: PirateAppConfig.port)
+            
+            // Setting up default birthday height in case of new wallet
+            PirateAppConfig.defaultBirthdayHeight = birthday
+
             try await self.initializeFreshWallet()
         
         } catch {
@@ -250,7 +254,10 @@ public class PirateAppSynchronizer : ObservableObject{
         )
         
         self.synchronizer = SDKSynchronizer(initializer: initializer)
-        
+       
+        // Setting up default birthday seed phrase in case of new wallet
+        PirateAppConfig.defaultSeed = defaultSeed
+
         try startStopNewWallet(with: defaultSeed, viewingKeys: [viewingKey], walletBirthday: SeedManager.default.exportBirthday())
         
 //        _ = try await self.synchronizer?.prepare(with: defaultSeed,viewingKeys: [viewingKey],walletBirthday: SeedManager.default.exportBirthday())
