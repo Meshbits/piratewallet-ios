@@ -38,9 +38,16 @@ struct TheNoScreen: View {
                         self.openHomeScreen = true
                     }else{
                         printLog("No, Nothing found in progress")
+                        printLog("\(UserSettings.shared.lastSyncedBlockHeight)")
                         if UserSettings.shared.lastSyncedBlockHeight > 0 {
                             self.openHomeScreen = true
                             printLog("Found synced block height, let's move to home screen instead of Login")
+                            PirateAppSynchronizer.shared.startStop()
+                        }else{
+                            printLog("Some issue with the saved time")
+                            UserSettings.shared.lastSyncedBlockHeight = SeedManager().getBirthday
+                            self.openHomeScreen = true
+                            printLog("Updated block height, let's move to home screen instead of Login")
                             PirateAppSynchronizer.shared.startStop()
                         }
                     }

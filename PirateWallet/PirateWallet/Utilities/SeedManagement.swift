@@ -178,9 +178,11 @@ final class SeedManager {
     
     var keysPresent: Bool {
         do {
-            _ = try self.exportPhrase()
-            _ = try self.exportBirthday()
+            let aSeedPhrase = try self.exportPhrase()
+            let aBirthday = try self.exportBirthday()
             printLog(message: "Found keys present")
+            printLog(message: "\(aSeedPhrase)")
+            printLog(message: "\(aBirthday)")
         } catch SeedManagerError.uninitializedWallet {
             return false
         } catch {
@@ -191,6 +193,20 @@ final class SeedManager {
             return false
         }
         return true
+    }
+
+    var getBirthday: BlockHeight {
+        do {
+            return try self.exportBirthday()
+        } catch SeedManagerError.uninitializedWallet {
+            return 0
+        } catch {
+//            tracker.track(.error(severity: .critical), properties: [
+//                            ErrorSeverity.messageKey : "attempted to find if keys were present but failed",
+//                            ErrorSeverity.underlyingError : error.localizedDescription])
+            printLog(message: "attempted to find if keys were present but failed: \(error.localizedDescription)")
+            return 0
+        }
     }
     
     func updatePasswordForPinCode(){
