@@ -45,11 +45,11 @@ struct PrivateServerConfig: View {
                                 UserSettings.shared.isAutoConfigurationOn = isEnabled
                                 
                                 if (isEnabled){
-                                    lightPortString = String.init(format:"%d",ZECCWalletEnvironment.defaultLightWalletPort)
-                                    lightServerString = ZECCWalletEnvironment.defaultLightWalletEndpoint
+                                    lightPortString = PirateAppConfig.port
+                                    lightServerString = PirateAppConfig.address
                                     
                                     SeedManager.default.importLightWalletEndpoint(address: lightServerString)
-                                    SeedManager.default.importLightWalletPort(port: ZECCWalletEnvironment.defaultLightWalletPort)
+                                    SeedManager.default.importLightWalletPort(port: PirateAppConfig.port)
                                 }
                                 
                             })
@@ -122,7 +122,7 @@ struct PrivateServerConfig: View {
                        Alert(title: Text("".localized()),
                              message: Text("Invalid Lite Server Address, Reverting it to pirate chain address!".localized()),
                              dismissButton: .default(Text("button_close".localized()),action: {
-                               lightServerString = ZECCWalletEnvironment.defaultLightWalletEndpoint
+                               lightServerString = PirateAppConfig.endpoint.host
                                SeedManager.default.importLightWalletEndpoint(address: lightServerString)
                          }))
                    })
@@ -130,8 +130,8 @@ struct PrivateServerConfig: View {
                        Alert(title: Text("".localized()),
                              message: Text("Invalid Lite Server Port, Reverting it to pirate chain port!".localized()),
                              dismissButton: .default(Text("button_close".localized()),action: {
-                               lightPortString = String.init(format: "%d", ZECCWalletEnvironment.defaultLightWalletPort)
-                               SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? ZECCWalletEnvironment.defaultLightWalletPort)
+                           lightPortString = String.init(format: "%d", PirateAppConfig.port)
+                               SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? PirateAppConfig.port)
                          }))
            })
         .edgesIgnoringSafeArea(.all)
@@ -162,7 +162,7 @@ struct PrivateServerConfig: View {
                     
                     if anArrayOfConfigurations[0] == self.lightServerString {
                         lightPortString = "443"
-                        SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? ZECCWalletEnvironment.defaultLightWalletPort)
+                        SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? PirateAppConfig.port)
                     }
                     /*
                     else if anArrayOfConfigurations[1] == self.lightServerString {
@@ -190,7 +190,7 @@ struct PrivateServerConfig: View {
                isDisplayPortAlert = true
         }else{
                // save port
-            SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? ZECCWalletEnvironment.defaultLightWalletPort)
+            SeedManager.default.importLightWalletPort(port: Int(lightPortString) ?? PirateAppConfig.port)
         }
        }
 }
@@ -198,52 +198,5 @@ struct PrivateServerConfig: View {
 struct PrivateServerConfig_Previews: PreviewProvider {
     static var previews: some View {
         PrivateServerConfig()
-    }
-}
-
-
-struct BackgroundPlaceholderModifier: ViewModifier {
-
-var backgroundColor = Color(.systemBackground)
-
-func body(content: Content) -> some View {
-    content
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
-                .softInnerShadow(RoundedRectangle(cornerRadius: 12), darkShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), lightShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), spread: 0.05, radius: 2))
-        .padding()
-    }
-}
-
-
-
-struct ForegroundPlaceholderModifier: ViewModifier {
-
-var backgroundColor = Color(.systemBackground)
-
-func body(content: Content) -> some View {
-    content
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
-                .softInnerShadow(RoundedRectangle(cornerRadius: 12), darkShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), lightShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), spread: 0.05, radius: 2))
-    }
-}
-
-struct ForegroundPlaceholderModifierHomeButtons: ViewModifier {
-
-var backgroundColor = Color(.systemBackground)
-
-func body(content: Content) -> some View {
-    content
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 30).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
-                .softInnerShadow(RoundedRectangle(cornerRadius: 30), darkShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), lightShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), spread: 0.05, radius: 2))
-        .padding()
     }
 }
