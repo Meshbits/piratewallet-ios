@@ -626,19 +626,6 @@ struct SettingsScreen_Previews: PreviewProvider {
     }
 }
 
-struct SettingsSectionBackgroundModifier: ViewModifier {
-
-        var backgroundColor = Color(.systemBackground)
-
-        func body(content: Content) -> some View {
-            content
-                .background(
-                    RoundedRectangle(cornerRadius: 12).fill(Color.init(red: 29.0/255.0, green: 32.0/255.0, blue: 34.0/255.0))
-                        .softInnerShadow(RoundedRectangle(cornerRadius: 12), darkShadow: Color.init(red: 0.06, green: 0.07, blue: 0.07), lightShadow: Color.init(red: 0.26, green: 0.27, blue: 0.3), spread: 0.05, radius: 2))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-            }
-}
 
 
 struct TabBarAccessor: UIViewControllerRepresentable {
