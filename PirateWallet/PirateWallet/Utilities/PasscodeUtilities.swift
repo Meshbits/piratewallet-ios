@@ -95,6 +95,88 @@ struct PasscodeNumberView : View {
     }
 }
 
+
+
+struct PasscodeValidationNumberView : View {
+    @Binding var passcodeViewModel: PasscodeValidationViewModel
+    var body: some View {
+        VStack {
+            PasscodeValidationNumpadRow(startIndex: Binding.constant(1), endIndex: Binding.constant(4),passcodeViewModel: Binding.constant(passcodeViewModel))
+            PasscodeValidationNumpadRow(startIndex: Binding.constant(4), endIndex: Binding.constant(7),passcodeViewModel: Binding.constant(passcodeViewModel))
+            PasscodeValidationNumpadRow(startIndex: Binding.constant(7), endIndex: Binding.constant(10),passcodeViewModel: Binding.constant(passcodeViewModel))
+            HStack(alignment: .center, spacing: nil, content: {
+                
+                PasscodeValidationNumber(passcodeValue: Binding.constant(""),passcodeViewModel: $passcodeViewModel).hidden()
+                PasscodeValidationNumber(passcodeValue: Binding.constant("0"),passcodeViewModel: $passcodeViewModel)
+                PasscodeValidationNumber(passcodeValue: Binding.constant("delete"),passcodeViewModel: $passcodeViewModel)
+            })
+        } .frame(width: 250, alignment: .center)
+    }
+}
+
+
+struct PasscodeValidationNumber: View {
+    
+    @Binding var passcodeValue: String
+    
+    @Binding var passcodeViewModel: PasscodeValidationViewModel
+    
+    func aSmallVibration(){
+        let vibrationGenerator = UINotificationFeedbackGenerator()
+        vibrationGenerator.notificationOccurred(.warning)
+    }
+    
+    var body: some View {
+        
+            Button(action: {
+                
+                if passcodeValue == "delete" {
+                    passcodeViewModel.captureKeyPress(mKeyPressed: -1, isBackPressed: true)
+                }else{
+                    passcodeViewModel.captureKeyPress(mKeyPressed: Int(passcodeValue)!, isBackPressed: false)
+                }
+                
+                passcodeViewModel.updateLayout(isBackPressed: passcodeValue == "delete" ? true : false)
+                
+                aSmallVibration()
+
+            }, label: {
+                ZStack {
+                    Image("passcodenumericbg").resizable().frame(width: Device.isLarge ? 100 : 60, height: Device.isLarge ? 100 : 60, alignment: .center)
+
+                    if passcodeValue == "delete" {
+                        Text("").foregroundColor(.white)
+                        Image(systemName: "delete.left").foregroundColor(.gray).scaledFont(size: Device.isLarge ? 15 : 12)
+                    }else {
+                        Text(passcodeValue).foregroundColor(.gray).bold().multilineTextAlignment(.center).scaledFont(size: Device.isLarge ? 22 : 14)
+                            .padding(.bottom,2)
+                            .padding(.trailing,2)
+                        
+                    }
+                }.padding(2)
+            })
+    }
+    
+}
+
+
+
+struct PasscodeValidationNumpadRow: View {
+    
+    @Binding var startIndex : Int
+    @Binding var endIndex : Int
+    @Binding var passcodeViewModel: PasscodeValidationViewModel
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: nil, content: {
+            ForEach(startIndex ..< endIndex) { index in
+                PasscodeValidationNumber(passcodeValue: Binding.constant(String(index)),passcodeViewModel: $passcodeViewModel)
+            }
+        })
+    }
+}
+
+
 struct PasscodeNumpadRow: View {
     
     @Binding var startIndex : Int
