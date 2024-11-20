@@ -52,8 +52,7 @@ struct HomeTabView: View {
     }
     
     var mSettingsView: some View {
-//        LazyView(SettingsScreen() .navigationBarHidden(true).environmentObject(self.appEnvironment))
-        Text("Settings")
+        LazyView(SettingsScreen() .navigationBarHidden(true))
         .navigationBarBackButtonHidden(true)
     }
   
