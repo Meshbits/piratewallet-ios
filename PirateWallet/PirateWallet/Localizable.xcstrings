@@ -3864,7 +3864,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "https://github.com/Meshbits/pirate-chain-ios-wallet/blob/master/PRIVACY.md"
+            "value" : "https://github.com/Meshbits/piratewallet-ios/blob/main/PRIVACY.md"
           }
         }
       }
@@ -5714,7 +5714,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "https://raw.githubusercontent.com/Meshbits/pirate-chain-ios-wallet/master/PRIVACY.md"
+            "value" : "https://github.com/Meshbits/piratewallet-ios/blob/main/PRIVACY.md"
           }
         }
       }
