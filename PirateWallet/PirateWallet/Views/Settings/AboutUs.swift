@@ -10,12 +10,12 @@ import SwiftUI
 
 struct AboutUs: View {
     @Environment(\.presentationMode) var presentationMode
-    var anAppVersion = "App Version: 1.0.0"
+    var anAppVersion = "App Version: 2.0.0"
     var aBuildversion = "Build: 1"
-    var aCommitsCount = "Commits Count: -"
+    var aCommitsCount = "Commits Count: 59"
     var aGitHash = "Short Git hash: -"
     var aSourceCode = "Source: "
-    var aSourceCodeURL = "-"
+    var aSourceCodeURL = "https://github.com/Meshbits/piratewallet-ios/"
     var aDevelopedBy = "Developed by Meshbits Limited"
     var aVersionDetails = "Release: Beta"
     var mFontSize:CGFloat = Device.isLarge ? 15 : 12

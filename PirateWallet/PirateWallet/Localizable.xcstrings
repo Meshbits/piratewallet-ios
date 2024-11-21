@@ -22,6 +22,9 @@
     "(%@ " : {
 
     },
+    "%.2f" : {
+
+    },
     "%@ sendable ARRR. You don't have sufficient funds to cover the amount + Miner Fee of %@ ARRR" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -43,6 +46,9 @@
 
     },
     "†" : {
+
+    },
+    "<" : {
 
     },
     "$%@" : {
@@ -5870,6 +5876,9 @@
           }
         }
       }
+    },
+    "This setting controls the volume of background music while your wallet is syncing with the blockchain network." : {
+
     },
     "This wallet has not been initialized correctly! Perhaps an error occurred during install.\n\nThis can be fixed with a reset. First, locate your backup seed phrase, then \"Nuke Wallet\" and reimport it." : {
       "comment" : "messages",
