@@ -125,6 +125,7 @@ struct RecoveryBasedUnlink: View {
                         }) {
      //                       self.didEndEditingAddressTextField()
                         }.scaledFont(size: Device.isLarge ?  14 : 12)
+                        .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
                         .textCase(.lowercase)
                         .autocapitalization(.none)
@@ -137,6 +138,7 @@ struct RecoveryBasedUnlink: View {
                         }){
       //                      self.didEndEditingPortTextField()
                         }.scaledFont(size: Device.isLarge ?  14 : 12)
+                        .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
                         .textCase(.lowercase)
                         .autocapitalization(.none)
@@ -149,6 +151,7 @@ struct RecoveryBasedUnlink: View {
                         }) {
       //                      self.didEndEditingPortTextField()
                         }.scaledFont(size: Device.isLarge ?  14 : 12)
+                        .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
                         .textCase(.lowercase)
                         .autocapitalization(.none)
