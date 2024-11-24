@@ -23,7 +23,12 @@ final class RecoveryWordsViewModel: ObservableObject {
         
         do {
             randomKeyPhrase =  try MnemonicSeedProvider.default.savedMnemonicWords()
-            print(randomKeyPhrase)
+            
+            if randomKeyPhrase?.count == 1 {
+                randomKeyPhrase = try SeedManager.default.exportPhrase().components(separatedBy: " ")
+            }
+            
+            printLog(randomKeyPhrase)
             
             mWordTitle = randomKeyPhrase![0]
             
