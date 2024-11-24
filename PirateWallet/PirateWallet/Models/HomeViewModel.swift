@@ -122,6 +122,39 @@ final class HomeViewModel: ObservableObject {
             }
         }
         
+        
+        Task { @MainActor in
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                aSynchronizer.eventStream
+                    .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
+                    .sink(receiveValue: { [weak self] events in self?.synchronizerStateUpdatedEvents(events) })
+                    .store(in: &cancellable)
+                
+                
+                aSynchronizer.eventStream
+                    .sink(
+                        receiveValue: { [weak self] event in
+                            
+                            printLog("WE ARE HERE")
+                            
+                            switch event {
+                            case let .minedTransaction(transaction):
+                                printLog("FOUND MINDED TRANSACTION")
+
+                            case let .foundTransactions(transactions, _):
+                                printLog("FOUND ALL TRANSACTION")
+
+                            case .storedUTXOs, .connectionStateChanged:
+                                break
+                            }
+                        }
+                    )
+                    .store(in: &cancellable)
+                
+            }
+        }
+        
+        
         balanceStatus = .none
         
         Task { @MainActor in
@@ -176,22 +209,27 @@ final class HomeViewModel: ObservableObject {
                         synchronizer: aSynchronizer
                     )
                     
-                    try? await dataSource.load()
-                    self.transactions = dataSource.transactions
-//                    printLog("dataSource.all.count : \(dataSource.transactions.count)")
+//                    try? await dataSource.load()
+//                    self.transactions = dataSource.transactions
+                    printLog("TEMPORARY COMMENTED TODO")
+                    printLog("dataSource.all.count : \(dataSource.transactions.count)")
+                    
+                    
                 }
                 
             }
             
-            Task { @MainActor in
-                if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
-                    aSynchronizer.eventStream
-                        .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
-                        .sink(receiveValue: { [weak self] events in self?.synchronizerStateUpdatedEvents(events) })
-                        .store(in: &cancellable)
-                    
-                }
-            }
+            
+            
+            PirateAppSynchronizer.shared.combineSdkSynchronizer?.allTransactions
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    printLog("ALL TRANSACTIONS HERE")
+                }) { [weak self] (allTransactions) in
+                    printLog("<<<>>><<ALL TRANSACTIONS HERE>>>><<<")
+                            printLog(allTransactions)
+//                        .map( { DetailModel(pendingTransaction: $0)})
+                }.store(in: &cancellable)
             
             
                 aSynchronizer.eventStream
@@ -332,6 +370,7 @@ final class HomeViewModel: ObservableObject {
 //    }
     
     private func synchronizerStateUpdatedEvents(_ events: SynchronizerEvent) {
+        printLog(">>>>>>>><<<<<<<<<<")
         printLog("synchronizerStateUpdatedEvents")
         switch(events){
         case let .foundTransactions(transaction,range):
@@ -347,6 +386,7 @@ final class HomeViewModel: ObservableObject {
             printLog("Event empty")
         }
         
+        printLog(">>>>>>>>_________<<<<<<<<<<")
     }
     
     private func synchronizerStateUpdatedHome(_ state: SynchronizerState) {

@@ -52,6 +52,8 @@ public class PirateAppSynchronizer : ObservableObject{
     
     var balance: String?
     
+    var isSynced: Bool = false
+    
     deinit {
         cancellables.forEach { $0.cancel() }
     }
@@ -406,14 +408,19 @@ public class PirateAppSynchronizer : ObservableObject{
     func textFor(state: SyncStatus) -> String {
         switch state {
         case .syncing:
+            isSynced = false
             return "Syncing 🤖"
         case .upToDate:
+            isSynced = true
             return "Up to Date 😎"
         case .unprepared:
+            isSynced = false
             return "Unprepared"
         case .error(ZcashError.synchronizerDisconnected):
+            isSynced = false
             return "Disconnected"
         case .error:
+            isSynced = false
             return "error 💔"
         }
     }

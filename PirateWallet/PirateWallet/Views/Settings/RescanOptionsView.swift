@@ -96,6 +96,7 @@ struct RescanOptionsView: View {
                                 .frame(height: Device.isLarge ?  60 : 40)
                                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                         }
+                        .background(Color.init(red: 27.0/255.0, green: 28.0/255.0, blue: 29.0/255.0))
                         
                     }
                     .scrollContentBackground(.hidden)
@@ -141,7 +142,7 @@ struct RescanOptionsView: View {
                         
                         mCurrentWalletBirthday = Int(height) ?? SeedManager.mDefaultHeight
                         
-                        if let isSynced = PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus.isSynced {
+                        if PirateAppSynchronizer.shared.isSynced {
                             showScanStartedToast = true
                             
                             (try? SeedManager.default.importNewBirthdayOnRescan(mCurrentWalletBirthday))
@@ -157,7 +158,7 @@ struct RescanOptionsView: View {
                         
                     }else{
                         
-                        if let isSynced = PirateAppSynchronizer.shared.synchronizer?.latestState.syncStatus.isSynced {
+                        if PirateAppSynchronizer.shared.isSynced {
                             
                             showScanStartedToast = true
                             
@@ -179,12 +180,12 @@ struct RescanOptionsView: View {
             
         }.toast(isPresenting: $showScanStartedToast){
             
-            AlertToast(displayMode: .banner(.pop), type: .regular, title:"Rescanning started with height:".localized() + "\(mCurrentWalletBirthday)")
+            AlertToast(displayMode: .alert, type: .regular, title:"Rescanning started with height:".localized() + "\(mCurrentWalletBirthday)")
 
         }
         .toast(isPresenting: $showErrorScanToast){
             
-            AlertToast(displayMode: .banner(.pop), type: .regular, title:"Please wait, existing downloading/scanning is in progress.".localized())
+            AlertToast(displayMode: .alert, type: .regular, title:"Please wait, existing downloading/scanning is in progress.".localized())
 
         }
         
