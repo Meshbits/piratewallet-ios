@@ -8,10 +8,29 @@
 		<string>io.meshbits.piratewallet.ios.backgroundAppRefreshTask</string>
 		<string>io.meshbits.piratewallet.ios.backgroundProcessingTask</string>
 	</array>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>io.meshbits.piratewallet.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>arrr</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>io.meshbits.piratewallet.ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pirate</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Barlow-Regular.ttf</string>
@@ -23,9 +42,5 @@
 		<string>fetch</string>
 		<string>processing</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Scan Arrr Address based Qr Codes</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>We might require you to use Biometric ID or pin to Authorize payments</string>
 </dict>
 </plist>
