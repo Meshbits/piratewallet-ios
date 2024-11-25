@@ -553,7 +553,7 @@ struct Home: View {
         }
               
         .sheet(isPresented: $showPassCodeScreen){
-//            LazyView(PasscodeValidationScreen(passcodeViewModel: PasscodeValidationViewModel(), isAuthenticationEnabled: true)).environmentObject(self.appEnvironment)
+            LazyView(PasscodeValidationScreen(passcodeViewModel: PasscodeValidationViewModel(), isAuthenticationEnabled: true))
         }
         .toast(isPresenting: $viewModel.showLowSpaceAlert, duration: 10, tapToDismiss: true, alert: {
             AlertToast(displayMode: .alert,type: .error(.red), title:"Low storage space".localized())
