@@ -25,6 +25,9 @@
     "%.2f" : {
 
     },
+    "%@" : {
+
+    },
     "%@ sendable ARRR. You don't have sufficient funds to cover the amount + Miner Fee of %@ ARRR" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1325,6 +1328,9 @@
     },
     "Confirm Recovery Phrase" : {
       "comment" : "Words Verification Screen"
+    },
+    "Confirm Transaction" : {
+
     },
     "Confirmed" : {
       "extractionState" : "manual",

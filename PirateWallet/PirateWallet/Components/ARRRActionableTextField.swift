@@ -1,13 +1,12 @@
 //
-//  ARRRTextField.swift
+//  ARRRActionableTextField.swift
 //  PirateWallet
 //
-//  Created by Lokesh on 16/09/24.
+//  Created by Lokesh on 05/12/24.
 //
 
-
 import SwiftUI
-struct ARRRTextField: View {
+struct ARRRActionableTextField: View {
     
     var title: String
     var placeholder: String = ""
@@ -20,10 +19,12 @@ struct ARRRTextField: View {
     var subtitleView: AnyView
     var onCommit: () -> Void
     var onEditingChanged: (Bool) -> Void
-    
-    
+    var inactiveColor: Color = .zGray2
+    var activeColor: Color
     
     @Binding var text: String
+    
+    
     
     var accessoryView: AnyView {
         if let img = accessoryIcon, let action = action {
@@ -31,9 +32,7 @@ struct ARRRTextField: View {
                 Button(action: {
                     action()
                 }) {
-                    img
-                        .resizable()
-                    
+                    img.resizable()
                 }
             )
         } else {
@@ -41,13 +40,15 @@ struct ARRRTextField: View {
         }
     }
     
-    
+    var isActive: Bool {
+        text.count > 0
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .foregroundColor(.white)
-            
-            HStack {
+            HStack(alignment: .center) {
+                Text(title)
+                    .foregroundColor(isActive ? .zLightGray : .white)
+                
                 TextField(placeholder,
                           text: $text,
                           onEditingChanged: self.onEditingChanged,
@@ -57,18 +58,20 @@ struct ARRRTextField: View {
                     .foregroundColor(Color.white)
                     .textContentType(contentType)
                     .keyboardType(keyboardType)
-                    .autocapitalization(autocapitalize ? .sentences : .none)
+                    .autocapitalization(autocapitalize ? .none : .sentences)
                     .disableAutocorrection(!autocorrect)
                     
-                    
-                    .padding([.top])
                 accessoryView
                     .frame(width: 25, height: 25)
+                    .padding(.bottom,4)
             }.overlay(
-                Baseline().stroke(Color.white,lineWidth: 2)
+                Baseline().stroke(isActive ? activeColor : inactiveColor ,lineWidth: 1)
             )
+            .font(.body)
+                
             subtitleView
         }
+        
     }
     
     init(title: String,
@@ -78,8 +81,10 @@ struct ARRRTextField: View {
          binding: Binding<String>,
          action: (() -> Void)? = nil,
          accessoryIcon: Image? = nil,
+         activeColor: Color = .zAmberGradient2,
          onEditingChanged: @escaping (Bool) -> Void,
          onCommit: @escaping () -> Void) {
+        
         self.title = title
         self.accessoryIcon = accessoryIcon
         self.action = action
@@ -93,32 +98,8 @@ struct ARRRTextField: View {
         self._text = binding
         self.onCommit = onCommit
         self.onEditingChanged = onEditingChanged
+        self.activeColor = activeColor
     }
     
 }
 
-struct ARRRTextField_Previews: PreviewProvider {
-    
-    @State static var text: String = "Ztestsapling1ctuamfer5xjnnrdr3xdazenljx0mu0gutcf9u9e74tr2d3jwjnt0qllzxaplu54hgc2tyjdc2p6"
-    static var previews: some View {
-        ZStack {
-            ARRRBackground()
-            ARRRTextField(title: "To:".localized(),
-                           subtitleView: AnyView(
-                            Text("Enter Shielded Address".localized())
-                                .foregroundColor(.zLightGray)
-                                .font(.footnote)
-                            ),
-                           binding: $text,
-                           action: {},
-                           accessoryIcon: Image("QRCodeIcon")
-                                                .renderingMode(.original),
-                           onEditingChanged: { editing in },
-                           onCommit: {}
-                
-            )
-            .padding()
-            
-        }
-    }
-}

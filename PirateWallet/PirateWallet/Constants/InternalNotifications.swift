@@ -12,5 +12,6 @@ extension Notification.Name {
     static let sendFlowStarted = Notification.Name("sendFlowStarted")
     static let openTransactionScreen = Notification.Name("openTransactionScreen")
     static let qrCodeScanned = Notification.Name(rawValue: "qrCodeScanned")
+    static let qrZaddressScanned = Notification.Name(rawValue: "qrZaddressScanned")
 }
 

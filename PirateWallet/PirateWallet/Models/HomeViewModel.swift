@@ -228,6 +228,14 @@ final class HomeViewModel: ObservableObject {
                 }) { [weak self] (allTransactions) in
                     printLog("<<<>>><<ALL TRANSACTIONS HERE>>>><<<")
                             printLog(allTransactions)
+                    
+                    for transaction in allTransactions {
+                        Task { @MainActor in
+                            let memos = try await aSynchronizer.getMemos(for: transaction)
+                            self?.transactions.append(TransactionDetailModel(transaction: transaction, memos: memos))
+                        }
+                    }
+                    
 //                        .map( { DetailModel(pendingTransaction: $0)})
                 }.store(in: &cancellable)
             

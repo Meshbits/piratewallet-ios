@@ -150,9 +150,8 @@ struct Home: View {
            
             if(self.viewModel.syncStatus.isSynced){
 
-//                SendFlow.start(appEnviroment: appEnvironment,
-//                               isActive: self.$sendingPushed,
-//                               amount: viewModel.sendZecAmount,memoText: memo,address:address)
+                SendFlow.start(isActive: self.$sendingPushed,
+                               amount: viewModel.sendZecAmount,memoText: memo,address:address)
                 self.sendingPushed = true
                 
                 if self.sendingPushed {
@@ -166,9 +165,9 @@ struct Home: View {
     }
     
     func startSendFlow() {
-//        SendFlow.start(appEnviroment: appEnvironment,
-//                       isActive: self.$sendingPushed,
-//                       amount: viewModel.sendZecAmount,memoText: "",address: "")
+        SendFlow.start(
+                       isActive: self.$sendingPushed,
+                       amount: viewModel.sendZecAmount,memoText: "",address: "")
         self.sendingPushed = true
     }
     
@@ -361,7 +360,7 @@ struct Home: View {
                         .onTapGesture {
                             cantSendError = false
                             // Send tapped
-                            if(self.viewModel.syncStatus.isSynced){
+                            if PirateAppSynchronizer.shared.isSynced {
                                 self.startSendFlow()
                                 
                                 if self.sendingPushed {
@@ -540,14 +539,14 @@ struct Home: View {
 //                #endif
             case .sendMoney:
                 EmptyView()
-//
-//                if let sendflowCurrent = SendFlow.current{
-//                    SendMoneyView()
-//                        .environmentObject(
-//                            sendflowCurrent
-//                    )
-//                }
-//                
+
+                if let sendflowCurrent = SendFlow.current{
+                    SendMoneyView(homeViewModel: viewModel)
+                        .environmentObject(
+                            sendflowCurrent
+                    )
+                }
+                
                
             }
         }
