@@ -64,7 +64,7 @@ final class HomeViewModel: ObservableObject {
     @Published var showHistory = false
     @Published var syncStatus: SyncStatus = .upToDate
     @Published var totalBalance: Double = 0
-    @Published var verifiedBalance: Int64 = 0
+    @Published var verifiedBalance: Double = 0
     @Published var shieldedBalance = ReadableBalance.zero
     @Published var transparentBalance = ReadableBalance.zero
     @Published var showLowSpaceAlert: Bool = false
@@ -156,37 +156,8 @@ final class HomeViewModel: ObservableObject {
         
         
         balanceStatus = .none
-        
-        Task { @MainActor in
-            
-            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
-                
-                verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.int64Value
-                printLog("verifiedBalance : \(verifiedBalance)")
-                let shieldedBalance = try! await aSynchronizer.getShieldedBalance().decimalValue.int64Value
-                printLog("balance : \(shieldedBalance)")
-//                let transparentBalanc = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).verified.decimalValue.int64Value
-//                printLog("transparentBalanc : \(transparentBalanc)")
-//                let transparentBalanceTotal = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).total.decimalValue.int64Value
-//                printLog("transparentBalanceTotal : \(transparentBalanceTotal)")
-                let difference = verifiedBalance - shieldedBalance
-                
-                let abs_difference = Double(abs(difference))
-                
-                printLog("Balance Status")
-                printLog(difference)
-                                
-                if difference == 0 {
-                    self.balanceStatus = BalanceStatus.available(showCaption: true)
-                }
-                else if difference > 0 {
-                    self.balanceStatus = BalanceStatus.expecting(arrr: abs_difference)
-                }
-                else {
-                    self.balanceStatus = BalanceStatus.waiting(change: abs_difference)
-                }
-            }
-        }
+  
+        syncBalanceOnUI()
         
         if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
             
@@ -236,7 +207,8 @@ final class HomeViewModel: ObservableObject {
                         }
                     }
                     
-//                        .map( { DetailModel(pendingTransaction: $0)})
+                    self?.syncBalanceOnUI()
+                    
                 }.store(in: &cancellable)
             
             
@@ -352,6 +324,40 @@ final class HomeViewModel: ObservableObject {
             
         }
         
+    }
+    
+    func syncBalanceOnUI(){
+        
+        Task { @MainActor in
+            
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                
+                verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.doubleValue
+                printLog("verifiedBalance : \(verifiedBalance)")
+                let shieldedBalance = try! await aSynchronizer.getShieldedBalance().decimalValue.doubleValue
+                printLog("balance : \(shieldedBalance)")
+//                let transparentBalanc = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).verified.decimalValue.int64Value
+//                printLog("transparentBalanc : \(transparentBalanc)")
+//                let transparentBalanceTotal = try! await aSynchronizer.getTransparentBalance(accountIndex: 0).total.decimalValue.int64Value
+//                printLog("transparentBalanceTotal : \(transparentBalanceTotal)")
+                let difference = verifiedBalance - shieldedBalance
+                
+                let abs_difference = Double(abs(difference))
+                
+                printLog("Balance Status")
+                printLog(difference)
+                                
+                if difference == 0 {
+                    self.balanceStatus = BalanceStatus.available(showCaption: true)
+                }
+                else if difference > 0 {
+                    self.balanceStatus = BalanceStatus.expecting(arrr: abs_difference)
+                }
+                else {
+                    self.balanceStatus = BalanceStatus.waiting(change: abs_difference)
+                }
+            }
+        }
     }
     
     deinit {
