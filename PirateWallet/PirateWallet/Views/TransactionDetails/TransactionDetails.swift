@@ -111,11 +111,11 @@ struct TransactionDetails: View {
                         Spacer()
 //                        
 //                        if detail.isMined {// If it is mined or confirmed then only show explore button
-//                                Button {
-//                                    self.alertItem = .explorerNotice
-//                                } label: {
-//                                    BlueButtonView(aTitle: "Explore".localized())
-//                                }
+                                Button {
+                                    self.alertItem = .explorerNotice
+                                } label: {
+                                    BlueButtonView(aTitle: "Explore".localized())
+                                }
 //                        }
 
                     
@@ -164,8 +164,8 @@ struct TransactionDetails: View {
             case .explorerNotice:
                 return Alert(title: Text("You are exiting your wallet".localized()),
                              message: Text("While usually an acceptable risk, you are possibly exposing your behavior and interest in this transaction by going online. OH NO! What will you do?".localized()),
-                             primaryButton: .cancel(Text("NEVERMIND".localized())),
-                             secondaryButton: .default(Text("SEE TX".localized()), action: {
+                             primaryButton: .cancel(Text("NEVERMIND".localized()).foregroundColor(.white)),
+                             secondaryButton: .default(Text("SEE TX".localized()).foregroundColor(.white), action: {
                                 
                              guard let url = UrlHandler.blockExplorerURL(for: self.detail.id?.toHexStringTxId() ?? "no id") else {
                                     return
@@ -175,7 +175,7 @@ struct TransactionDetails: View {
                                 mOpenSafari = true
                                 
 //                                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                             }))
+                }))
             }
         }
         .navigationBarTitle("", displayMode: .inline)
