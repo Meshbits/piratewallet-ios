@@ -95,7 +95,7 @@ struct Sending: View {
         }
         .onAppear() {
             printLog("sendFinalOnAppear")
-            self.flow.preSend()
+            self.send()
         }
     }
     
