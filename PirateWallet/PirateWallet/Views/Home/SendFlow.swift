@@ -176,20 +176,30 @@ final class SendFlowEnvironment: ObservableObject {
     }
     
     func isBalanceValid() async -> Bool {
-        let synchronizer = await AppDelegate.shared.sharedSynchronizer
-        let balanceText = (try? await synchronizer.getShieldedBalance().decimalString()) ?? "0.0"
-        let verifiedText = (try? await synchronizer.getShieldedVerifiedBalance().decimalString()) ?? "0.0"
-        let balance = try? await PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance() ?? .zero
-        return balance ?? .zero > .zero
+
+        if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                let balanceText = (try? await aSynchronizer.getShieldedBalance().decimalString()) ?? "0.0"
+                let verifiedText = (try? await aSynchronizer.getShieldedVerifiedBalance().decimalString()) ?? "0.0"
+                let balance = try? await PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance() ?? .zero
+                return balance ?? .zero > .zero
+        }else{
+            return false
+        }
+        
     }
     
     func isAmountValid() async -> Bool {
-        let synchronizer = await AppDelegate.shared.sharedSynchronizer
-        let balance = (try? await synchronizer.getShieldedVerifiedBalance(accountIndex: 0)) ?? .zero
-        guard
-            let amountValue = NumberFormatter.zcashNumberFormatter.number(from: amount).flatMap({ Zatoshi($0.int64Value) }),
-            amountValue <= balance
-        else {
+        
+        if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                let balance = (try? await aSynchronizer.getShieldedVerifiedBalance(accountIndex: 0)) ?? .zero
+                guard
+                    let amountValue = NumberFormatter.zcashNumberFormatter.number(from: amount).flatMap({ Zatoshi($0.int64Value) }),
+                    amountValue <= balance
+                else {
+                    return false
+                }
+
+        }else{
             return false
         }
 
@@ -199,8 +209,7 @@ final class SendFlowEnvironment: ObservableObject {
     
     func isRecipientValid() -> Bool {
         if address.count > 0 {
-            var wallet = Initializer.shared
-            return wallet.isValidSaplingAddress(address) || wallet.isValidTransparentAddress(address)
+            return address.isValidShieldedAddress || address.isValidTransparentAddress
         }else{
             return false
         }
@@ -243,29 +252,34 @@ final class SendFlowEnvironment: ObservableObject {
 
             /// TODO: SHOW LOADER
 
-            do {
-                let synchronizer =  AppDelegate.shared.sharedSynchronizer
-                let pendingTransaction = try await synchronizer.sendToAddress(
-                    spendingKey: spendingKey,
-                    zatoshi: zec,
-                    // swiftlint:disable:next force_try
-                    toAddress: try! Recipient(address, network: kPirateNetwork.networkType),
-                    // swiftlint:disable:next force_try
-                    memo:  Memo(string: memo)
-                )
-                /// TODO: HIDE LOADER
-                printLog("transaction created: \(pendingTransaction)")
-                // fix me:
-                self.isDone = true
-                self.state = .finished
+
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                
+                do {
+                    let pendingTransaction = try await aSynchronizer.sendToAddress(
+                        spendingKey: spendingKey,
+                        zatoshi: zec,
+                        // swiftlint:disable:next force_try
+                        toAddress: try! Recipient(address, network: kPirateNetwork.networkType),
+                        // swiftlint:disable:next force_try
+                        memo:  Memo(string: memo)
+                    )
+                    /// TODO: HIDE LOADER
+                    printLog("transaction created: \(pendingTransaction)")
+                    // fix me:
+                    self.isDone = true
+                    self.state = .finished
+                
+                    UserSettings.shared.lastUsedAddress = self.address
+                   
+                    self.txSent = true
+                } catch {
+                    fail(error)
+                    printLog("SEND FAILED: \(error)")
+                }
+             }
             
-                UserSettings.shared.lastUsedAddress = self.address
-               
-                self.txSent = true
-            } catch {
-                fail(error)
-                printLog("SEND FAILED: \(error)")
-            }
+          
         }
         
            

@@ -30,7 +30,7 @@ struct ConfirmTransaction: View {
                             .multilineTextAlignment(.leading)
                         Spacer()
                     }
-                    .padding(.leading,20)
+                    .padding(.leading,10)
                     .frame(minHeight: 50)
                     .listRowSeparator(.hidden)
                 
@@ -44,7 +44,7 @@ struct ConfirmTransaction: View {
                         Spacer()
                     }
                     .listRowSeparator(.hidden)
-                    .padding(.leading,20)
+                    .padding(.leading,10)
                     .frame(minHeight: 50)
                     
                 ConfirmTableSectionHeaderView(aTitle:"Transaction Amount: ".localized()).listRowSeparator(.hidden)
@@ -54,7 +54,7 @@ struct ConfirmTransaction: View {
                             .frame(alignment: .leading)
                          Spacer()
                      }
-                     .padding(.leading,20)
+                     .padding(.leading,10)
                      .frame(height: 40).listRowSeparator(.hidden)
                     
                 ConfirmTableSectionHeaderView(aTitle:"Processing fee: ".localized().localized()).listRowSeparator(.hidden)
@@ -64,7 +64,7 @@ struct ConfirmTransaction: View {
                             .frame(alignment: .leading)
                         Spacer()
                     }
-                    .padding(.leading,20)
+                    .padding(.leading,10)
                     .frame(height: 40).listRowSeparator(.hidden)
                    
                 

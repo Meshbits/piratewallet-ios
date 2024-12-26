@@ -89,7 +89,7 @@ struct TransactionDetails: View {
                                     TransactionRow(mTitle: aTitle, mSubTitle: (detail.id?.toHexStringTxId() ?? "no id"), showLine: true,isYellowColor: false)
                                 }
                                 
-//                                TransactionRowTitleSubtitle(mTitle: converDateToString(aDate: detail.date), mSubTitle: ("Processing fee: ".localized() + "\(detail.defaultFee.asHumanReadableZecBalance().toZecAmount())" + " ARRR"), showLine: true)
+                                TransactionRowTitleSubtitle(mTitle: converDateToString(aDate: detail.date), mSubTitle: ("Processing fee: ".localized() + "\((10_000).asHumanReadableZecBalance().toZecAmount())" + " ARRR"), showLine: true)
                                 
                                 TransactionRowTitleSubtitle(mTitle: "Memo".localized(), mSubTitle: (detail.memo?.toString() ?? "-"), showLine: true).onTapGesture {
                                     if let _ = detail.memo {
@@ -97,12 +97,12 @@ struct TransactionDetails: View {
                                     }
                                 }
                                 
-//                                if detail.success {
-//                                    let latestHeight = PirateAppSynchronizer.shared.synchronizer?.latestHeight() //ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
-//                                    TransactionRow(mTitle: detail.makeStatusText(latestHeight: latestHeight),mSubTitle :"", showLine: false,isYellowColor: true)
-//                                } else {
-//                                    TransactionRow(mTitle: "Pending".localized(),mSubTitle :"", showLine: false,isYellowColor: true)
-//                                }
+                                if detail.success {
+                                    let latestHeight = PirateAppSynchronizer.shared.synchronizer?.latestHeight() //ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
+                                    TransactionRow(mTitle: detail.makeStatusText(latestHeight: latestHeight),mSubTitle :"", showLine: false,isYellowColor: true)
+                                } else {
+                                    TransactionRow(mTitle: "Pending".localized(),mSubTitle :"", showLine: false,isYellowColor: true)
+                                }
                                 
 
                             }

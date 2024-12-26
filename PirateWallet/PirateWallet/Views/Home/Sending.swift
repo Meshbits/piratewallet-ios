@@ -9,12 +9,13 @@
 import SwiftUI
 import Combine
 import PirateLightClientKit
+import UIKit
+import Foundation
 
 struct Sending: View {
     
     let dragGesture = DragGesture()
     @EnvironmentObject var flow: SendFlowEnvironment
-//    @State var details: DetailModel? = nil
     @Environment(\.presentationMode) var presentationMode
     var errorMessage: String {
         guard let e = flow.error else {
@@ -74,31 +75,13 @@ struct Sending: View {
                     
                 }
                 Spacer()
-//                if self.flow.isDone && self.$flow.pendingTx != nil {
-//                    Button(action: {
-//                        guard let pendingTx = self.flow.pendingTx  else {
-//                            printLog("Attempt to open transaction details in sending screen with no pending transaction in send flow")
-//                            self.flow.close() // close this so it does not get stuck here
-//                            return
-//                        }
-//                        
-//                        let latestHeight = PirateAppSynchronizer.shared.synchronizer?.latestHeight()
-////                        let latestHeight = ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
-//                        self.details = DetailModel(pendingTransaction: pendingTx,latestBlockHeight: latestHeight)
-//                        printLog("sendFinalDetails")
-//                        
-//                    }) {
-//                        
-//                        SendRecieveButtonView(title: "button_seedetails".localized(),isSyncing:Binding.constant(false))
-//                        
-//                    }
-//                }
                 
                 if flow.isDone {
                     Button(action: {
                         printLog("sendFinalClose")
                         self.flow.close()
                         NotificationCenter.default.post(name: NSNotification.Name("DismissPasscodeScreenifVisible"), object: nil)
+                        self.presentationMode.wrappedValue.dismiss()
                     }) {
                         SendRecieveButtonView(title: "button_done".localized(),isSyncing:Binding.constant(false))
                     }
@@ -107,12 +90,6 @@ struct Sending: View {
             .padding([.horizontal, .bottom], 40)
         }
         .highPriorityGesture(dragGesture)
-//        .sheet(item: $details, onDismiss: {
-//            self.flow.close()
-//            NotificationCenter.default.post(name: NSNotification.Name("DismissPasscodeScreenifVisible"), object: nil)
-//        }){ item in
-//            TxDetailsWrapper(row: item)
-//        }
         .alert(isPresented: self.$flow.showError) {
             showErrorAlert
         }
@@ -120,5 +97,62 @@ struct Sending: View {
             printLog("sendFinalOnAppear")
             self.flow.preSend()
         }
+    }
+    
+    
+    func send() {
+        Task { @MainActor in
+            guard
+                let zec = NumberFormatter.zcashNumberFormatter.number(from: flow.amount).flatMap({ Zatoshi($0.int64Value) })
+            else {
+                printLog("WARNING: Information supplied is invalid")
+                return
+            }
+
+            let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
+            guard let spendingKey = try? derivationTool.deriveUnifiedSpendingKey(seed: PirateAppConfig.defaultSeed, accountIndex: 0) else {
+                printLog("NO SPENDING KEY")
+                return
+            }
+
+            Task { @MainActor in
+                if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                    do {
+                        let pendingTransaction = try await aSynchronizer.sendToAddress(
+                            spendingKey: spendingKey,
+                            zatoshi: zec,
+                            // swiftlint:disable:next force_try
+                            toAddress: try! Recipient(flow.address, network: kPirateNetwork.networkType),
+                            // swiftlint:disable:next force_try
+                            memo: convertToMemo(aMemo: flow.memo)
+                        )
+                        
+                        self.flow.isDone = true
+                        
+                        printLog("transaction created: \(pendingTransaction)")
+                        
+//                        self.flow.close()
+//                        NotificationCenter.default.post(name: NSNotification.Name("DismissPasscodeScreenifVisible"), object: nil)
+
+                    } catch {
+                        self.flow.error = error
+                        self.flow.showError = true
+                        printLog("SEND FAILED: \(error)")
+                    }
+                }
+            }
+            
+        
+        }
+    }
+    
+    func convertToMemo(aMemo:String) throws -> Memo {
+        
+        if aMemo.isEmpty == false{
+            return try Memo(string: aMemo)
+        }else{
+            return .empty
+        }
+        
     }
 }
