@@ -22,17 +22,20 @@ struct ConfirmTransaction: View {
                 
                 
                 ConfirmTableSectionHeaderView(aTitle:"From: ".localized())
+                    .listRowSeparator(.hidden)
                     HStack{
-                        Text(homeViewModel.unifiedAddressObject?.stringEncoded.shortARRRaddress ?? "")
+                        Text(homeViewModel.arrrAddress ?? "")
                             .foregroundColor(.white)
                             .scaledFont(size: 15)
                             .multilineTextAlignment(.leading)
                         Spacer()
                     }
+                    .padding(.leading,20)
                     .frame(minHeight: 50)
+                    .listRowSeparator(.hidden)
                 
-                    ConfirmTableSectionHeaderView(aTitle:"To: ".localized())
-                       
+                    ConfirmTableSectionHeaderView(aTitle:"To: ".localized()).listRowSeparator(.hidden)
+                
                     HStack{
                         Text("\(flow.address)").multilineTextAlignment(.leading)
                             .lineLimit(nil)
@@ -40,31 +43,36 @@ struct ConfirmTransaction: View {
                             .frame(alignment: .leading)
                         Spacer()
                     }
+                    .listRowSeparator(.hidden)
+                    .padding(.leading,20)
                     .frame(minHeight: 50)
                     
-                ConfirmTableSectionHeaderView(aTitle:"Transaction Amount: ".localized())
+                ConfirmTableSectionHeaderView(aTitle:"Transaction Amount: ".localized()).listRowSeparator(.hidden)
                      HStack{
                         Text("\(flow.amount)" + " ARRR")
                             .scaledFont(size: 15)
-                            .frame(width: 300,alignment: .leading)
+                            .frame(alignment: .leading)
                          Spacer()
                      }
-                     .frame(height: 40)
+                     .padding(.leading,20)
+                     .frame(height: 40).listRowSeparator(.hidden)
                     
-                ConfirmTableSectionHeaderView(aTitle:"Processing fee: ".localized().localized())
+                ConfirmTableSectionHeaderView(aTitle:"Processing fee: ".localized().localized()).listRowSeparator(.hidden)
                     HStack{
                         Text("\(Int64(10_000).asHumanReadableZecBalance())" + " ARRR")
                             .scaledFont(size: 15)
                             .frame(alignment: .leading)
                         Spacer()
                     }
-                    .frame(height: 40)
+                    .padding(.leading,20)
+                    .frame(height: 40).listRowSeparator(.hidden)
                    
                 
                 
             }
+            .listRowSeparator(.hidden)
             .background(Rectangle().fill(Color.init(red: 24.0/255.0, green: 28.0/255.0, blue: 29.0/255.0)))
-            .modifier(BackgroundPlaceholderModifierRescanOptions())
+//            .modifier(BackgroundPlaceholderModifierRescanOptions())
 //            .overlay(
 //                RoundedRectangle(cornerRadius: 20)
 //                    .stroke(Color.zGray, lineWidth: 1.0)
@@ -111,8 +119,10 @@ struct ConfirmTableSectionHeaderView : View {
 
               Text(aTitle)
                 .scaledFont(size: 17).foregroundColor(Color.zSettingsSectionHeader)
-                                .foregroundColor(Color.white)
+                                
               .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.leading, 50)
+              
             }
             .frame(width: 380)
            

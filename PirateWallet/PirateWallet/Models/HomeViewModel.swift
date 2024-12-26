@@ -430,7 +430,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     func getUnifiedAddress() async throws{
-        Task {
+        Task { @MainActor in
             if let unifiedAddress = try? await PirateAppSynchronizer.shared.synchronizer?.getUnifiedAddress(accountIndex: 0) {
                 self.unifiedAddressObject = unifiedAddress
                 
