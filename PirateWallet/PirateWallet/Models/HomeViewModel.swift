@@ -172,28 +172,39 @@ final class HomeViewModel: ObservableObject {
 //            }
 //
             
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                
+                Task { @MainActor in
+                    let dataSource =   TransactionsDataSource(
+                        status: .all,
+                        synchronizer: aSynchronizer
+                    )
+                    
+//                    try? await dataSource.load()
+//                    self.transactions = dataSource.transactions
+                    printLog("TEMPORARY COMMENTED TODO")
+                    printLog("dataSource.all.count : \(dataSource.transactions.count)")
+                    
+                    
+                }
+                
+            }
+            
+            
             
             PirateAppSynchronizer.shared.combineSdkSynchronizer?.allTransactions
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
-                    printLog("All Transactions in here")
+                    printLog("ALL TRANSACTIONS HERE")
                 }) { [weak self] (allTransactions) in
+                    printLog("<<<>>><<ALL TRANSACTIONS HERE>>>><<<")
                             printLog(allTransactions)
                     
-                    var index = 0
-                    
-                    for transaction in allTransactions.reversed() {
-                        
-                        if index == 5 {
-                            break
-                        }
-                        
+                    for transaction in allTransactions {
                         Task { @MainActor in
                             let memos = try await aSynchronizer.getMemos(for: transaction)
                             self?.transactions.append(TransactionDetailModel(transaction: transaction, memos: memos))
                         }
-                        
-                        index += 1
                     }
                     
                     self?.syncBalanceOnUI()
@@ -459,6 +470,10 @@ final class HomeViewModel: ObservableObject {
 //    }
 //
     func getSortedItems()-> [TransactionDetailModel]{
+        if self.transactions.count == 0 {
+            return []
+        }
+        
         return self.transactions.sorted(by: { $0.created! > $1.created! })
     }
     

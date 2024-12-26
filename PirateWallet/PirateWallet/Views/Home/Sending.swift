@@ -95,7 +95,7 @@ struct Sending: View {
         }
         .onAppear() {
             printLog("sendFinalOnAppear")
-            self.send()
+            self.flow.preSend()
         }
     }
     
@@ -103,11 +103,14 @@ struct Sending: View {
     func send() {
         Task { @MainActor in
             guard
-                let zec = NumberFormatter.zcashNumberFormatter.number(from: flow.amount).flatMap({ Zatoshi($0.int64Value) })
+                let arrr = NumberFormatter.ARRRNumberFormatter.number(from: flow.amount).flatMap({ Zatoshi($0.int64Value) })
             else {
                 printLog("WARNING: Information supplied is invalid")
                 return
             }
+            
+            printLog("ARRR is \(arrr)")
+            printLog("flow.amount is \(flow.amount)")
 
             let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
             guard let spendingKey = try? derivationTool.deriveUnifiedSpendingKey(seed: PirateAppConfig.defaultSeed, accountIndex: 0) else {
@@ -120,7 +123,7 @@ struct Sending: View {
                     do {
                         let pendingTransaction = try await aSynchronizer.sendToAddress(
                             spendingKey: spendingKey,
-                            zatoshi: zec,
+                            zatoshi: arrr,
                             // swiftlint:disable:next force_try
                             toAddress: try! Recipient(flow.address, network: kPirateNetwork.networkType),
                             // swiftlint:disable:next force_try
@@ -155,4 +158,15 @@ struct Sending: View {
         }
         
     }
+}
+
+public extension NumberFormatter {
+    static let ARRRNumberFormatter: NumberFormatter = {
+        var formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 8
+        formatter.maximumIntegerDigits = 8
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = true
+        return formatter
+    }()
 }

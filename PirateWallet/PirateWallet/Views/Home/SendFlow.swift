@@ -237,8 +237,7 @@ final class SendFlowEnvironment: ObservableObject {
         
         Task { @MainActor in
             guard
-                await isFormValid(),
-                let zec = NumberFormatter.zcashNumberFormatter.number(from: amount).flatMap({ Zatoshi($0.int64Value) })
+                await isFormValid()
             else {
                 printLog("WARNING: Form is invalid")
                 return
@@ -247,6 +246,13 @@ final class SendFlowEnvironment: ObservableObject {
             let derivationTool = DerivationTool(networkType: kPirateNetwork.networkType)
             guard let spendingKey = try? derivationTool.deriveUnifiedSpendingKey(seed: PirateAppConfig.defaultSeed, accountIndex: 0) else {
                 printLog("NO SPENDING KEY")
+                return
+            }
+            
+            guard let zatoshi = doubleAmount?.toZatoshi() else {
+                let message = "invalid arrr amount:".localized() + " \(String(describing: doubleAmount))"
+                printLog(message)
+                fail(FlowError.invalidAmount(message: message))
                 return
             }
 
@@ -258,7 +264,7 @@ final class SendFlowEnvironment: ObservableObject {
                 do {
                     let pendingTransaction = try await aSynchronizer.sendToAddress(
                         spendingKey: spendingKey,
-                        zatoshi: zec,
+                        zatoshi: Zatoshi(zatoshi),
                         // swiftlint:disable:next force_try
                         toAddress: try! Recipient(address, network: kPirateNetwork.networkType),
                         // swiftlint:disable:next force_try
