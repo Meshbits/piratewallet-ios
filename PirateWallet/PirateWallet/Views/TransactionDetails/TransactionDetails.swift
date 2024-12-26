@@ -72,15 +72,13 @@ struct TransactionDetails: View {
     var body: some View {
         
         ScrollView {
-            VStack(spacing: 30) {
-                VStack {
+            VStack(alignment: .center, spacing: 10) {
                     
                     TransactionDetailsTitle(
                         availableZec: detail.zatoshi.amount.asHumanReadableZecBalance() ,status:detail.transaction)
                     
-                    VStack(alignment: .center, spacing: 10) {
                         Spacer(minLength: 5)
-                        ScrollView {
+
                             VStack {
 
                                 if let fullAddr = detail.id{
@@ -89,7 +87,8 @@ struct TransactionDetails: View {
                                     TransactionRow(mTitle: aTitle, mSubTitle: (detail.id?.toHexStringTxId() ?? "no id"), showLine: true,isYellowColor: false)
                                 }
                                 
-                                TransactionRowTitleSubtitle(mTitle: converDateToString(aDate: detail.date), mSubTitle: ("Processing fee: ".localized() + "\((10_000).asHumanReadableZecBalance().toZecAmount())" + " ARRR"), showLine: true)
+                               TransactionRowTitleSubtitle(mTitle: detail.dateDescription, mSubTitle: ("Processing fee: ".localized() + " 0.0001" + " ARRR"), showLine: true)
+                                
                                 
                                 TransactionRowTitleSubtitle(mTitle: "Memo".localized(), mSubTitle: (detail.memo?.toString() ?? "-"), showLine: true).onTapGesture {
                                     if let _ = detail.memo {
@@ -97,20 +96,18 @@ struct TransactionDetails: View {
                                     }
                                 }
                                 
-                                if detail.success {
-                                    let latestHeight = PirateAppSynchronizer.shared.synchronizer?.latestHeight() //ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
-                                    TransactionRow(mTitle: detail.makeStatusText(latestHeight: latestHeight),mSubTitle :"", showLine: false,isYellowColor: true)
-                                } else {
-                                    TransactionRow(mTitle: "Pending".localized(),mSubTitle :"", showLine: false,isYellowColor: true)
-                                }
+//                                if detail.success {
+//                                    let latestHeight = PirateAppSynchronizer.shared.synchronizer?.latestHeight() //ZECCWalletEnvironment.shared.synchronizer.syncBlockHeight.value
+//                                    TransactionRow(mTitle: detail.makeStatusText(latestHeight: latestHeight),mSubTitle :"", showLine: false,isYellowColor: true)
+//                                } else {
+//                                    TransactionRow(mTitle: "Pending".localized(),mSubTitle :"", showLine: false,isYellowColor: true)
+//                                }
                                 
 
                             }
                             .modifier(SettingsSectionBackgroundModifier())
-                            
-                        }
+                         
                         
-                        Spacer()
                         Spacer()
 //                        
 //                        if detail.isMined {// If it is mined or confirmed then only show explore button
@@ -121,7 +118,6 @@ struct TransactionDetails: View {
 //                                }
 //                        }
 
-                    }
                     
 //                    HeaderFooterFactory.header(for: detail)
 //                    SubwayPathBuilder.buildSubway(detail: detail, expandMemo: self.$expandMemo)
@@ -130,8 +126,7 @@ struct TransactionDetails: View {
 //                            self.alertItem = .copiedItem(item: p)
 //                        }
 //                    HeaderFooterFactory.footer(for: detail)
-                    
-                }
+                 
                 
 //                if detail.isMined {
 //                    exploreButton

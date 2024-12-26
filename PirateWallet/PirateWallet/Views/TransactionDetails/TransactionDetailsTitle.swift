@@ -39,7 +39,13 @@ struct TransactionDetailsTitle: View {
             case .pending(let overview):
                 return  "Pending".localized()
             case .cleared(let overview):
-                return  "Cleared: ".localized()
+                if overview.isSentTransaction {
+                    return  "You Sent".localized()
+                }else {
+                    return  "You Received".localized()
+                }
+            
+//                return  "Cleared: ".localized()
         }
         
     }
@@ -54,7 +60,12 @@ struct TransactionDetailsTitle: View {
             case .pending(let overview):
                 return  "wallet_history_sent"
             case .cleared(let overview):
-                return  "wallet_history_receive"
+                if overview.isSentTransaction {
+                    return  "wallet_history_sent"
+                }else {
+                    return  "wallet_history_receive"
+                }
+                
         }
         
     }
