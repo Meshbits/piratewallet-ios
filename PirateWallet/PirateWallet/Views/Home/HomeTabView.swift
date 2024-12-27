@@ -80,7 +80,7 @@ struct HomeTabView: View {
                     
                         NavigationView{
                             mWalletView
-                                .navigationBarTitle("Wallet History")
+                                .navigationBarTitle("Wallet History",displayMode: .inline)
                                 .navigationBarHidden(isNavigationBarHidden)
                                 .onAppear {
                                     self.isNavigationBarHidden = true

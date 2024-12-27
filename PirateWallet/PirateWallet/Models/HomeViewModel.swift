@@ -474,7 +474,11 @@ final class HomeViewModel: ObservableObject {
             return []
         }
         
-        return self.transactions.sorted(by: { $0.created! > $1.created! })
+        return self.transactions.sorted(by: {
+            
+            $0.created ?? Date() > $1.created ?? Date()   // TODO: Supplying a dummy date for sorting as it was leading to crash for newly created sent transaction
+            
+        })
     }
     
     func bindToEnvironmentEvents() {

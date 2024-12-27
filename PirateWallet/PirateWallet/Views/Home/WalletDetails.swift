@@ -36,7 +36,9 @@ struct WalletDetails: View {
             VStack(alignment: .center, spacing: 20) {
                 
                 VStack(alignment: .center, spacing: 10) {
-                    Text("Wallet History".localized()).scaledFont(size: Device.isLarge ? 20 : 12).multilineTextAlignment(.center).foregroundColor(.white)
+                    Text("Wallet History".localized()).scaledFont(size: Device.isLarge ? 26 : 20).multilineTextAlignment(.center)
+                        .foregroundStyle(Color.zLightGray)
+                        
                 }.padding(.top,Device.isLarge ? 50 : 30)
                 
 //                BalanceDetailView(
