@@ -15,17 +15,22 @@ class WalletDetailsViewModel: ObservableObject {
     @Published var items = [TransactionDetailModel]()
 
     var showError = false
-    var balance: Double = 0
-
+    @Published var totalBalance: Double = 0
+    @Published var verifiedBalance: Double = 0
+    @Published var shieldedBalance = ReadableBalance.zero
+    @Published var transparentBalance = ReadableBalance.zero
+    
     private var synchronizerEvents = Set<AnyCancellable>()
     private var internalEvents = Set<AnyCancellable>()
     @State var showMockData = false // Change it to false = I have used it for mock data testing
     var synchronizer : SDKSynchronizer?
-
+    @Published var balanceStatus: BalanceStatus?
     var combineSDKSynchronizer : CombineSDKSynchronizer?
-
+    private var cancellable = [AnyCancellable]()
     let appDelegate: AppDelegate = PirateWalletApp().appDelegate
-    
+    @Published var unifiedAddressObject: UnifiedAddress?
+    @Published var arrrAddress: String?
+
     func groupedTransactions(_ details: [TransactionDetailModel]) -> [Date: [TransactionDetailModel]] {
       let empty: [Date: [TransactionDetailModel]] = [:]
       return details.reduce(into: empty) { acc, cur in
@@ -50,6 +55,67 @@ class WalletDetailsViewModel: ObservableObject {
         combineSDKSynchronizer = CombineSDKSynchronizer(synchronizer: appDelegate.sharedSynchronizer)
          
         subscribeToSynchonizerEvents()
+        
+    }
+    
+    func syncTransactions(){
+        
+        if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+            PirateAppSynchronizer.shared.combineSdkSynchronizer?.allTransactions
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    printLog("ALL TRANSACTIONS HERE")
+                }) { [weak self] (allTransactions) in
+                    printLog("<<<>>><<ALL TRANSACTIONS HERE WALLET TAB>>>><<<")
+                    printLog(allTransactions)
+                    
+                    for transaction in allTransactions {
+                        Task { @MainActor in
+                            let memos = try await aSynchronizer.getMemos(for: transaction)
+                            self?.items.append(TransactionDetailModel(transaction: transaction, memos: memos))
+                        }
+                    }
+                    
+                    self?.syncBalanceOnUI()
+                    
+                }.store(in: &cancellable)
+            
+        }
+    }
+    
+    func syncBalanceOnUI(){
+        
+        Task { @MainActor in
+            
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                
+                verifiedBalance = try! await aSynchronizer.getShieldedVerifiedBalance().decimalValue.doubleValue
+                printLog("verifiedBalance : \(verifiedBalance)")
+                let shieldedBalance = try! await aSynchronizer.getShieldedBalance().decimalValue.doubleValue
+                printLog("valid balance : \(shieldedBalance)")
+                let difference = verifiedBalance - shieldedBalance
+                
+                let abs_difference = Double(abs(difference))
+                
+                printLog("Balance Status")
+                printLog(difference)
+                                
+                if difference == 0 {
+                    self.balanceStatus = BalanceStatus.available(showCaption: true)
+                }
+                else if difference > 0 {
+                    self.balanceStatus = BalanceStatus.expecting(arrr: abs_difference)
+                }
+                else {
+                    self.balanceStatus = BalanceStatus.waiting(change: abs_difference)
+                }
+            }
+        }
+    }
+    
+    
+    func updateTransactions(transactions: [TransactionDetailModel]){
+        self.items = transactions
     }
     
     deinit {
@@ -61,20 +127,7 @@ class WalletDetailsViewModel: ObservableObject {
     }
     
     func subscribeToSynchonizerEvents() {
-        
-//        combineSDKSynchronizer?.allTransactions
-//            .receive(on: RunLoop.main)
-//            .sink(receiveValue: { [weak self] (d) in
-//                self?.items = self!.showMockData ? DetailModel.mockDetails : d
-//            })
-//            .store(in: &synchronizerEvents)
-        
-//        combineSDKSynchronizer.balance
-//            .receive(on: RunLoop.main)
-//            .sink(receiveValue: { [weak self] (b) in
-//                self?.balance = b
-//            })
-//            .store(in: &synchronizerEvents)
+        syncTransactions()
     }
     
     func unsubscribeFromSynchonizerEvents() {
@@ -83,19 +136,20 @@ class WalletDetailsViewModel: ObservableObject {
         }
         synchronizerEvents.removeAll()
     }
+        
     
-    var shieldedBalance: String {
-//        return try! PirateAppSynchronizer.shared.appDelegate.sharedSynchronizer.getShieldedBalance().decimalString()
-        "shieldedBalance"
+    func getUnifiedAddress() async throws{
+        Task { @MainActor in
+            if let unifiedAddress = try? await PirateAppSynchronizer.shared.synchronizer?.getUnifiedAddress(accountIndex: 0) {
+                self.unifiedAddressObject = unifiedAddress
+                
+                if let arrrSheildedAddress = try? unifiedAddress.saplingReceiver().stringEncoded {
+                    self.arrrAddress = arrrSheildedAddress
+                }
+                
+                
+            }
+        }
     }
     
-    var verifiedBalance: String {
-//        return try! PirateAppSynchronizer.shared.appDelegate.sharedSynchronizer.getShieldedVerifiedBalance().decimalString()
-        "verifiedBalance"
-    }
-    
-    var zAddress: String {
-//        ZECCWalletEnvironment.shared.getShieldedAddress() ?? ""
-        "--"
-    }
 }

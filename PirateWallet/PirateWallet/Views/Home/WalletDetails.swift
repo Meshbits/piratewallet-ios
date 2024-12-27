@@ -15,7 +15,7 @@ struct WalletDetails: View {
     @Binding var isActive: Bool
     @State var selectedModel: TransactionDetailModel? = nil
     var zAddress: String {
-        viewModel.zAddress
+        viewModel.arrrAddress ?? ""
     }
     
 //    var status: BalanceStatus {
@@ -41,10 +41,10 @@ struct WalletDetails: View {
                         
                 }.padding(.top,Device.isLarge ? 50 : 30)
                 
-//                BalanceDetailView(
-//                    availableZec: (PirateAppSynchronizer.shared.synchronizer?.getShieldedBalance().decimalValue.doubleValue)!,
-//                        status: status)
-                
+                BalanceDetailView(
+                    availableZec: viewModel.verifiedBalance,
+                    transparentFundsAvailable: false,status: viewModel.balanceStatus ?? BalanceStatus.available(showCaption: false))
+//                    BalanceViewHome(availableARRR: Double(viewModel.verifiedBalance), status: viewModel.balanceStatus ?? BalanceStatus.available(showCaption: false), aTitleStatus: viewModel.aSyncTitleStatus ?? "")
 
                 if #available(iOS 16.0, *) {
                     List {

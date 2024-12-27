@@ -23,6 +23,7 @@ struct BalanceDetailView: View {
                 .scaledFont(size: Device.isLarge ? 20 : 12)
                 .foregroundColor(.zAmberGradient1)
         }
+        .padding(.leading,10)
     }
     
     func format(zec: Double) -> String {
@@ -68,7 +69,7 @@ struct BalanceDetailView: View {
             Text("Balance".localized())
                 .foregroundColor(.zLightGray)
                 .scaledFont(size: Device.isLarge ? 18 : 14)
-                .padding(.leading,10)
+                .padding(.leading,20)
             HStack{
                 available.multilineTextAlignment(.leading)
                     .padding(.leading,10)

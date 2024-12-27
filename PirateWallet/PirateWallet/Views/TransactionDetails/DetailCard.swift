@@ -47,7 +47,7 @@ struct DetailCard: View {
                 VStack(alignment: .leading){
                     HStack {
 //                        Text(model.title)
-                        Text(model.created!.aNewFormattedDate)
+                        Text((model.created ?? Date()).aNewFormattedDate)
                             .scaledFont(size: Device.isLarge ? 20 : 14)
                             .truncationMode(.tail)
                             .lineLimit(1)
