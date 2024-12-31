@@ -7,10 +7,42 @@
 
 
 import SwiftUI
+import AlertToast
+import Combine
+import PirateLightClientKit
+
+final class UnlinkDeviceViewModel: ObservableObject {
+    
+    @Published var syncStatus: SyncStatus = .upToDate
+    private var cancellable = [AnyCancellable]()
+    
+    init()
+    {
+        Task { @MainActor in
+            if let aSynchronizer = PirateAppSynchronizer.shared.synchronizer  {
+                aSynchronizer.stateStream
+                    .throttle(for: .seconds(0.2), scheduler: DispatchQueue.main, latest: true)
+                    .sink(receiveValue: { [weak self] state in self?.synchronizerStateUpdatedUnlinkDevice(state) })
+                    .store(in: &cancellable)
+            }
+        }
+    }
+    
+    private func synchronizerStateUpdatedUnlinkDevice(_ state: SynchronizerState) {
+        printLog("Logging inside UnlinkDeviceModel.synchronizerStateUpdatedUnlinkDevice")
+        printLog(state.syncStatus)
+        syncStatus = state.syncStatus
+    }
+    
+    
+}
 
 struct UnlinkDevice: View {
     @Environment(\.presentationMode) var presentationMode
     @State var goToRecoveryPhrase = false
+    @State var cantSendError = false
+    @StateObject var unlinkDeviceViewModel = UnlinkDeviceViewModel()
+    
     var body: some View {
                 ZStack{
                     ARRRBackground().edgesIgnoringSafeArea(.all)
@@ -25,7 +57,13 @@ struct UnlinkDevice: View {
                             
                             Spacer(minLength: 10)
                             Button {
-                                goToRecoveryPhrase = true
+                                
+                                if unlinkDeviceViewModel.syncStatus == .upToDate {
+                                    goToRecoveryPhrase = true
+                                }else{
+                                    cantSendError = true
+                                }
+                                
                                
                             } label: {
                                 BlueButtonView(aTitle: "Continue".localized())
@@ -64,6 +102,11 @@ struct UnlinkDevice: View {
                               NotificationCenter.default.post(name: NSNotification.Name("MoveToFirstViewLayout"), object: nil)
                         }
                     }
+                }
+                .toast(isPresenting: $cantSendError){
+
+                    AlertToast(displayMode: .hud, type: .regular, title:"Please wait, You cannot delete your wallet while ARRR Wallet Syncing is in progress.".localized())
+
                 }
     }
 }
