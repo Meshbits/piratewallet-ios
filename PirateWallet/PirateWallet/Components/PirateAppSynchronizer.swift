@@ -441,10 +441,16 @@ public class PirateAppSynchronizer : ObservableObject{
     private func wipeFailedAlert(error: Error) {
         
         // show alert here for wipe failed
+        printLog(#function)
+        printLog("Well, we had an error in wiping off the wallet")
+        printLog("Wipe of wallet and data failed - \(error.localizedDescription)")
     }
     
     private func wipeSuccessAlert() {
         // Wipe success alert here
+        printLog(#function)
+        printLog("Successfully cleaned up wallet")
+
     }
 }
 

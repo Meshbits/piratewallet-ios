@@ -168,6 +168,25 @@ final class SeedManager {
     There's no fate but what we make for ourselves - Sarah Connor
     */
     func nukeWallet() {
+        
+        let appDelegate: AppDelegate = PirateWalletApp().appDelegate
+        appDelegate.wipe { error in
+            if error != nil {
+                print("Came across error \(error!.localizedDescription)")
+                // got error but still we need to clean the house
+                self.nukeWalletAndKeys()
+            }else{
+                // wiped the wallet and now time is to clean up the keys
+                print("successfully wiped!")
+                self.nukeWalletAndKeys()
+            }
+        }
+        
+   
+    }
+    
+    func nukeWalletAndKeys() {
+        
         nukeAll()
         nukePhrase()
         nukeBirthday()
