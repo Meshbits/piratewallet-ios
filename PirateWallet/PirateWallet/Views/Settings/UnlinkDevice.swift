@@ -57,6 +57,7 @@ struct UnlinkDevice: View {
                 })
                 .onAppear(){
                     NotificationCenter.default.addObserver(forName: NSNotification.Name("NukedUser"), object: nil, queue: .main) { (_) in
+                        PirateAppConfig.resetConfigDefaults()
                         UserSettings.shared.removeAllSettings()
                         SeedManager.default.nukeWallet()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

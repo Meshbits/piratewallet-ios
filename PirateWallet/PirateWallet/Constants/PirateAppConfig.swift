@@ -17,16 +17,25 @@ enum PirateAppConfig {
         let seed: [UInt8]
     }
 
-    static let host = "lightd1.pirate.black"
-    static let port: Int = 443
+    static var host = "lightd1.pirate.black"
+    static var port: Int = 443
     static var defaultBirthdayHeight: BlockHeight = 1390000
     static var defaultBirthdayHeightNewWallet: BlockHeight = 2560000
     static var defaultSeed = try! Mnemonic.deterministicSeedBytes(from: "eyebrow luggage boy enemy stamp lunch middle slab mother bacon confirm again tourist idea grain pink angle comic question rabbit pole train dragon grape")
-    static let memoLengthLimit: Int = 512
+    static var memoLengthLimit: Int = 512
     static var address: String {
         "\(host):\(port)"
     }
 
+    static func resetConfigDefaults () {
+        host = "lightd1.pirate.black"
+        port = 443
+        defaultBirthdayHeight = 1390000
+        defaultBirthdayHeightNewWallet = 2560000
+        defaultSeed = try! Mnemonic.deterministicSeedBytes(from: "eyebrow luggage boy enemy stamp lunch middle slab mother bacon confirm again tourist idea grain pink angle comic question rabbit pole train dragon grape")
+        memoLengthLimit = 512
+    }
+    
     static var endpoint: LightWalletEndpoint {
         return LightWalletEndpoint(address: self.host, port: self.port, secure: true, streamingCallTimeoutInMillis: 10 * 60 * 60 * 1000)
     }
