@@ -105,7 +105,7 @@ struct UnlinkDevice: View {
                 }
                 .toast(isPresenting: $cantSendError){
 
-                    AlertToast(displayMode: .hud, type: .regular, title:"Please wait, You cannot delete your wallet while ARRR Wallet Syncing is in progress.".localized())
+                    AlertToast(displayMode: .alert, type: .regular, title:"Please wait, You cannot delete your wallet while ARRR Wallet Syncing is in progress.".localized())
 
                 }
     }

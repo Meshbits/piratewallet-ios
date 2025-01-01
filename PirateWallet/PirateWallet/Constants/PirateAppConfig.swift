@@ -26,6 +26,9 @@ enum PirateAppConfig {
     static var address: String {
         "\(host):\(port)"
     }
+    static var arrrAddress: String {
+        "\(host)"
+    }
 
     static func resetConfigDefaults () {
         host = "lightd1.pirate.black"

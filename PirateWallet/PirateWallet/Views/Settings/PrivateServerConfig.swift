@@ -18,7 +18,7 @@ struct PrivateServerConfig: View {
     @State var isUserEditingPort = false
     @State var isUserEditingAddress = false
     @State var showListOfConfigurations = false
-    var anArrayOfConfigurations = ["lightd.pirate.black","Your Custom Server"]
+    var anArrayOfConfigurations = ["lightd1.pirate.black","Your Custom Server"]
     var isHighlightedAddress: Bool {
         lightServerString.count > 0
     }
@@ -46,7 +46,7 @@ struct PrivateServerConfig: View {
                                 
                                 if (isEnabled){
                                     lightPortString = PirateAppConfig.port.description
-                                    lightServerString = PirateAppConfig.address
+                                    lightServerString = PirateAppConfig.arrrAddress
                                     
                                     SeedManager.default.importLightWalletEndpoint(address: lightServerString)
                                     SeedManager.default.importLightWalletPort(port: PirateAppConfig.port)

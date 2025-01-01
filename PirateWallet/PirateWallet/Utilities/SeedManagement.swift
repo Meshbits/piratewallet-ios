@@ -103,7 +103,7 @@ final class SeedManager {
     func exportLightWalletEndpoint() -> String {
         guard let address = userDefaults.string(forKey: Self.aRRRLightWalletEndpoint) else
         {
-            return PirateAppConfig.address
+            return PirateAppConfig.arrrAddress
         }
         return address
     }
