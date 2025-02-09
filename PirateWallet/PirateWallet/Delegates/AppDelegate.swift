@@ -131,6 +131,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,ObservableObject {
 
         }
         
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor.white
+
         printLog("STATUS ON LAUNCH")
         
         if SeedManager().keysPresent {
