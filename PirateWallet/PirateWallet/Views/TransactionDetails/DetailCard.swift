@@ -29,6 +29,12 @@ struct DetailCard: View {
             color = Color.orange
         case .cleared(let overview):
             color = Color.white
+            
+            if model.zatoshi.amount > 0 {
+                color = Color.zARRRSentColor
+            }else{
+                color = Color.zARRRReceivedColor
+            }
         }
                 
         return
