@@ -34,10 +34,20 @@ class WalletDetailsViewModel: ObservableObject {
     func groupedTransactions(_ details: [TransactionDetailModel]) -> [Date: [TransactionDetailModel]] {
       let empty: [Date: [TransactionDetailModel]] = [:]
       return details.reduce(into: empty) { acc, cur in
-          let components = Calendar.current.dateComponents([.year, .month, .day], from: cur.created!)
-          let date = Calendar.current.date(from: components)!
-          let existing = acc[date] ?? []
-          acc[date] = existing + [cur]
+          
+          if let newDate =  cur.created {
+              let components = Calendar.current.dateComponents([.year, .month, .day], from: newDate)
+              let date = Calendar.current.date(from: components)!
+              let existing = acc[date] ?? []
+              acc[date] = existing + [cur]
+          }else{
+              let components = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+              let date = Calendar.current.date(from: components)!
+              let existing = acc[date] ?? []
+              acc[date] = existing + [cur]
+          }
+          
+       
       }
     }
 
